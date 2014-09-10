@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p" 
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context-2.5.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd"
+    default-autowire="byName"   >
+    
+    <description>
+  	 定义公共参数,可以在在报表中引用
+    </description>
+    
+	<bean id="globalProductParam" class="com.duowan.reportengine.model.Param">
+		<property name="id" value="configInSpringPorduct"></property>
+		<property name="label" value="spring配置文件的产品参数"></property>
+		<property name="labelExpr" value="product"></property>
+		<property name="displayType" value="radio"></property>
+		<property name="query">
+			<bean class="com.duowan.reportengine.model.Query">
+				<property name="sql">
+					<value>
+						select distinct product from st_blog
+					</value>
+				</property>
+				<property name="dataSource" ref="userDs"></property>
+				<property name="id" value="aaaaaaaaa"></property>
+			</bean>
+		</property>
+	</bean>
+	
+</beans>

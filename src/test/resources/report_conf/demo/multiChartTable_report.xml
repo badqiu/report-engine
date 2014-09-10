@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<report id="" author="badqiu" title="测试报表标题" dataSource="userDs">
+	<params>
+		<param id="startDate" label="开始日期" defaultValue="" dataType="date" displayType="date" required="true" help="请输入开始日期"></param>
+		<param id="endDate" label="结束日期" defaultValue="" dataType="date" displayType="date"></param>
+		
+		<param id="page" label="分页号" defaultValue="" dataType="int"></param>
+		<param id="pageSize" label="分页大小" defaultValue="" dataType="int"></param>
+		<param id="game" label="游戏" defaultValue="" dataType="string" refDataList="blogList" displayType="checkbox" labelExpr="game" ></param>
+		<param id="product" label="product" defaultValue="" dataType="string" refDataList="blogList" displayType="radio" valueExpr="PRODUCT"></param>
+		<param ref="globalProductParam"></param>
+		<param id="tdate" label="日期" defaultValue="" dataType="string" displayType="select" labelExpr="TDATE" valueExpr="cnt">
+			<query dataSource="userDs">
+				<sql>
+				select FORMATDATETIME(tdate,'yyyy-MM-dd') tdate,count(*) cnt from st_blog group by tdate;
+				</sql>
+			</query>
+		</param>
+		<param id="hiddenGame" dataType="string" hidden="true" label="日期" ></param>
+	</params>
+	
+	<querys>
+		<!-- 查询SQL，返回一个对象，并将查询结果保存在 varName指定的变量中 -->
+		<query id="user" singleRow="true" dataSource="userDs">
+			<sql>
+			select * from user limit 1;
+			</sql>
+		</query>
+		
+		<!-- 查询SQL，返回List，并将查询结果保存在 varName指定的变量中 -->
+		<query id="blogList" singleRow="false">
+			<sql>
+				select FORMATDATETIME(tdate,'yyyy-MM-dd') tdate,product,game,sum(pay) pay_sum,sum(click)click_sum,count(*) cnt from st_blog 
+				group by tdate,product,game
+			</sql>
+		</query>
+	</querys>
+	
+	<!-- 多维数据集 -->
+	<!-- 
+	<cubes>
+		<cube id="cubeBlog" refDataList="blogList" 
+			dimensions="tdate,product,game" 
+			measures="count(username) cnt,min(pay_sum) min_pay_sum,count(distinct username)"/>;
+	</cubes>
+	 -->
+	
+	<groovy>
+		<!-- 作些如参数检查的事,可以引用params的对象 -->
+		<beforeQuery>
+			beforeQueryTag = "beforeQueryTag";
+			context.put("beforeQueryTag","beforeQueryTag");
+		</beforeQuery>
+		
+		<!-- 根据查询结果，返回一些计算列,可以引用对象: context,params,querys的查询结果 -->
+		<afterQuery>
+			afterQueryTag = "afterQueryTag";
+			context.put("afterQueryTag","afterQueryTag");
+		</afterQuery>
+	</groovy>
+	
+	<charts>
+		<!-- 序列图 -->
+		<chart id="lineChart" title="序列图" x="TDATE"  xTitle="xTitle" yTitle="yTitle" chartType="line" refDataList="blogList">
+			<sers>
+				<ser y="PAY_SUM" title="充值"></ser>
+				<ser y="CLICK_SUM" title="点击"></ser>
+			</sers>
+		</chart>
+		<!-- 序列图 -->
+		<chart id="pieChart" title="并图" x="TDATE"  xTitle="xTitle" yTitle="yTitle" chartType="pie" refDataList="blogList">
+			<sers>
+				<ser y="PAY_SUM" title="充值"></ser>
+			</sers>
+		</chart>
+		<!-- 序列图 -->
+		<chart id="barChart" title="柱壮图" x="TDATE"  xTitle="xTitle" yTitle="yTitle" chartType="column" refDataList="blogList">
+			<sers>
+				<ser y="PAY_SUM" title="充值"></ser>
+				<ser y="CLICK_SUM" title="点击"></ser>
+			</sers>
+		</chart>
+	</charts>
+	
+	<!-- 表格 -->
+	<tables>
+		<table id="table1" refDataList="blogList" title="" pageable="true">
+			<columns>
+				<column label="日期">
+					<value>${row.TDATE}</value>
+				</column>
+				<column label="产品">
+					<value>${row.PRODUCT}</value>
+				</column>
+				<column label="充值">
+					<value>${row.PAY_SUM}</value>
+				</column>
+				<column label="操作">
+					<value><![CDATA[删除,修改<a href="www.163.com">163</a> ${afterQueryTag} ${beforeQueryTag}]]></value>
+				</column>
+			</columns>
+		</table>
+		
+		<table id="leftTable" refDataList="blogList" title="" pageable="true">
+			<columns>
+				<column label="日期">
+					<value>${row.TDATE}</value>
+				</column>
+				<column label="产品">	
+					<value>${row.PRODUCT}</value>
+				</column>
+				<column label="充值">
+					<value>${row.PAY_SUM}</value>
+				</column>
+				<column label="操作">
+					<value><![CDATA[删除,修改<a href="www.163.com">163</a> ${afterQueryTag} ${beforeQueryTag}]]></value>
+				</column>
+			</columns>
+		</table>
+		
+		<table id="rightTable" refDataList="blogList" title="" pageable="true">
+			<columns>
+				<column label="日期">
+					<value>${row.TDATE}</value>
+				</column>
+				<column label="产品">
+					<value>${row.PRODUCT}</value>
+				</column>
+				<column label="充值">
+					<value>${row.PAY_SUM}</value>
+				</column>
+				<column label="操作">
+					<value><![CDATA[删除,修改<a href="www.163.com">163</a> ${afterQueryTag} ${beforeQueryTag}]]></value>
+				</column>
+			</columns>
+		</table>
+		
+		<table id="userTable" refDataList="blogList" title="">
+			<columns>
+				<column id="" value="${row.tdate}" label="日期"/>
+			</columns>
+		</table>
+	</tables>
+	
+	<!-- 交叉表 -->
+	<!-- 
+	<crosstabs>
+		<crosstab rowDimensionPath="game/gameServer" colDimensionPath="tdate/product" crosstabCell="click,login,pay"/>
+	</crosstabs>
+	 -->
+
+	<help>
+		帮助文档: 1.你是好人
+	</help>
+		
+</report>

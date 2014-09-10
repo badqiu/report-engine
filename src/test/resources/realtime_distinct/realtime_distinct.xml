@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<bolt>
+	<realtime_distinct>
+		<distinct>username</distinct>
+		<where></where>
+		<groupBy>grade,class</groupBy>
+		<into></into>
+	</realtime_distinct>
+</bolt>
+

@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<report id="" author="badqiu" title="测试报表标题" refDataSource="userDs" extend="demo/parent_report">
+
+	<props>
+		<property name="sex" value="1"/>
+	</props>
+	
+	<params>
+		<param ref="demo/global_report/startDate" defaultValue="${DateUtils.addDays(now,-7)?string('yyyy-MM-dd')}" ></param>
+		<param id="endDate" label="结束日期" defaultValue="${now?string('yyyy-MM-dd')}" dataType="date" displayType="date"></param>
+		 
+		<param id="page" label="分页号" defaultValue="1" dataType="int"></param>
+		<param id="pageSize" label="分页大小" defaultValue="" dataType="int" readonly="true"></param>
+		<param id="game" label="游戏" defaultValue="sxd" dataType="string" refDataList="blogList" displayType="checkbox" labelExpr="game" ></param>
+		<param id="product" label="product" defaultValue="" dataType="string" refDataList="blogList" displayType="tab" valueExpr="PRODUCT"></param>
+		
+		<!-- 引用spring里面配置的参数对象 -->
+		<param ref="globalProductParam"></param>
+		<param ref="demo/global_report/globalTdate" defaultValue="1988-01-01"></param>
+		<param ref="demo/global_report/globalHiddenTdate" defaultValue="1988-01-01"></param>
+		
+		<param id="tdate" label="日期" defaultValue="14" dataType="string" displayType="select" labelExpr="TDATE" valueExpr="cnt" readonly="true">
+			<query refDataSource="userDs">
+				<sql>
+				<![CDATA[
+				select FORMATDATETIME(tdate,'yyyy-MM-dd') tdate,day(tdate) cnt from st_blog group by tdate
+				]]>
+				</sql>
+			</query>
+		</param>
+		<param id="hiddenGame" dataType="string" hidden="true" label="日期" distinct="true" ></param>
+		<param id="emptyLabel" label="" defaultValue="" dataType="string"></param>
+		<!-- 
+		<cascadingParameterGroup>
+			
+		</cascadingParameterGroup>
+		 -->
+		 [#assign items = ["badqiu"]]
+		 [#list items as item]
+		 	<param id="@{item}" label="" defaultValue="" dataType="string"></param>
+		 [/#list]
+	</params>
+	
+	<querys>
+		<!-- 查询SQL，返回一个对象，并将查询结果保存在 varName指定的变量中 -->
+		<query id="user" singleRow="true" refDataSource="userDs">
+			<sql>
+			select * from user limit 1;
+			</sql>
+		</query>
+		
+		<!-- 查询SQL，返回List，并将查询结果保存在 varName指定的变量中 -->
+		<query id="cubeBlogList" singleRow="false">
+			<sql>
+				<![CDATA[
+				select FORMATDATETIME(tdate,'yyyy-MM-dd') tdate,product,game,sum(pay) pay_sum,sum(click)click_sum,count(*) cnt from st_blog 
+				<#if true>
+					where 1=1 or game=:game
+				</#if>
+				group by tdate,game,product
+				order by tdate desc,game desc,product desc
+				]]>
+			</sql>
+		</query>
+		
+		<!-- 查询SQL，返回List，并将查询结果保存在 varName指定的变量中 -->
+		<query id="blogList" singleRow="false">
+			<sql>
+				select tdate,product,game,sum(pay) pay_sum,sum(click)click_sum,count(*) cnt from st_blog 
+				group by tdate,product,game
+			</sql>
+		</query>	
+
+		<!-- 查询SQL，返回List，并将查询结果保存在 varName指定的变量中 -->
+		<query id="allBlogList" singleRow="false">
+			<sql>
+				select tdate,sum(pay) pay_sum from st_blog group by tdate order by tdate asc
+			</sql>
+		</query>	
+				
+		<!-- 查询SQL，返回List，并将查询结果保存在 varName指定的变量中 -->
+		<query id="requeryBlogList" singleRow="false">
+			<sql>
+				select tdate,product,game,sum(pay) pay_sum,sum(click)click_sum,count(*) cnt from st_blog 
+				group by tdate,product,game
+			</sql>
+			<requerySql>
+				select tdate,product,
+					collect_map(number_map(game,pay_sum)) pay_map,
+					collect_map(date_map(game,tdate)) game_date_map,
+					collect_map(game,pay_sum) pay_map2,
+					collect_map(game,tdate) tdate_map2 
+				from t
+				group by tdate,product
+			</requerySql>
+		</query>				
+	</querys>
+	
+	<!-- 多维数据集 -->
+	<cubes>
+		<cube id="cubeBlog" refDataList="cubeBlogList" 
+			dimensions="tdate,product,game" 
+			measures="count(*) 行数,min(pay_sum) 最小充值,count(distinct game) 游戏排重"/>
+		<cube id="cubeTdateGame" refDataList="cubeBlogList" 
+			dimensions="game,tdate"  rowDims="game" colDims="tdate"
+			measures="count(*) 行数,min(pay_sum) 最小充值,sum(pay_sum),count(distinct game) 游戏排重"/>			
+	</cubes>
+	
+	<groovy>
+		<!-- 作些如参数检查的事,可以引用params的对象 -->
+		<beforeQuery>
+			beforeQueryTag = "beforeQueryTag";
+			context.put("beforeQueryTag","beforeQueryTag");
+		</beforeQuery>
+		
+		<!-- 根据查询结果，返回一些计算列,可以引用对象: context,params,querys的查询结果 -->
+		<afterQuery>
+			import com.duowan.reportengine.model.Chart.Ser;
+			
+			afterQueryTag = "afterQueryTag";
+			context.put("afterQueryTag","afterQueryTag");
+			System.out.println("----------------------- requeryBlogList ----------------------------");
+			System.out.println(context.get("requeryBlogList"));
+			
+			def chart = context.get("report").getElementById("dynamicLineChart");
+			chart.addSer(new Ser("PAY_SUM","充值"));
+			Integer[] a = [100,200,300,400,500];
+			chart.addSer(new Ser("------------",Arrays.asList(a)));
+		</afterQuery>
+	</groovy>
+	
+	<charts>
+		<chart id="lineChart" title="序列图" x="TDATE"  xTitle="xTitle" yTitle="yTitle" chartType="line" refDataList="blogList">
+			<sers>
+				<ser y="PAY_SUM" title="充值"></ser>
+				<ser y="CLICK_SUM" title="点击"></ser>
+			</sers>
+		</chart>
+		<!-- 如果时间区间为空，会自动填充值： dateIntervalSeconds  -->
+		<chart id="lineChartBreakByDate" title="中间会中断的线状图" x="TDATE"  xFormat="yyyy-MM-dd" xTitle="xTitle" yTitle="yTitle" chartType="line" refDataList="allBlogList"  
+			dateIntervalSeconds="86400">
+			<sers>
+				<ser y="PAY_SUM" title="充值"></ser>
+			</sers>
+		</chart>		
+		<chart id="nestPropertyLineChart" title="基于List map map结构的序列图,nestPropertyLineChart" x="TDATE"  xTitle="nestPropertyLineChart" yTitle="yTitle" chartType="line" refDataList="requeryBlogList" orderBy="TDATE desc">
+			<sers>
+				<ser y="pay_map.dfw" title="DDT充值"></ser>
+			</sers>
+		</chart>
+		<chart id="dynamicLineChart" title="动态ser序列图" x="TDATE"  xTitle="xTitle" yTitle="yTitle" chartType="line" refDataList="blogList">
+		</chart>				
+		<chart id="pieChart" title="并图" x="TDATE" xFormat="MM-dd"  xTitle="xTitle" yTitle="yTitle" chartType="pie" refDataList="blogList">
+			<sers>
+				<ser y="PAY_SUM" title="充值"></ser>
+			</sers>
+		</chart>
+		<chart id="barChart" title="柱壮图" x="TDATE"  xTitle="xTitle" yTitle="yTitle" chartType="column" refDataList="blogList">
+			<sers>
+				<ser y="PAY_SUM" title="充值"></ser>
+				<ser y="CLICK_SUM" title="点击"></ser>
+			</sers>
+		</chart>
+		
+	</charts>
+	
+	<!-- 表格 -->
+	<tables>
+		<table id="table1" refDataList="blogList" title="充值数据" pageable="true" orderBy="pay_sum desc,product asc" monitorable="true">
+			<columns>
+				<column label="日期" type="date">
+					<value>${row.tdate}</value>
+				</column>
+				<column label="产品" type="key">
+					<value>${row.product}</value>
+				</column>
+				<column label="充值">
+					<value>${row.pay_sum}</value>
+				</column>
+				<column label="充值人数">
+					<value>${row.pay_sum/2}</value>
+				</column>
+				<column label="操作">
+					<value><![CDATA[删除,修改<a href="http://www.163.com">163</a> ${afterQueryTag} ${beforeQueryTag}]]></value>
+				</column>
+			</columns>
+		</table>
+		
+		<table id="userTable" refDataList="blogList" title="日期表格">
+			<columns>
+				<column id="" value="${row.tdate}" label="日期" />
+			</columns>
+		</table>
+		<table id="requeryBlogTable" refDataList="requeryBlogList"  title="" monitorable="true">
+			<columns>
+				<column value="${row.tdate}" label="日期" ></column>
+				<column label="ddt充值" >
+					<value><![CDATA[${row.pay_map.ddt!}]]></value>
+				</column>
+			</columns>
+		</table>
+	</tables>
+	
+	<!-- 交叉表 -->
+	<!-- 
+	<crosstabs>
+		<crosstab 
+			rowDimensionPath="game/gameServer" 
+			colDimensionPath="tdate/product" 
+			crosstabCells="click,login,pay" 
+			crosstabCellLabels=""/>
+	</crosstabs>
+	 -->
+
+	<help>
+		帮助文档: 1.你是好人
+	</help>
+		
+</report>

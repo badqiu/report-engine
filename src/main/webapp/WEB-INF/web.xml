@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.4"
+		 xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+	
+	<display-name>report engine web application</display-name>
+	
+	<!-- session超时定义,单位为分钟 -->
+	<session-config>
+		<session-timeout>120</session-timeout>
+	</session-config>
+	
+	<!-- 默认首页定义 -->
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>index.html</welcome-file>
+	</welcome-file-list>
+	
+	<!-- Spring ApplicationContext配置文件的路径,可使用通配符，多个路径用,号分隔,此参数用于后面的Spring-Context loader -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath*:spring/report_engine/*.xml,</param-value>
+	</context-param>
+
+	<!--Spring ApplicationContext 载入 -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+		
+	<servlet>
+		<servlet-name>ReportEngineServlet</servlet-name>
+		<servlet-class>com.duowan.reportengine.web.servlet.ReportEngineServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>ReportEngineServlet</servlet-name>
+		<url-pattern>/ReportEngine/*</url-pattern>
+	</servlet-mapping>
+					
+</web-app>
+

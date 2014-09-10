@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<report author="badqiu" title="测试报表标题" refDataSource="userDs">
+	<params>
+		<param id="globalTdate" label="定义在global_report.xml中，用于其它模板通过ref导入" defaultValue="" dataType="string" displayType="select" labelExpr="TDATE" valueExpr="cnt">
+			<query refDataSource="userDs">
+				<sql>
+				select FORMATDATETIME(tdate,'yyyy-MM-dd') tdate,count(*) cnt from st_blog group by tdate;
+				</sql>
+			</query>
+		</param>
+		<param id="globalHiddenTdate" label="定义在global_report.xml中，hidden" defaultValue="" hidden="true"/>
+		
+		<param id="startDate" label="开始日期" defaultValue="${DateUtils.addDays(now,-7)?string('yyyy-MM-dd')}" dataType="date" displayType="date" required="true" help="请输入开始日期"></param>
+		<param id="endDate" label="结束日期" defaultValue="${DateUtils.addDays(now,-1)?string('yyyy-MM-dd')}" dataType="date" displayType="date" required="true" help="请输入结束日期"></param>
+	</params>
+		
+</report>

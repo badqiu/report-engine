@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<report id="" author="badqiu" title="测试报表标题" refDataSource="userDs">
+	<params>
+		<param id="parentStartDate" label="parent开始日期" defaultValue="1991-01-01" dataType="date" displayType="date" required="true" help="请输入开始日期"></param>
+		<param id="parentDndDate" label="parent结束日期" defaultValue="1991-01-01" dataType="date" displayType="date"></param>
+		<param id="page" label="parent分页号" defaultValue="100" dataType="int"></param>
+	</params>
+		
+</report>

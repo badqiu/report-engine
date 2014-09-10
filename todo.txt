@@ -1,0 +1,37 @@
+# 1.  参数的列表选择框实现: 文档，组合框，列表框(允许多选)，单选按钮
+# 1.1	  增加help text,hidden,
+# 1.2	  列表框需要: refDataList(key,value), defaultValue, order by:desc,asc,distinct value
+2.  级联参数实现
+# 3.  参数与报表展现页面分离：参数框，报表框
+# 4.  ReportEngineServlet实现
+# 5.  table分页实现
+# 6.  dataSource配置实现1
+# 7.  global ReportEngine Template实现
+# 8.  param.ref, 参数采用引用，而不是每个模板都配置
+# 9.  Report include实现
+10. 交叉表实现
+11. 导出功能
+# 12. 增加报表变量配置
+# 13. 增加macro脚本导入功能
+# 14. 集成log4jdbc
+# 15. 增加groovy脚本import功能
+# 16. 集成freemarker extends模板功能
+# 17. 添加通用的 refXXXXX功能，将refXXXX 转变为 1.lookup(XXXXX),2. setXXXXX()
+# 18. ReportEngine引用的静态资源必须使用引用ctx
+19. 编写使用说明文档
+# 20. 通过对象通用ref 语句，都可以引用对象
+# 21. 支持report的import功能， 支持namespace(现在的目录已经是namespace)
+# 23. 支持report的继承功能(extend)
+# 24. radio项目小于8，使用 nav tab类似的效果显示
+# 支持pie chart动态渲染 map中的key,value;   key = x, value = y
+# 支持表格排序功能
+ 支持行,列交叉表
+ 将Query修改为FactoryBean模式
+# 参数值保留在cookie中,不同的报表页面都使用相同参数
+# com.duowan.reportengine.util.ObjectSqlQueryUtil只根据一个样本不能正确猜测出数据类型
+# --cookie中的值,应该跟 path关联,以便如:不同的产品,不会相互影响
+#  双freemarker需求, freemarker => xml => freemarker => result, 可以使用特殊符号<%>
+  Report对象里面所有的 string类型,都支持 Freemarker引用参数
+  将macro等标准 js,css,ftl文件打包在jar包里面
+  
+
