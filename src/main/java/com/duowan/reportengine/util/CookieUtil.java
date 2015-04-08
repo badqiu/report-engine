@@ -1,6 +1,7 @@
 package com.duowan.reportengine.util;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
 /**
@@ -19,6 +22,9 @@ import org.springframework.util.Assert;
  */
 public class CookieUtil {
 	private static String ARRAY_SEPERATOR = "\001";
+	static String URL_ENCODE = "UTF-8";
+	
+	private final static Logger logger = LoggerFactory.getLogger(CookieUtil.class);
 	
 	public static void saveParamInotCookie(Map<String,Object> param, HttpServletResponse resp,String cookieNamePrefix) {
 		Assert.notNull(cookieNamePrefix,"cookieNamePrefix must be not empty");
@@ -40,8 +46,12 @@ public class CookieUtil {
 //				continue;
 //			}
 			
-			Cookie cookie;
-			cookie = new Cookie(cookieNamePrefix+key,strValue);
+			Cookie cookie = null;
+			try {
+				cookie = new Cookie(cookieNamePrefix+key,URLEncoder.encode(strValue, URL_ENCODE));
+			} catch (UnsupportedEncodingException e) {
+				logger.error("cookie encode error,", e);
+			}
 			cookie.setPath("/");
 //				cookie.setMaxAge(-1); //浏览器进程生效
 			resp.addCookie(cookie);
@@ -77,7 +87,12 @@ public class CookieUtil {
 				String cookieName = c.getName();
 				if(cookieName.startsWith(cookieNamePrefix)) {
 					String key = cookieName.substring(cookieNamePrefix.length());
-					String value = c.getValue();
+					String value = null;
+					try {
+						value = URLDecoder.decode(c.getValue(), URL_ENCODE);
+					} catch (UnsupportedEncodingException e) {
+						logger.error("cookie decode error,",e);
+					}
 					if(StringUtils.isNotBlank(value)) {
 						if(StringUtils.contains(value, ARRAY_SEPERATOR)) {
 							String[] values = StringUtils.split(value,ARRAY_SEPERATOR);

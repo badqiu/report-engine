@@ -18,6 +18,12 @@ import org.apache.commons.lang.time.DateUtils;
 import com.duowan.common.beanutils.PropertyUtils;
 import com.duowan.common.util.DateConvertUtils;
 
+/**
+ * @warning 如果你看到这个，那么说明你现在已经在负责我以前的项目了。
+ * I am so, so sorry for you.Good speed, guy!
+ * @author Irwin
+ * 2014年12月18日 下午5:09:21
+ */
 public class DataUtils {
 	
 	private static final String DATE_FORMAT = "yyyy-MM-dd";
@@ -159,7 +165,7 @@ public class DataUtils {
 				for (int i = 0; i < innerColumns.length; i++) {
 					if (targetMap.get(innerColumns[i]).toString().equals(sourceMap.get(innerColumns[i]).toString())) {
 						for (int j = 0; j < combineColumens.length; j++) {
-							targetMap.put(alias[i], sourceMap.get(combineColumens[i]));
+							targetMap.put(alias[j], sourceMap.get(combineColumens[j]));
 						}
 					}
 				}

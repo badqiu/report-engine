@@ -15,6 +15,7 @@
 		<param id="game" label="游戏" defaultValue="sxd" dataType="string" refDataList="blogList" displayType="checkbox" labelExpr="game" ></param>
 		<param id="product" label="product" defaultValue="" dataType="string" refDataList="blogList" displayType="tab" valueExpr="PRODUCT"></param>
 		
+		<param id="monitor_report_passport" label="monitor_report_passport" defaultValue="dw_zhanglong" dataType="string" hidden="true"></param>
 		<!-- 引用spring里面配置的参数对象 -->
 		<param ref="globalProductParam"></param>
 		<param ref="demo/global_report/globalTdate" defaultValue="1988-01-01"></param>
@@ -31,6 +32,7 @@
 		</param>
 		<param id="hiddenGame" dataType="string" hidden="true" label="日期" distinct="true" ></param>
 		<param id="emptyLabel" label="" defaultValue="" dataType="string"></param>
+		<param id="tdateType" label="" defaultValue="day" dataType="string"></param>
 		<!-- 
 		<cascadingParameterGroup>
 			
@@ -67,8 +69,11 @@
 		<!-- 查询SQL，返回List，并将查询结果保存在 varName指定的变量中 -->
 		<query id="blogList" singleRow="false">
 			<sql>
+			<![CDATA[
 				select tdate,product,game,sum(pay) pay_sum,sum(click)click_sum,count(*) cnt from st_blog 
+				where tdate >= :startDate and tdate <= :endDate 
 				group by tdate,product,game
+			]]>
 			</sql>
 		</query>	
 
@@ -169,10 +174,10 @@
 	<tables>
 		<table id="table1" refDataList="blogList" title="充值数据" pageable="true" orderBy="pay_sum desc,product asc" monitorable="true">
 			<columns>
-				<column label="日期" type="date">
+				<column label="日期" isKpi="false">
 					<value>${row.tdate}</value>
 				</column>
-				<column label="产品" type="key">
+				<column label="产品" isKpi="false">
 					<value>${row.product}</value>
 				</column>
 				<column label="充值">
@@ -194,7 +199,7 @@
 		</table>
 		<table id="requeryBlogTable" refDataList="requeryBlogList"  title="" monitorable="true">
 			<columns>
-				<column value="${row.tdate}" label="日期" ></column>
+				<column value="${row.tdate}" label="日期" isKpi="false"></column>
 				<column label="ddt充值" >
 					<value><![CDATA[${row.pay_map.ddt!}]]></value>
 				</column>

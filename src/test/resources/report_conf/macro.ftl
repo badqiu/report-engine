@@ -239,6 +239,7 @@
 
 <#macro renderTable table> 
 	<a href="/ReportEngine/monitorArg?reportPath=${reportPath}&metadataId=${table.id}&metadataType=table&isRetainedData=${table.isRetainedData?string('true','false')}" target="_blank" style="background-color: #DDDDDD;background-image: linear-gradient(#DDDDDD, #DDDDDD 5%, #DDDDDD);margin-bottom: 4px;" class="btn btn-round" title="点击设置报表数据监控">我要监控</a>
+	<a href="/ReportEngine/subscribeArg?reportPath=${reportPath}&metadataId=${table.id}&metadataType=table_subscribe" target="_blank" style="background-color: #DDDDDD;background-image: linear-gradient(#DDDDDD, #DDDDDD 5%, #DDDDDD);margin-bottom: 4px;" class="btn btn-round" title="点击订阅报表">我要订阅</a>
 	<table id="${table.id}" class="table table-striped table-bordered table-hover table-condensed  scrolltable sortable">
 		<thead>
 			<tr>
@@ -439,7 +440,7 @@
 		        </#if>
 			</#list>
 		</select>
-		<a id="tip0" data-placement="bottom" class="btn btn-mini btn-round" style="border-radius: 40px;" data-content=" <font color=#D2691E><strong>数据值列:</strong></font>所监控报表的指标列<br> <font color=#D2691E><strong>维度值:</strong></font>报表中除指标列之外的其他列，与进入此页面之前报表显示的数据相同<br> <font color=#D2691E><strong>维度值中的日期:</strong></font>与查询时间及当前时间有关，监控时数据日期会随着监控时间顺移，并非固定不变<br> " data-original-title="说明" rel="popover" href="javascript:void(0);">
+		<a id="tip0" data-placement="bottom" class="btn btn-mini btn-round" style="border-radius: 40px;" data-content=" <font color=#D2691E><strong>数据值列:</strong></font>所监控报表的指标列<br> <font color=#D2691E><strong>监控所有维度:</strong></font>自动监控展现的所有维度及后续增加的维度<br> <font color=#D2691E><strong>维度值:</strong></font>报表中除指标列之外的其他列，与进入此页面之前报表显示的数据相同<br> <font color=#D2691E><strong>维度值中的日期:</strong></font>与查询时间及当前时间有关，监控时数据日期会随着监控时间顺移，并非固定不变<br> " data-original-title="说明" rel="popover" href="javascript:void(0);">
 			<i class="icon-question-sign"></i>
 		</a>
 		<script type="text/javascript">
@@ -450,6 +451,9 @@
 	    <input class="btn btn-primary" style="border-radius: 3px 3px 3px 3px;" type="button" name="back" value="关闭" onclick="javascript:window.opener=null;window.open('','_self');window.close();"/>
 	    &nbsp;&nbsp;
 	    </span>
+    </div>
+    <div class="input-prepend">
+    	<span class="add-on">监控所有维度:</span>&nbsp;&nbsp;<input id="autoAppend" name="autoAppend" type="checkbox" value="1"/><span style="background:transparent;height:10px;font-size:80%;font-weight:500;color:rgb(128,128,128);">&nbsp;&nbsp;（勾选后监控所有维度,包括新增维度）</span>
     </div>
 	<#list table.columns as col>
 		<#if col.isKpi?? && !col.isKpi>
@@ -512,5 +516,41 @@
 			</#list>
 		</row>
 	</#list>
+</table>
+</#macro>
+
+<#macro renderTableSubscribe table>
+	<!-- 报表订阅  -->
+	<#if startDate??>
+		<input type="hidden" id="startDate" name="startDate" value="${startDate}"/>
+	</#if>
+	 <#if endDate??>
+	    <input type="hidden" id="endDate" name="endDate" value="${endDate}"/>
+	</#if>
+	<input type="hidden" id="reportPath" name="reportPath" value="${reportUrl}"/>
+	<input type="hidden" id="metadataId"  name="metadataId" value="${table.id}"/>
+	<input type="hidden" id="queryParams" name="queryParams" value="${queryParams}"/>
+	<input type="hidden" id="monitorReportPassport"  name="monitorReportPassport" value="${monitor_report_passport}"/>
+</#macro>
+
+<#macro renderTableSubscribeHtml table> 
+<table id='${table.id}' class='table'>
+	<thead>
+		<tr>
+		<#list table.columns as col>
+			<th>${col.label}</th>
+		</#list>
+		</tr>
+	</thead>
+	
+	<tbody>
+		<#list table.dataList as row>
+			<tr>
+		<#list table.columns as col>
+				<td class='center'><#assign rowValue = col.value?interpret><@rowValue /></td>
+		</#list>
+			</tr>
+		</#list>
+	</tbody>
 </table>
 </#macro>

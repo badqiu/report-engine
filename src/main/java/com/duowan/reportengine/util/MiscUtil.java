@@ -21,8 +21,9 @@ import com.duowan.reportengine.model.Chart.Ser;
 
 /**
  * 杂项工具类
- * @author irwin
- *
+ * @author Irwin
+ * @warning 如果你看到这个，那么说明你现在已经在负责我以前的项目了。
+ * I am so, so sorry for you.Good speed, guy!
  */
 public class MiscUtil {
 	
@@ -196,22 +197,33 @@ public class MiscUtil {
 		return dateList;
 	}
 	
+	/**
+	 * 漏斗数据组织，获取开始/结束步骤
+	 * @param dataList
+	 * @return
+	 */
 	public static List<Map<String, Object>> sutitableFunnel(List<Map<String, Object>> dataList) {
 		List<Map<String, Object>> resultDataList = new ArrayList<Map<String,Object>>();
-		Map<String, Object> tmpMap = new HashMap<String, Object>();
+		Set<Object> keySet = new HashSet<Object>();
 		
 		for (int i = 0;i< dataList.size();i++) {
-			String funnelId = dataList.get(i).get("funnel_id").toString();
+			Object funnelId = dataList.get(i).get("funnel_id");
+			if (keySet.contains(funnelId)) {
+				continue;
+			}
+			Integer step = new Integer(1);
+			
 			for (int j = i+1; j < dataList.size(); j++) {
-				Object tmpFunnelId = tmpMap.get("funnel_id");
-				if (funnelId.equals(dataList.get(j).get("funnel_id").toString()) && (ObjectUtils.isNotEmpty(tmpFunnelId) && !tmpFunnelId.equals(funnelId) || ObjectUtils.isEmpty(tmpFunnelId))) {
+				Object unfunnelId = dataList.get(j).get("funnel_id");
+				Integer nextStep = Integer.valueOf(dataList.get(j).get("steps").toString());
+				if (funnelId.equals(unfunnelId) && step.compareTo(nextStep)==0) {
 					Map<String, Object> map = new HashMap<String, Object>();
 					map.putAll(dataList.get(i));
 					map.put("first_step", dataList.get(j).get("last_step"));
 					resultDataList.add(map);
 				}
 			}
-			tmpMap.put("funnel_id", funnelId);
+			keySet.add(funnelId);
 		}
 		return resultDataList;
 	}

@@ -1,4 +1,5 @@
 var monitorUrl = "http://statmonitor.game.yy.com/monitor/report/setReportMonitorTaskArg.do";
+var subscribeUrl = "http://statmonitor.game.yy.com/monitor/subscribe/setReportSubscribekArg.do";
 
 function checkAllBox(tableid){
 	$("#" + tableid + " tr").each(function () {
@@ -70,21 +71,23 @@ function formatStr(str){
 	}
 	return str;
 }
-
+//报表监控form表单提交
 function submitForm(tableid){
 	var temp = document.createElement("form"); 
 	temp.action = monitorUrl; 
 	temp.method = "post";
-	temp.target="_blank"
+	temp.target="_blank";
 	temp.style.display = "none";
 	temp.appendChild(createInputById("reportPath"));
 	temp.appendChild(createInputById("metadataId"));
 	temp.appendChild(createInputById("metadataTitle"));
-	temp.appendChild(createInputById("spanType"));
 	temp.appendChild(createInputById("system"));
 	temp.appendChild(createInputById("startDate"));
 	temp.appendChild(createInputById("endDate"));
 	temp.appendChild(createInputById("queryParams"));
+	if(document.getElementById("autoAppend").checked){
+		temp.appendChild(createInputById("autoAppend"));
+	}
 	var dateInput = createInputById("dateTitle");
 	temp.appendChild(dateInput);
 	
@@ -161,5 +164,39 @@ function isNull(str) {
     }
 }
 
+/**报表订阅表单提交*/
+function submitSubscribeForm(tableid){
+	var temp = document.createElement("form"); 
+	temp.action = subscribeUrl; 
+	temp.method = "post";
+	temp.style.display = "none";
+	temp.appendChild(createInputById("reportPath"));
+	temp.appendChild(createInputById("metadataId"));
+	temp.appendChild(createInputById("startDate"));
+	temp.appendChild(createInputById("endDate"));
+	temp.appendChild(createInputById("queryParams"));
+	
+	var passportInput = createInputById("monitorReportPassport");
+	if(isNull(passportInput.value)){
+		alert("用户通行证不能为空！");
+		return;
+	}else{
+		if((passportInput.value).toLowerCase().substring(0,3)!='dw_'){
+			alert("通行证必须以dw_开头！");
+			passportInput.focus();
+			return;
+		}
+		if(passportInput.value.length<=3){
+			alert(passportInput.value+" 为非常规通行证！");
+			passportInput.focus();
+			return;
+		}
+	}
+	temp.appendChild(passportInput);
+	
+	document.body.appendChild(temp);        
+	temp.submit(); 
+	document.body.removeChild(temp)
+}
 
 	

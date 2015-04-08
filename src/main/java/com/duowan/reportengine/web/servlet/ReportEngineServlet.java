@@ -1,5 +1,6 @@
 package com.duowan.reportengine.web.servlet;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
@@ -20,7 +21,10 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.util.WebUtils;
 
 import com.duowan.common.util.DateConvertUtils;
+import com.duowan.common.util.DateFormats;
 import com.duowan.reportengine.ReportEngine;
+import com.duowan.reportengine.model.Param;
+import com.duowan.reportengine.model.Report;
 import com.duowan.reportengine.util.CookieUtil;
 import com.duowan.reportengine.util.ResponseUtil;
 
@@ -84,36 +88,67 @@ public class ReportEngineServlet extends HttpServlet{
 			String metadataId = req.getParameter("metadataId");
 			String metadataType = req.getParameter("metadataType");
 			String isRetainedData = req.getParameter("isRetainedData");
-			formatQueryDate(isRetainedData,params);
-			metadata(reportPath, metadataType, metadataId, params, req, resp);
+			metadata(reportPath, metadataType, metadataId, params, req, resp,isRetainedData);
 		}else if("monitorReport".equals(method)){
-			String enc = req.getParameter("monitorReportEnc");
-			String time = req.getParameter("monitorReportTime");
-			String passport = req.getParameter("monitorReportPassport");
-			isValidRequest(time, enc, passport);
-			req.getSession().setAttribute("passport", passport);
+			checkRequestValid(req);
 			String metadataId = req.getParameter("metadataId");
 			String metadataType = req.getParameter("metadataType")+".xml";
 			metadata(reportPath, metadataType, metadataId, params, req, resp);
-		}else{
+		}else if("subscribeArg".equals(method)){
+			String metadataId = req.getParameter("metadataId");
+			String metadataType = req.getParameter("metadataType");
+			metadata(reportPath, metadataType, metadataId, params, req, resp);
+		}else {
 			throw new RuntimeException("unknow method:"+method);
 		}
+	}
+
+	private void checkRequestValid(HttpServletRequest req) {
+		String enc = req.getParameter("monitorReportEnc");
+		String time = req.getParameter("monitorReportTime");
+		String passport = req.getParameter("monitorReportPassport");
+		isValidRequest(time, enc, passport);
+		req.getSession().setAttribute("passport", passport);
 	}
 	/**
 	 * 格式化查询时间,非用户留存数据
 	 */
-	@SuppressWarnings("rawtypes")
-	void formatQueryDate(String isRetainedData,Map params){
-		if(StringUtils.isBlank(isRetainedData) || isRetainedData.toString().equals("false")){
-			String tdate = DateConvertUtils.format(DateUtils.addDays(new Date(), -1), "yyyy-MM-dd");
-			Object startDate = params.get("startDate");
-			Object endDate = params.get("endDate");
-			if(startDate!=null && endDate!=null && startDate.toString().equalsIgnoreCase(endDate.toString())){
-				tdate = startDate.toString();
+	void parserReportDateParam(String reportPath,Map params,String ignoreDateFormat) throws FileNotFoundException{
+		Report report = reportEngine.getReport(reportPath, params);
+		Map map = reportEngine.processForModel(report, params);
+		String startDate = "";
+		String endDate = "";
+		String tdateType = "";
+		Param startDateParam = (Param)((Map)map.get("elements")).get("startDate");
+		Param endDateParam = (Param)((Map)map.get("elements")).get("endDate");
+		Param tdateTypeParam = (Param)((Map)map.get("elements")).get("tdateType");
+		if(startDateParam != null){
+			Object value = startDateParam.getValue();
+			if("date".equalsIgnoreCase(startDateParam.getDataType())){
+				startDate = DateConvertUtils.format((Date)value, DateFormats.DATE_TIME_FORMAT);
+			}else {
+				startDate = String.valueOf(value);
+			}
+		}
+		if(endDateParam != null){
+			Object value = endDateParam.getValue();
+			if("date".equalsIgnoreCase(endDateParam.getDataType())){
+				endDate = DateConvertUtils.format((Date)value, DateFormats.DATE_TIME_FORMAT);
+			}else {
+				endDate = String.valueOf(value);
+			}
+		}
+		if(tdateTypeParam != null){
+			tdateType = String.valueOf(tdateTypeParam.getValue());
+		}
+		if(StringUtils.isBlank(ignoreDateFormat) || ignoreDateFormat.toString().equals("false")){
+			String tdate = DateConvertUtils.format(DateUtils.addDays(new Date(), -1), DateFormats.DATE_FORMAT);
+			startDate = StringUtils.defaultIfEmpty(startDate, endDate);
+			if(StringUtils.isNotBlank(startDate) && startDate.equalsIgnoreCase(endDate)){
+				tdate = startDate;
 			}else {
 				//时间类型
-				Object tdateType = params.get("tdateType");
-				if(tdateType != null ){
+				if(StringUtils.isNotBlank(tdateType)){
 					String spanType = tdateType.toString();
 					if(spanType.equalsIgnoreCase("week")){
 						tdate = com.duowan.reportengine.util.DateUtils.getBeginDayOfLastWeek(new Date());
@@ -125,11 +160,20 @@ public class ReportEngineServlet extends HttpServlet{
 						tdate = com.duowan.reportengine.util.DateUtils.getBeginTimeOfLast5Minute(new Date());
 					}
 				}
+				startDate = tdate;
+				endDate = tdate;
 			}
-			params.put("startDate", tdate);
-			params.put("endDate", tdate);
+			params.put("startDate", startDate);
+			params.put("endDate", endDate);
+			map = reportEngine.processForModel(report, params);
+		}else {
+			params.put("startDate", startDate);
+			params.put("endDate", endDate);
 		}
+		params.putAll(map);
+		params.put("queryParams", params.get("queryParams")+"&tdateType="+tdateType);
 	}
+	
 	/**
 	 * 参数非法则抛出异常
 	 * @param time
@@ -176,7 +220,12 @@ public class ReportEngineServlet extends HttpServlet{
 				paramString += param.get(paramKeys[i]);
 			}
 		}
-		return paramString.substring(1);
+		if(StringUtils.isNotBlank(paramString)){
+			paramString = paramString.substring(1);
+		}else {
+			paramString = "1=1";
+		}
+		return paramString;
 	}
 	
 	private boolean filterString(String source,String ... filters){
@@ -239,11 +288,15 @@ public class ReportEngineServlet extends HttpServlet{
 	 * @throws ServletException 
 	 */
 	private void metadata(String reportPath,String metadataType,String metadataId,Map params,HttpServletRequest req, HttpServletResponse resp) throws IOException, TemplateException, ServletException {
+		metadata(reportPath, metadataType, metadataId, params, req, resp,"true");
+	}
+	
+	private void metadata(String reportPath,String metadataType,String metadataId,Map params,HttpServletRequest req, HttpServletResponse resp,String ignoreDateFormat) throws IOException, TemplateException, ServletException {
+		parserReportDateParam(reportPath, params,ignoreDateFormat);
 		Template template = reportEngine.getFreemarkerConfiguration().getTemplate(metadataType+".ftl");
 		params.put("metadataId", metadataId);
 		params.put("reportUrl", req.getRequestURL()+"?reportPath="+reportPath);
-		Map map = reportEngine.getTemplateModel(reportPath, params);
-		String str = FreeMarkerTemplateUtils.processTemplateIntoString(template,map);
+		String str = FreeMarkerTemplateUtils.processTemplateIntoString(template,params);
 		ResponseUtil.writeString(resp, str);
 	}
 	
