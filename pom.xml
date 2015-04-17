@@ -1,8 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.duowan.common</groupId>
-	<artifactId>duowan-report-engine</artifactId>
+	<groupId>com.github.common</groupId>
+	<artifactId>report-engine</artifactId>
 	<version>0.1.3-SNAPSHOT</version>	
 	<name>duowan-report-engine</name>
 	<packaging>jar</packaging>
@@ -127,13 +127,13 @@
 			<dependency>
 				<groupId>com.duowan.common</groupId>
 				<artifactId>duowan-common-util</artifactId>
-				<version>1.0.11</version>	
+				<version>1.0.13</version>	
 			</dependency>
 
 			<dependency>
 				<groupId>com.duowan.common</groupId>
 				<artifactId>duowan-common-test</artifactId>
-				<version>1.0</version>
+				<version>1.0.1</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
@@ -184,7 +184,7 @@
 			<dependency>
 			    <groupId>com.thoughtworks.xstream</groupId>
 			    <artifactId>xstream</artifactId>
-			    <version>1.4.5</version>
+			    <version>1.4.8</version>
 			</dependency>
 			
 			<!-- json -->
@@ -333,12 +333,12 @@
 				<version>2.2</version>
 				<optional>true</optional>
 			</dependency>
-			<dependency>
-			    <groupId>apache-oro</groupId>
-			    <artifactId>jakarta-oro</artifactId>
-			    <version>2.0.8</version>
-				<optional>true</optional>
-			</dependency>			
+<!-- 			<dependency> -->
+<!-- 			    <groupId>apache-oro</groupId> -->
+<!-- 			    <artifactId>jakarta-oro</artifactId> -->
+<!-- 			    <version>2.0.8</version> -->
+<!-- 				<optional>true</optional> -->
+<!-- 			</dependency>			 -->
 			<!-- spring end -->
 
 			<!--  apache-commons BEGIN -->

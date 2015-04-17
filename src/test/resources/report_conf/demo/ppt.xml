@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<report id="" author="badqiu" title="测试报表标题" refDataSource="userDs" extend="demo/parent_report">
+	<params>
+		<param ref="demo/global_report/startDate" defaultValue="${DateUtils.addDays(now,-7)?string('yyyy-MM-dd')}" ></param>
+		<param id="endDate" label="结束日期" defaultValue="${now?string('yyyy-MM-dd')}" dataType="date" displayType="date"></param>
+	</params>
+	
+	<querys>
+		<!-- 查询SQL，返回一个对象，并将查询结果保存在 varName指定的变量中 -->
+		<query id="user" singleRow="true" refDataSource="userDs">
+			<sql>
+			select * from user
+			</sql>
+		</query>
+	</querys>
+	
+	<charts>
+		<chart id="lineChart" title="序列图" x="TDATE"  xTitle="xTitle" yTitle="yTitle" chartType="line" refDataList="blogList">
+			<sers>
+				<ser y="PAY_SUM" title="充值"></ser>
+				<ser y="CLICK_SUM" title="点击"></ser>
+			</sers>
+		</chart>
+	</charts>
+	
+	<tables>
+		<table id="userTable" refDataList="blogList" title="日期表格">
+			<columns>
+				<column id="" value="${row.tdate}" label="日期" />
+			</columns>
+		</table>
+	</tables>
+
+</report>
