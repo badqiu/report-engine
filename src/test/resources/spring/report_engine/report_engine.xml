@@ -30,7 +30,7 @@
 		<property name="properties" ref="applicationProperties"/>
 	</bean>
 	    
-	<bean id="reportEngine" class="com.duowan.reportengine.ReportEngine">
+	<bean id="reportEngine" class="com.github.reportengine.ReportEngine">
 		<property name="baseReportDir" value="${report_baseReportDir}"></property>
 		<property name="engineContext" ref="applicationProperties"/>
 	</bean>

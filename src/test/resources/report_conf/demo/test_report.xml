@@ -107,7 +107,7 @@
 		
 		<!-- 根据查询结果，返回一些计算列,可以引用对象: context,params,querys的查询结果 -->
 		<afterQuery>
-			import com.duowan.reportengine.model.Chart.Ser;
+			import com.github.reportengine.model.Chart.Ser;
 			
 			afterQueryTag = "afterQueryTag";
 			context.put("afterQueryTag","afterQueryTag");

@@ -12,7 +12,7 @@ import org.springframework.util.Assert;
 
 /**
  * 聚焦函数，collect_map(map) : 可以将多个map合并为一个map
- * 函数创建: CREATE AGGREGATE collect_map FOR "com.duowan.reportengine.h2.functions.CollectMapAggrFunction";
+ * 函数创建: CREATE AGGREGATE collect_map FOR "com.github.reportengine.h2.functions.CollectMapAggrFunction";
  * @author badqiu
  *
  */

@@ -70,7 +70,7 @@
 	
 	<servlet>
 		<servlet-name>ReportEngineServlet</servlet-name>
-		<servlet-class>com.duowan.reportengine.web.servlet.ReportEngineServlet</servlet-class>
+		<servlet-class>com.github.reportengine.web.servlet.ReportEngineServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	
@@ -80,7 +80,7 @@
 	</servlet-mapping>
 
 3. spring配置: report_engine.xml
-	<bean id="reportEngine" class="com.duowan.reportengine.ReportEngine">
+	<bean id="reportEngine" class="com.github.reportengine.ReportEngine">
 		<property name="baseReportDir" value="${report_baseReportDir}"></property>
 		<!-- 引擎配置参数，可以在报表中引用定义的变量 -->
 		<property name="engineContext" ref="applicationProperties"/>

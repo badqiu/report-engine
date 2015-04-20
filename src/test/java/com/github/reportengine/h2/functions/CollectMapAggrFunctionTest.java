@@ -21,8 +21,8 @@ public class CollectMapAggrFunctionTest {
 		ds.setUrl("jdbc:h2:mem:test2;DB_CLOSE_DELAY=-1;INIT=RUNSCRIPT FROM '"+ReportEngineTest.h2TableSqlFile.getAbsolutePath().replace('\\', '/')+"'");
 		ds.setUsername("sa");
 		ds.setPassword("");
-		new JdbcTemplate(ds).execute("CREATE AGGREGATE collect_map FOR \"com.duowan.reportengine.h2.functions.CollectMapAggrFunction\"");
-		new JdbcTemplate(ds).execute("CREATE ALIAS map FOR \"com.duowan.reportengine.h2.functions.H2Functions.string_map\"");
+		new JdbcTemplate(ds).execute("CREATE AGGREGATE collect_map FOR \"com.github.reportengine.h2.functions.CollectMapAggrFunction\"");
+		new JdbcTemplate(ds).execute("CREATE ALIAS map FOR \"com.github.reportengine.h2.functions.H2Functions.string_map\"");
 	}
 	
 	@Test

@@ -15,7 +15,7 @@ import freemarker.template.TemplateModel;
  * 创建新对象,并放入freemarker 共享变量的指令
  * 
  * 使用示例:
- * <@new class="com.duowan.reportengine.util.MiscUtil"/>
+ * <@new class="com.github.reportengine.util.MiscUtil"/>
  * 
  * @author badqiu
  *

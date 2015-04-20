@@ -28,7 +28,7 @@
  支持行,列交叉表
  将Query修改为FactoryBean模式
 # 参数值保留在cookie中,不同的报表页面都使用相同参数
-# com.duowan.reportengine.util.ObjectSqlQueryUtil只根据一个样本不能正确猜测出数据类型
+# com.github.reportengine.util.ObjectSqlQueryUtil只根据一个样本不能正确猜测出数据类型
 # --cookie中的值,应该跟 path关联,以便如:不同的产品,不会相互影响
 #  双freemarker需求, freemarker => xml => freemarker => result, 可以使用特殊符号<%>
   Report对象里面所有的 string类型,都支持 Freemarker引用参数

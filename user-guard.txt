@@ -17,7 +17,7 @@
 		
 	报表相关变量
 		elements: 报表所有对象,类型: Map，例：引用startDate参数为 elements['startDate'];
-		report: 报表对象,类型: com.duowan.reportengine.model.Report
+		report: 报表对象,类型: com.github.reportengine.model.Report
 		context: 报表上下文,类型: Map
 		now: 当前时间,类型: java.util.Date
 	
@@ -26,8 +26,8 @@
 		StringUtils: org.apache.commons.lang.StringUtils.StringUtils
 		WordUtils: org.apache.commons.lang.WordUtils.WordUtils
 		NumberUtils: org.apache.commons.lang.NumberUtils.NumberUtils
-		ViewUtils: com.duowan.reportengine.util.ViewUtils.ViewUtils
-		MiscUtil: com.duowan.reportengine.util.MiscUtil.MiscUtil
+		ViewUtils: com.github.reportengine.util.ViewUtils.ViewUtils
+		MiscUtil: com.github.reportengine.util.MiscUtil.MiscUtil
 		ObjectUtils: com.duowan.common.util.ObjectUtils
 
 报表引擎特殊场景

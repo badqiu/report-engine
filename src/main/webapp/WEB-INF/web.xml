@@ -28,7 +28,7 @@
 		
 	<servlet>
 		<servlet-name>ReportEngineServlet</servlet-name>
-		<servlet-class>com.duowan.reportengine.web.servlet.ReportEngineServlet</servlet-class>
+		<servlet-class>com.github.reportengine.web.servlet.ReportEngineServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	

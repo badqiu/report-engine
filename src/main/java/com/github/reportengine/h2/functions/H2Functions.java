@@ -21,7 +21,7 @@ import com.duowan.common.beanutils.PropertyUtils;
 public class H2Functions  {
 	/**
 	 *  生成map结构的数据,使用 map(key1,value1,key2,value2,key3,value3....)
-	 *  CREATE ALIAS map FOR "com.duowan.reportengine.h2.functions.H2Functions.map"
+	 *  CREATE ALIAS map FOR "com.github.reportengine.h2.functions.H2Functions.map"
 	 * @param keyValues
 	 * @return
 	 */

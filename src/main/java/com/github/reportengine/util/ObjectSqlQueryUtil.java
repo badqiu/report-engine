@@ -43,12 +43,12 @@ public class ObjectSqlQueryUtil {
 			public List<Map<String,Object>> doInTransaction(TransactionStatus status) {
 				createTableAndInsertData(TABLE_NAME,rows,ds);
 				final JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
-				jdbcTemplate.execute("CREATE AGGREGATE IF NOT EXISTS collect_map FOR \"com.duowan.reportengine.h2.functions.CollectMapAggrFunction\"");
-				jdbcTemplate.execute("CREATE ALIAS IF NOT EXISTS map FOR \"com.duowan.reportengine.h2.functions.H2Functions.string_map\"");
-				jdbcTemplate.execute("CREATE ALIAS IF NOT EXISTS string_map FOR \"com.duowan.reportengine.h2.functions.H2Functions.string_map\"");
-				jdbcTemplate.execute("CREATE ALIAS IF NOT EXISTS number_map FOR \"com.duowan.reportengine.h2.functions.H2Functions.number_map\"");
-				jdbcTemplate.execute("CREATE ALIAS IF NOT EXISTS date_map FOR \"com.duowan.reportengine.h2.functions.H2Functions.date_map\"");
-				jdbcTemplate.execute("CREATE ALIAS IF NOT EXISTS get_property FOR \"com.duowan.reportengine.h2.functions.H2Functions.get_property\"");
+				jdbcTemplate.execute("CREATE AGGREGATE IF NOT EXISTS collect_map FOR \"com.github.reportengine.h2.functions.CollectMapAggrFunction\"");
+				jdbcTemplate.execute("CREATE ALIAS IF NOT EXISTS map FOR \"com.github.reportengine.h2.functions.H2Functions.string_map\"");
+				jdbcTemplate.execute("CREATE ALIAS IF NOT EXISTS string_map FOR \"com.github.reportengine.h2.functions.H2Functions.string_map\"");
+				jdbcTemplate.execute("CREATE ALIAS IF NOT EXISTS number_map FOR \"com.github.reportengine.h2.functions.H2Functions.number_map\"");
+				jdbcTemplate.execute("CREATE ALIAS IF NOT EXISTS date_map FOR \"com.github.reportengine.h2.functions.H2Functions.date_map\"");
+				jdbcTemplate.execute("CREATE ALIAS IF NOT EXISTS get_property FOR \"com.github.reportengine.h2.functions.H2Functions.get_property\"");
 				
 				final NamedParameterJdbcTemplate namedJdbcTemplate = new NamedParameterJdbcTemplate(ds);
 				return MapUtil.allMapKey2LowerCase(namedJdbcTemplate.queryForList(sql,params));
@@ -69,12 +69,12 @@ public class ObjectSqlQueryUtil {
 //					createTableAndInsertData(TABLE_NAME+(++count),rows,ds);
 //				}
 //				final JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
-//				jdbcTemplate.execute("CREATE AGGREGATE IF NOT EXISTS collect_map FOR \"com.duowan.reportengine.h2.functions.CollectMapAggrFunction\"");
-//				jdbcTemplate.execute("CREATE ALIAS IF NOT EXISTS map FOR \"com.duowan.reportengine.h2.functions.H2Functions.string_map\"");
-//				jdbcTemplate.execute("CREATE ALIAS IF NOT EXISTS string_map FOR \"com.duowan.reportengine.h2.functions.H2Functions.string_map\"");
-//				jdbcTemplate.execute("CREATE ALIAS IF NOT EXISTS number_map FOR \"com.duowan.reportengine.h2.functions.H2Functions.number_map\"");
-//				jdbcTemplate.execute("CREATE ALIAS IF NOT EXISTS date_map FOR \"com.duowan.reportengine.h2.functions.H2Functions.date_map\"");
-//				jdbcTemplate.execute("CREATE ALIAS IF NOT EXISTS get_property FOR \"com.duowan.reportengine.h2.functions.H2Functions.get_property\"");
+//				jdbcTemplate.execute("CREATE AGGREGATE IF NOT EXISTS collect_map FOR \"com.github.reportengine.h2.functions.CollectMapAggrFunction\"");
+//				jdbcTemplate.execute("CREATE ALIAS IF NOT EXISTS map FOR \"com.github.reportengine.h2.functions.H2Functions.string_map\"");
+//				jdbcTemplate.execute("CREATE ALIAS IF NOT EXISTS string_map FOR \"com.github.reportengine.h2.functions.H2Functions.string_map\"");
+//				jdbcTemplate.execute("CREATE ALIAS IF NOT EXISTS number_map FOR \"com.github.reportengine.h2.functions.H2Functions.number_map\"");
+//				jdbcTemplate.execute("CREATE ALIAS IF NOT EXISTS date_map FOR \"com.github.reportengine.h2.functions.H2Functions.date_map\"");
+//				jdbcTemplate.execute("CREATE ALIAS IF NOT EXISTS get_property FOR \"com.github.reportengine.h2.functions.H2Functions.get_property\"");
 //				
 //				return MapUtil.allMapKey2LowerCase(jdbcTemplate.queryForList(sql));
 //			}

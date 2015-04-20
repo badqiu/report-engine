@@ -18,13 +18,13 @@
   	 定义公共参数,可以在在报表中引用
     </description>
     
-	<bean id="globalProductParam" class="com.duowan.reportengine.model.Param">
+	<bean id="globalProductParam" class="com.github.reportengine.model.Param">
 		<property name="id" value="configInSpringPorduct"></property>
 		<property name="label" value="spring配置文件的产品参数"></property>
 		<property name="labelExpr" value="product"></property>
 		<property name="displayType" value="radio"></property>
 		<property name="query">
-			<bean class="com.duowan.reportengine.model.Query">
+			<bean class="com.github.reportengine.model.Query">
 				<property name="sql">
 					<value>
 						select distinct product from st_blog
