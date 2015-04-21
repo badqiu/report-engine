@@ -16,7 +16,7 @@
 	</querys>
 	
 	<charts>
-		<chart id="userChart" title="序列图" x="TDATE"  xTitle="xTitle" yTitle="yTitle" chartType="line" refDataList="blogList">
+		<chart id="userChart" title="序列图" x="product"  xTitle="xTitle" yTitle="yTitle" chartType="line" refDataList="blogList">
 			<sers>
 				<ser y="sum_pay" title="充值"></ser>
 				<ser y="sum_click" title="点击"></ser>
