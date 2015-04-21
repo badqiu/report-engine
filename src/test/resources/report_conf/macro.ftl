@@ -237,9 +237,11 @@
 </#macro>
 
 
-<#macro renderTable table> 
+<#macro renderTable table>
+	<!-- 
 	<a href="/ReportEngine/monitorArg?reportPath=${reportPath}&metadataId=${table.id}&metadataType=table&isRetainedData=${table.isRetainedData?string('true','false')}" target="_blank" style="background-color: #DDDDDD;background-image: linear-gradient(#DDDDDD, #DDDDDD 5%, #DDDDDD);margin-bottom: 4px;" class="btn btn-round" title="点击设置报表数据监控">我要监控</a>
 	<a href="/ReportEngine/subscribeArg?reportPath=${reportPath}&metadataId=${table.id}&metadataType=table_subscribe" target="_blank" style="background-color: #DDDDDD;background-image: linear-gradient(#DDDDDD, #DDDDDD 5%, #DDDDDD);margin-bottom: 4px;" class="btn btn-round" title="点击订阅报表">我要订阅</a>
+	-->
 	<table id="${table.id}" class="table table-striped table-bordered table-hover table-condensed  scrolltable sortable">
 		<thead>
 			<tr>

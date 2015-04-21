@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<report id="" author="badqiu" title="测试报表标题" refDataSource="userDs" extend="demo/parent_report">
+<report id="" author="badqiu" title="测试报表标题" refDataSource="userDs" >
 	<params>
 		<param ref="demo/global_report/startDate" defaultValue="${DateUtils.addDays(now,-7)?string('yyyy-MM-dd')}" ></param>
 		<param id="endDate" label="结束日期" defaultValue="${now?string('yyyy-MM-dd')}" dataType="date" displayType="date"></param>
 	</params>
 	
 	<querys>
-		<!-- 查询SQL，返回一个对象，并将查询结果保存在 varName指定的变量中 -->
-		<query id="user" singleRow="true" refDataSource="userDs">
+		<query id="blogList" refDataSource="userDs">
 			<sql>
-			select * from user
+			select product,game,sum(click) sum_click,sum(pay) sum_pay from st_blog
+			group by product,game
 			</sql>
 		</query>
 	</querys>
 	
 	<charts>
-		<chart id="lineChart" title="序列图" x="TDATE"  xTitle="xTitle" yTitle="yTitle" chartType="line" refDataList="blogList">
+		<chart id="userChart" title="序列图" x="TDATE"  xTitle="xTitle" yTitle="yTitle" chartType="line" refDataList="blogList">
 			<sers>
-				<ser y="PAY_SUM" title="充值"></ser>
-				<ser y="CLICK_SUM" title="点击"></ser>
+				<ser y="sum_pay" title="充值"></ser>
+				<ser y="sum_click" title="点击"></ser>
 			</sers>
 		</chart>
 	</charts>
@@ -27,7 +27,10 @@
 	<tables>
 		<table id="userTable" refDataList="blogList" title="日期表格">
 			<columns>
-				<column id="" value="${row.tdate}" label="日期" />
+				<column id="" value="${row.product}" label="product" />
+				<column id="" value="${row.game}" label="game" />
+				<column id="" value="${row.sum_click}" label="click" />
+				<column id="" value="${row.sum_pay}" label="pay" />
 			</columns>
 		</table>
 	</tables>

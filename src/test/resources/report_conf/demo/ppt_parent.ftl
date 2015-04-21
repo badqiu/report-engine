@@ -1,16 +1,14 @@
 <#include "/macro.ftl"/>
 
+
 <!DOCTYPE html>
 <html lang="en">
 <@renderHtmlHead/>
 
 <body>
-	<@block name="table">
+	<div class="row-fluid sortable">
+	<@block name="body">
 	</@block>  
+	</div>
 </body>
 </html>
-
-
-
-
-

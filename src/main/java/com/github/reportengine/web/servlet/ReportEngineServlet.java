@@ -99,7 +99,7 @@ public class ReportEngineServlet extends HttpServlet{
 			String metadataType = req.getParameter("metadataType");
 			metadata(reportPath, metadataType, metadataId, params, req, resp);
 		}else {
-			throw new RuntimeException("unknow method:"+method);
+			throw new RuntimeException("unknow method:"+method+" servletPath:"+req.getRequestURI());
 		}
 	}
 

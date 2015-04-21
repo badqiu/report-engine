@@ -7,13 +7,12 @@
 		<title>${report.tiele!}</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		
-		<#assign bootstrapCssList = ["bootstrap-cerulean.css","bootstrap-classic.css","bootstrap-cyborg.css","bootstrap-journal.css","bootstrap-redy.css","bootstrap-simplex.css","bootstrap-slate.css","bootstrap-spacelab.css","bootstrap-united.css"]/>
-		<#assign randomCssIndex =  now?string('dd')?number % bootstrapCssList?size/>
 		<!-- css -->
-		<link href="${ctx}/css/skin/${bootstrapCssList[randomCssIndex]}" rel="stylesheet" id="bs-css">
+		<link href="${ctx}/css/skin/bootstrap-redy.css" rel="stylesheet" id="bs-css">
 
 		<link href="${ctx}/css/bootstrap-responsive.min.css" rel="stylesheet">
 		<link href="${ctx}/css/bootstrap-sortable.css" rel="stylesheet">
+		
 		<link href="${ctx}/css/dynamic-page.css" rel="stylesheet">
 		
 		<!-- external javascript
@@ -24,7 +23,9 @@
 		<!-- 在dynamic-page.js中, 用到了jquery-ui的sortable拖曳特效 -->
 		<script src="${ctx}/js/jquery-ui.custom.min.js"></script>
 		<script src="${ctx}/js/bootstrap.min.js"></script>
+		<!--
 		<script src="${ctx}/js/dynamic-page.js"></script>
+		-->
 		<script src="${ctx}/js/bootstrap-tooltip.js"></script>
 		<script src="${ctx}/js/bootstrap-popover.js"></script>
 		
@@ -40,8 +41,8 @@
     	 <script src="${ctx}/js/bootstrap-sortable.js"></script>
     	 
     	 <!--monitor system js -->
+    	<!--
     	 <script src="${ctx}/js/monitor.js"></script>
-    
      	<script type="text/javascript">
 
 		(function($){
@@ -77,6 +78,7 @@
          })
 
          </script>
+         -->
     
 	    <style type="text/css">
 			.div-space {
