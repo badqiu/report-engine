@@ -4,19 +4,21 @@
 	<params>
 		<param ref="demo/global_report/startDate" defaultValue="${DateUtils.addDays(now,-7)?string('yyyy-MM-dd')}" ></param>
 		<param id="endDate" label="结束日期" defaultValue="${now?string('yyyy-MM-dd')}" dataType="date" displayType="date"></param>
+		<param id="product" label="产品" defaultValue="yygame" dataType="string" displayType="text"></param>
 	</params>
 	
 	<querys>
 		<query id="blogList" refDataSource="userDs">
 			<sql>
 			select product,game,sum(click) sum_click,sum(pay) sum_pay from st_blog
+			where product=:product
 			group by product,game
 			</sql>
 		</query>
 	</querys>
 	
 	<charts>
-		<chart id="userChart" title="序列图" x="product"  xTitle="xTitle" yTitle="yTitle" chartType="line" refDataList="blogList">
+		<chart id="userChart" title="序列图" x="product"  xTitle="xTitle" yTitle="yTitle" chartType="column" refDataList="blogList">
 			<sers>
 				<ser y="sum_pay" title="充值"></ser>
 				<ser y="sum_click" title="点击"></ser>

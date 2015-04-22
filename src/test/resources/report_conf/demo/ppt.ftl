@@ -4,6 +4,7 @@
 
 <@override name="body">
 	<@renderChart report.getElementById("userChart")/>
+	<h1>111111111111111111</h1>
 	<@renderTable report.getElementById("userTable")/>
 </@override>
 
