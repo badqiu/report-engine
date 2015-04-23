@@ -12,7 +12,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.Assert;
 
-import com.duowan.common.beanutils.PropertyUtils;
+import com.github.rapid.common.beanutils.PropertyUtils;
 import com.github.reportengine.ReportEngine;
 import com.github.reportengine.ReportEngineLifecycle;
 import com.github.reportengine.util.FieldUtil;

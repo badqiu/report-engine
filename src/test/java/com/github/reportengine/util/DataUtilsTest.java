@@ -10,7 +10,7 @@ import java.util.Map;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.duowan.common.util.DateConvertUtils;
+import com.github.rapid.common.util.DateConvertUtils;
 
 public class DataUtilsTest extends Assert{
 	

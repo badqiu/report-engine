@@ -20,8 +20,8 @@ import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.util.WebUtils;
 
-import com.duowan.common.util.DateConvertUtils;
-import com.duowan.common.util.DateFormats;
+import com.github.rapid.common.util.DateConvertUtils;
+import com.github.rapid.common.util.DateFormats;
 import com.github.reportengine.ReportEngine;
 import com.github.reportengine.model.Param;
 import com.github.reportengine.model.Report;

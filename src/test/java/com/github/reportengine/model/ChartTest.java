@@ -8,7 +8,7 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.duowan.common.util.DateConvertUtils;
+import com.github.rapid.common.util.DateConvertUtils;
 import com.github.reportengine.util.MapUtil;
 import com.github.reportengine.util.ObjectSqlQueryUtil;
 

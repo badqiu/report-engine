@@ -14,8 +14,8 @@ import java.util.Set;
 
 import org.apache.commons.lang.math.NumberUtils;
 
-import com.duowan.common.util.DateConvertUtils;
-import com.duowan.common.util.ObjectUtils;
+import com.github.rapid.common.util.DateConvertUtils;
+import com.github.rapid.common.util.ObjectUtils;
 import com.github.reportengine.model.Chart;
 import com.github.reportengine.model.Chart.Ser;
 

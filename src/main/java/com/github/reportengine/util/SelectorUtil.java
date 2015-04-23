@@ -9,7 +9,7 @@ import java.util.Set;
 
 import org.springframework.util.ClassUtils;
 
-import com.duowan.common.beanutils.PropertyUtils;
+import com.github.rapid.common.beanutils.PropertyUtils;
 
 public class SelectorUtil {
 

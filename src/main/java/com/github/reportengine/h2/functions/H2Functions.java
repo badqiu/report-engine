@@ -9,7 +9,7 @@ import java.util.Map;
 import org.apache.commons.beanutils.NestedNullException;
 import org.h2.value.ValueJavaObject;
 
-import com.duowan.common.beanutils.PropertyUtils;
+import com.github.rapid.common.beanutils.PropertyUtils;
 
 /**
  * 

@@ -7,7 +7,7 @@ import java.util.Map;
 import org.apache.commons.collections.MapUtils;
 import org.springframework.util.Assert;
 
-import com.duowan.common.util.page.Paginator;
+import com.github.rapid.common.util.page.Paginator;
 import com.github.reportengine.Constants;
 import com.github.reportengine.ReportEngineLifecycle;
 

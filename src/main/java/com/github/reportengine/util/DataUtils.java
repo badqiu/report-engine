@@ -15,8 +15,8 @@ import org.apache.commons.beanutils.NestedNullException;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.lang.time.DateUtils;
 
-import com.duowan.common.beanutils.PropertyUtils;
-import com.duowan.common.util.DateConvertUtils;
+import com.github.rapid.common.beanutils.PropertyUtils;
+import com.github.rapid.common.util.DateConvertUtils;
 
 /**
  * @warning 如果你看到这个，那么说明你现在已经在负责我以前的项目了。

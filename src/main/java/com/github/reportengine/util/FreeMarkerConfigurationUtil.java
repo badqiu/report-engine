@@ -5,11 +5,11 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
 import org.apache.commons.lang.time.DateUtils;
 
-import com.duowan.common.freemarker.directive.BlockDirective;
-import com.duowan.common.freemarker.directive.ExtendsDirective;
-import com.duowan.common.freemarker.directive.OverrideDirective;
-import com.duowan.common.freemarker.directive.SuperDirective;
-import com.duowan.common.util.DateConvertUtils;
+import com.github.rapid.common.freemarker.directive.BlockDirective;
+import com.github.rapid.common.freemarker.directive.ExtendsDirective;
+import com.github.rapid.common.freemarker.directive.OverrideDirective;
+import com.github.rapid.common.freemarker.directive.SuperDirective;
+import com.github.rapid.common.util.DateConvertUtils;
 import com.github.reportengine.util.freemarker.NewDirective;
 
 import freemarker.template.Configuration;
@@ -33,7 +33,7 @@ public class FreeMarkerConfigurationUtil {
 			conf.setSharedVariable("ViewUtils", new ViewUtils());
 			conf.setSharedVariable("MiscUtil", new MiscUtil());
 			conf.setSharedVariable("DataUtils", new DataUtils());
-			conf.setSharedVariable("ObjectUtils", new com.duowan.common.util.ObjectUtils());
+			conf.setSharedVariable("ObjectUtils", new com.github.rapid.common.util.ObjectUtils());
 			conf.setSharedVariable("PDateUtils", new com.github.reportengine.util.DateUtils());
 			
 			conf.setNumberFormat("######.####");

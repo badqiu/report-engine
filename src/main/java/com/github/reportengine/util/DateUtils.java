@@ -3,7 +3,7 @@ package com.github.reportengine.util;
 import java.util.Calendar;
 import java.util.Date;
 
-import com.duowan.common.util.DateConvertUtils;
+import com.github.rapid.common.util.DateConvertUtils;
 
 public class DateUtils {
 	/**

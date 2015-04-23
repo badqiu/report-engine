@@ -12,8 +12,7 @@ import org.apache.commons.beanutils.NestedNullException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.duowan.common.beanutils.PropertyUtils;
-import com.duowan.common.util.ObjectUtils;
+import com.github.rapid.common.beanutils.PropertyUtils;
 
 /**
  * 页面工具类

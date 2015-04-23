@@ -3,8 +3,8 @@ package com.github.reportengine.model;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.duowan.common.test.util.BeanAssert;
-import com.duowan.common.test.util.BeanDefaultValueUtils;
+import com.github.rapid.common.test.util.BeanAssert;
+import com.github.rapid.common.test.util.BeanDefaultValueUtils;
 
 public class AllModelTest extends Assert{
 

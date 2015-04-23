@@ -5,9 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.commons.lang.reflect.FieldUtils;
-
-import com.duowan.common.util.ObjectUtils;
+import com.github.rapid.common.util.ObjectUtils;
 
 public class FieldUtil {
 

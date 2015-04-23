@@ -5,7 +5,7 @@ import java.util.Date;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.duowan.common.util.DateConvertUtils;
+import com.github.rapid.common.util.DateConvertUtils;
 
 public class DateUtilsTest extends Assert{
 	private Date date = DateConvertUtils.parse("2013-10-10 13:24:00", "yyyy-MM-dd HH:mm:ss");

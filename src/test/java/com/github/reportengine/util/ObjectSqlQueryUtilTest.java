@@ -10,8 +10,8 @@ import java.util.Map;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.duowan.common.test.util.MultiThreadTestUtils;
-import com.duowan.common.util.DateConvertUtils;
+import com.github.rapid.common.test.util.MultiThreadTestUtils;
+import com.github.rapid.common.util.DateConvertUtils;
 
 
 public class ObjectSqlQueryUtilTest extends Assert{

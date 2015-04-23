@@ -13,8 +13,8 @@ import org.apache.commons.beanutils.NestedNullException;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 
-import com.duowan.common.beanutils.PropertyUtils;
-import com.duowan.common.util.DateConvertUtils;
+import com.github.rapid.common.beanutils.PropertyUtils;
+import com.github.rapid.common.util.DateConvertUtils;
 import com.github.reportengine.ReportEngineLifecycle;
 import com.github.reportengine.util.MapUtil;
 
