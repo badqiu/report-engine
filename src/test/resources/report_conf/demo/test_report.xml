@@ -158,7 +158,7 @@
 	
 	<!-- 表格 -->
 	<tables>
-		<table id="table1" refDataList="blogList" title="充值数据" pageable="true" orderBy="pay_sum desc,product asc" monitorable="true">
+		<table id="table1" refDataList="blogList" title="充值数据" pageable="true" orderBy="pay_sum desc,product asc" >
 			<columns>
 				<column label="日期" type="date">
 					<value>${row.tdate}</value>
@@ -187,7 +187,7 @@
 				<column id="" value="${row.tdate}" label="日期"/>
 			</columns>
 		</table>
-		<table id="requeryBlogTable" refDataList="requeryBlogList"  title="" monitorable="true">
+		<table id="requeryBlogTable" refDataList="requeryBlogList"  title="" >
 			<columns>
 				<column value="${row.tdate}" label="日期" type="date"></column>
 				<column label="ddt充值">

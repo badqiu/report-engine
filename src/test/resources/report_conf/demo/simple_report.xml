@@ -15,7 +15,6 @@
 		<param id="game" label="游戏" defaultValue="sxd" dataType="string" refDataList="blogList" displayType="checkbox" labelExpr="game" ></param>
 		<param id="product" label="product" defaultValue="" dataType="string" refDataList="blogList" displayType="tab" valueExpr="PRODUCT"></param>
 		
-		<param id="monitor_report_passport" label="monitor_report_passport" defaultValue="dw_zhanglong" dataType="string" hidden="true"></param>
 		<!-- 引用spring里面配置的参数对象 -->
 		<param ref="globalProductParam"></param>
 		<param ref="demo/global_report/globalTdate" defaultValue="1988-01-01"></param>
@@ -197,7 +196,7 @@
 				<column id="" value="${row.tdate}" label="日期" />
 			</columns>
 		</table>
-		<table id="requeryBlogTable" refDataList="requeryBlogList"  title="" monitorable="true">
+		<table id="requeryBlogTable" refDataList="requeryBlogList"  title="" >
 			<columns>
 				<column value="${row.tdate}" label="日期" isKpi="false"></column>
 				<column label="ddt充值" >

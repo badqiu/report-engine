@@ -40,9 +40,6 @@
     
     	 <script src="${ctx}/js/bootstrap-sortable.js"></script>
     	 
-    	 <!--monitor system js -->
-    	<!--
-    	 <script src="${ctx}/js/monitor.js"></script>
      	<script type="text/javascript">
 
 		(function($){
@@ -219,12 +216,3 @@
 	<@renderTable report.getElementById("${table}")/>	
 </#macro>
 
-<#macro renderNav>
-		<div>
-			<ul class="breadcrumb" style="color:#08c;">
-				<li>
-					${report.title}
-				</li>
-			</ul>
-		</div>
-</#macro>
