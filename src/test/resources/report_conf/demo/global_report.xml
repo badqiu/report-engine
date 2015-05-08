@@ -13,6 +13,22 @@
 		
 		<param id="startDate" label="开始日期" defaultValue="${DateUtils.addDays(now,-7)?string('yyyy-MM-dd')}" dataType="date" displayType="date" required="true" help="请输入开始日期"></param>
 		<param id="endDate" label="结束日期" defaultValue="${DateUtils.addDays(now,-1)?string('yyyy-MM-dd')}" dataType="date" displayType="date" required="true" help="请输入结束日期"></param>
+		
+		<param id="page" label="分页页码" defaultValue="1" dataType="int" displayType="text" hidden="true"></param>
+		<param id="pageSize" label="分页大小" defaultValue="50" dataType="int" displayType="text" hidden="true"></param>
+		<param id="tdateType"  defaultValue="day" dataType="string" displayType="radio" labelExpr="tdate_name" valueExpr="tdate_type" help="时间类型，取值 day:日，周:week,月:month;  hour:小时,minute:分钟,second:秒">
+			<query refDataSource="userDs">
+				<sql>
+				<![CDATA[
+					SELECT 'day' tdate_type,'日' tdate_name
+					UNION
+					SELECT 'week' tdate_type,'周' tdate_name
+					UNION
+					SELECT 'month' tdate_type,'月' tdate_name
+				]]>
+				</sql>
+			</query>
+		</param>
 	</params>
 		
 </report>

@@ -117,102 +117,33 @@
 	<#assign tipId=tipId+1 />
 </#macro>
 
-<#macro renderChartTableTabs tabs>
-	<div class="tabbable">
-		<ul class="nav nav-tabs">
-			<#list tabs as tab>
-				<#if tab_index=0>
-					<li class="active"><a href="#Tab${tipId}${tab_index}" data-toggle="tab" onclick="showTab('Tab${tipId}${tab_index}');">${tab[0]}</a></li>
-				<#else>
-					<li><a href="#Tab${tipId}${tab_index}" data-toggle="tab" onclick="showTab('Tab${tipId}${tab_index}');">${tab[0]}</a></li>
-				</#if>
-			</#list>
-		</ul>
-		<div class="tab-content">
-			<#list tabs as tab>
-				<#if tab_index=0>
-					<div class="tab-pane active" id="Tab${tipId}${tab_index}">
-				<#else>
-					<div class="tab-pane" id="Tab${tipId}${tab_index}">
-				</#if>
-					<@renderChart report.getElementById("${tab[1]}")/>
-					<@renderTable report.getElementById("${tab[2]}")/>
-					</div>						
-			</#list>				
-		</div>
-	</div>		
-	<#assign tipId=tipId+1 />		
-</#macro>
-
-<#macro renderChartTabs tabs>
-	<div class="tabbable">
-		<ul class="nav nav-tabs">
-			<#list tabs as tab>
-				<#if tab_index=0>
-					<li class="active"><a href="#Tab${tab[0]}" data-toggle="tab" onclick="showTab('Tab${tab[0]}');">${tab[0]}</a></li>
-				<#else>
-					<li><a href="#Tab${tab[0]}" data-toggle="tab" onclick="showTab('Tab${tab[0]}');">${tab[0]}</a></li>
-				</#if>
-			</#list>
-		</ul>
-		<div class="tab-content">
-			<#list tabs as tab>
-				<#if tab_index=0>
-					<div class="tab-pane active" id="Tab${tab[0]}">
-				<#else>
-					<div class="tab-pane" id="Tab${tab[0]}">
-				</#if>
-					<@renderChart report.getElementById("${tab[1]}")/>
-					</div>						
-			</#list>				
-		</div>
-	</div>			
-</#macro>
-
+<#-- 渲染tabs, 参数示例: tabs : ['chart1','chart2','chart3'] -->
 <#macro renderTabs tabs>
 	<div class="tabbable">
 		<ul class="nav nav-tabs">
 			<#list tabs as tab>
+				<#assign tabTitle = report.getElementById(tab).title/>
 				<#if tab_index=0>
-					<li class="active"><a href="#Tab${tipId}${tab_index}" data-toggle="tab" onclick="showTab('Tab${tipId}${tab_index}');">${tab[1]}</a></li>
+					<li class="active"><a href="#Tab${tab}" data-toggle="tab" onclick="showTab('Tab${tab}');">${tabTitle}</a></li>
 				<#else>
-					<li><a href="#Tab${tipId}${tab_index}" data-toggle="tab" onclick="showTab('Tab${tipId}${tab_index}');">${tab[1]}</a></li>
+					<li><a href="#Tab${tab}" data-toggle="tab" onclick="showTab('Tab${tab}');">${tabTitle}</a></li>
 				</#if>
 			</#list>
 		</ul>
 		<div class="tab-content">
 			<#list tabs as tab>
 				<#if tab_index=0>
-					<div class="tab-pane active" id="Tab${tipId}${tab_index}">
+					<div class="tab-pane active" id="Tab${tab}">
 				<#else>
-					<div class="tab-pane" id="Tab${tipId}${tab_index}">
+					<div class="tab-pane" id="Tab${tab}">
 				</#if>
-				<#if tab[0]=='chart'>
-					<@renderChart report.getElementById("${tab[2]}")/>
-				<#else>
-					<@renderTable report.getElementById("${tab[2]}")/>
-				</#if>
+					<@renderObject tab/>
 				</div>						
 			</#list>				
 		</div>
 	</div>
-	<#assign tipId=tipId+1 />	
 </#macro>
 
-<#macro renderTableList tables>
-	<#list tables as table>
-		<@renderTable report.getElementById("${table}") />
-	</#list>
-</#macro>
 
-<#macro renderChartList charts>
-	<#list charts as chart>
-		<@renderChart report.getElementById("${chart}") />
-	</#list>
-</#macro>
 
-<#macro renderChartTable chart table>
-	<@renderChart report.getElementById("${chart}")/>
-	<@renderTable report.getElementById("${table}")/>	
-</#macro>
 

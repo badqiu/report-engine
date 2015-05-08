@@ -287,6 +287,29 @@
 </#macro>
 
 
+<#macro renderObject id>
+	<#assign obj = report.getElementById("${id}")/>
+	<#if obj.class.simpleName = 'Chart'>
+		<@renderChart obj/>
+	<#elseif obj.class.simpleName = 'Table'>
+		<@renderTable obj/>
+	<#else>
+		render error,unknow object type for render,id:${id},object class: ${item.class.simpleName},support renderObject is [Chart,Table]
+	</#if>
+</#macro>
+
+<#macro renderTables tables>
+	<#list tables as table>
+		<@renderTable report.getElementById("${table}") />
+	</#list>
+</#macro>
+
+<#macro renderCharts charts>
+	<#list charts as chart>
+		<@renderChart report.getElementById("${chart}") />
+	</#list>
+</#macro>
+
 <#macro renderCrosstab cube >
 	<#assign maxLevel = cube.dimensionSize - 1>
 	<table class="table table-striped table-bordered table-hover table-condensed">

@@ -123,7 +123,7 @@ public class Query extends BaseObject implements InitializingBean,ReportEngineLi
 		List<Map<String,Object>> rows = jdbcTemplate.queryForList(sql, params);
 		if(isSingleRow()) {
 			Map<String,Object> row = DataAccessUtils.singleResult(rows);
-			if(row.size() == 1) {
+			if(row != null && row.size() == 1) {
 				Object value = row.entrySet().iterator().next().getValue();
 				return value;
 			}else {
