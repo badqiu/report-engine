@@ -88,26 +88,24 @@
 	</head>
 </#macro>
 
-<#macro renderBoxHeader title="" icon="icon-book" kpiTips=[]>
+<#macro renderBoxHeader title="" icon="icon-book" kpis=[]>
 	<div class="box-header well">
 			<h2>
 				<i class="${icon}"></i>
 				<span id='tTitle'>${title!}</span>
-				<#if kpiTips?size!=0>
-					<#assign kpiList = application.getAttribute("kpiList") />
+				
+				<#if kpis?size!=0>
+					<#assign kpiMap = application.getAttribute("kpiMap") />
 					<a id="tip${tipId}" href="#" class="btn btn-mini btn-round" rel="popover" data-original-title="描述" data-content="
-						<#list kpiTips as kpiTip>
-							<#list kpiList as kpi>
-								<#if kpiTip==kpi['kpi_code']>
-									<font color=#D2691E><strong>${kpi['kpi_name']}:</strong></font>${kpi['remarks']}<br>
-								</#if>
-							</#list>
+						<#list kpis as kpi>
+							<font color=#D2691E><strong>${kpiMap[kpi].kpiName}: </strong>${kpiMap[kpi].kpiDesc}</font><br>
 						</#list>
 					">
 					<i class="icon-question-sign"></i></a>
 					<script type="text/javascript">
 					  $('#tip${tipId}').popover();
 					</script>
+					
 				</#if>
 			</h2>
 			<div class="box-icon">

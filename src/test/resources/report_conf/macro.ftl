@@ -172,7 +172,7 @@
 		
 		<#if paramDef.displayType == 'select'>
 				<select name="${paramDef.id}" placeholder="${paramDef.label}" onchange="this.form.submit();" <#if paramDef.readonly>disabled="disabled"</#if> >
-					<#if !defaultParamValue??>
+					<#if defaultParamValue??>
 						<option value ="${defaultParamValue}"></option>
 					</#if>
 					<#list paramDef.dataList as row>
