@@ -3,6 +3,7 @@ package com.github.reportengine.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +16,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.util.Assert;
 
 import com.github.reportengine.ReportEngineLifecycle;
+import com.github.reportengine.util.AggrFunctionUtil;
 import com.github.reportengine.util.FreeMarkerConfigurationUtil;
 import com.github.reportengine.util.FreemarkerUtil;
 import com.github.reportengine.util.ObjectSqlQueryUtil;
@@ -51,6 +53,17 @@ public class Query extends BaseObject implements InitializingBean,ReportEngineLi
 	 */
 	private transient DataSource dataSource;
 	
+	/**
+	 * 查询结果
+	 */
+	private Object result;
+	
+	/**
+	 * 自动渠道聚合的结果
+	 */
+	private Map autoSumResult;
+	
+	
 	public String getRefDataSource() {
 		return refDataSource;
 	}
@@ -81,6 +94,15 @@ public class Query extends BaseObject implements InitializingBean,ReportEngineLi
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
 	}
+	
+	public Object getResult() {
+		return result;
+	}
+	
+	public Map getAutoSumResult() {
+		return autoSumResult;
+	}
+	
 	public void afterPropertiesSet() throws Exception {
 		Assert.hasText(sql,"sql must be not empty");
 	}
@@ -110,6 +132,13 @@ public class Query extends BaseObject implements InitializingBean,ReportEngineLi
 					tempInputList = result == null ? new ArrayList() : Arrays.asList(result);
 				}
 				result = ObjectSqlQueryUtil.query(FreemarkerUtil.processTemplateIntoString(conf,requerySql,params), (List)tempInputList,params);
+			}
+			
+			this.result = result;
+			if(result instanceof List) {
+				this.autoSumResult = AggrFunctionUtil.autoSumAggr((List)result);
+			}else {
+				this.autoSumResult = Collections.EMPTY_MAP;
 			}
 			
 			return result;

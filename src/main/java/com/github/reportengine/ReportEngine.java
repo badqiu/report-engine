@@ -9,6 +9,7 @@ import java.io.StringReader;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.script.Bindings;
@@ -32,6 +33,7 @@ import com.github.reportengine.model.Groovy;
 import com.github.reportengine.model.Param;
 import com.github.reportengine.model.Query;
 import com.github.reportengine.model.Report;
+import com.github.reportengine.util.AggrFunctionUtil;
 import com.github.reportengine.util.FreeMarkerConfigurationUtil;
 
 import freemarker.cache.FileTemplateLoader;
@@ -233,8 +235,17 @@ public class ReportEngine implements InitializingBean,ApplicationContextAware{
 		for(Query q : report.getQuerys()) {
 			Object result = q.execute(params);
 			context.put(q.getId(), result);
-			if(logger.isDebugEnabled()) {
-				logger.debug("query result,"+q.getId()+" size:"+(getSize(result)) +" dataList:"+result);
+			if(result instanceof Collection) {
+				Map sumArrgMap = AggrFunctionUtil.autoSumAggr((List)result);
+				String sumId = q.getId()+"Sum";
+				context.put(sumId, sumArrgMap);
+				if(logger.isDebugEnabled()) {
+					logger.debug("query result,"+q.getId()+" size:"+(getSize(result)) +" "+ sumId + ":"+sumArrgMap+" dataList:"+result);
+				}
+			}else {
+				if(logger.isDebugEnabled()) {
+					logger.debug("query result,"+q.getId()+" size:"+(getSize(result)) +" dataList:"+result);
+				}
 			}
 		}
 	}

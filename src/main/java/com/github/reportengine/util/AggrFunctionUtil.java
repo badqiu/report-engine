@@ -1,7 +1,11 @@
 package com.github.reportengine.util;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.springframework.util.CollectionUtils;
 /**
  * 聚集函数
  * 
@@ -101,5 +105,34 @@ public class AggrFunctionUtil {
 			}
 		}
 		return sum;
+	}
+	
+	public static Map<String,Object> autoSumAggr(List<Map<String,Object>> rows) {
+		if(CollectionUtils.isEmpty(rows)) {
+			return Collections.EMPTY_MAP;
+		}
+		
+		Map<String,Object> result = new HashMap<String,Object>();
+		for(Map.Entry<String, Object> entry : rows.get(0).entrySet()) {
+			Object notNullValue = getNotNullValue(entry.getKey(),rows);
+			if(notNullValue != null && notNullValue instanceof Number) {
+				List tempRows = rows;
+				double sum = sum(tempRows,entry.getKey());
+				result.put(entry.getKey(), sum);
+			}else {
+				result.put(entry.getKey(), (double)0);
+			}
+		}
+		return result;
+	}
+
+	public static Object getNotNullValue(Object key, List<Map<String, Object>> rows) {
+		for(Map<String,Object> row : rows) {
+			Object value = row.get(key);
+			if(value != null) {
+				return value;
+			}
+		}
+		return null;
 	}
 }

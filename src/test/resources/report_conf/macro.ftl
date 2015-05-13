@@ -246,12 +246,17 @@
 			</tr>
 		</thead>
 		
+		<#if table.query??>
+			<#local sum = table.query.autoSumResult! /> 
+		<#else>
+			<#local sum = context[table.refDataList + 'Sum']! /> 
+		</#if>
 		<tbody>
 			<#list table.dataList as row>
 				<tr>
-			<#list table.columns as col>
+				<#list table.columns as col>
 					<td class="center"><#assign rowValue = col.value?interpret><@rowValue /></td>
-			</#list>
+				</#list>
 				</tr>
 			</#list>
 		</tbody>

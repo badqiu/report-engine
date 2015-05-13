@@ -1,4 +1,5 @@
 <#assign system = "reportEngine">
+<#include "/beta_macro.ftl"/>
 
 <#assign tipId=0 />
 <#macro renderHtmlHead>

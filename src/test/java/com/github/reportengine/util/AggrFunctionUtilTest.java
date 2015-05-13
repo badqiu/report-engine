@@ -1,5 +1,8 @@
 package com.github.reportengine.util;
 
+import java.util.List;
+import java.util.Map;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -21,7 +24,14 @@ public class AggrFunctionUtilTest extends Assert{
 		assertEquals(5,AggrFunctionUtil.count(CubeBuilderTest.rows,"click"));
 		assertEquals(100,AggrFunctionUtil.first(CubeBuilderTest.rows,"click"));
 		assertEquals(200,AggrFunctionUtil.last(CubeBuilderTest.rows,"click"));
-		
-		
 	}
+	
+	@Test
+	public void test_autoSumAggr() {
+		List rows = CubeBuilderTest.rows;
+		Map result = AggrFunctionUtil.autoSumAggr(rows);
+		System.out.println(result);
+		assertEquals(result.toString(),"{game=0.0, gameServer=0.0, tdate=0.0, login=900.0, click=900.0}");
+	}
+	
 }
