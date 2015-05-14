@@ -129,8 +129,13 @@ public class Report extends BaseObject implements InitializingBean,Cloneable,Ser
 	public void setExtend(String extend) {
 		this.extend = extend;
 	}
-	public Object getElementById(String id) {
-		return SelectorUtil.getElementById(this,id);
+	
+	public Object getElementById(Object id) {
+		if(id instanceof String) {
+			return SelectorUtil.getElementById(this,(String)id);
+		}else {
+			return id;
+		}
 	}
 	
 	/**
