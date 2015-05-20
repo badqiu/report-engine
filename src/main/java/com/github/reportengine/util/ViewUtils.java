@@ -32,7 +32,11 @@ public class ViewUtils {
 	 * @return
 	 */
 	public static String percent(Object number1,Object number2) {
-		DecimalFormat df=new DecimalFormat("0.00"); 
+		DecimalFormat df = new DecimalFormat("0.00"); 
+		return percent(number1, number2, df);
+	}
+
+	private static String percent(Object number1, Object number2,DecimalFormat df) {
 		if(number1==null || number2==null || number1.toString().equals("0") || number2.toString().equals("0") || number2.toString().equals("0.0")) {
 			return "";
 		}
@@ -50,7 +54,7 @@ public class ViewUtils {
 	 * 百分比
 	 * @param number1
 	 * @param number2
-	 * @param precision
+	 * @param precision 精度
 	 * @return
 	 */
 	public static String percent(Object number1,Object number2, int precision) {
@@ -61,18 +65,9 @@ public class ViewUtils {
 		for(int i=0;i<precision;i++) {
 			preStr.append(0);
 		}
+		
 		DecimalFormat df=new DecimalFormat(preStr.toString()); 
-		if(number1==null || number2==null || number2.toString().equals("0") || number2.toString().equals("0.0")) {
-			return "";
-		}
-		double percent = (double)Double.valueOf(number1.toString())/Double.valueOf(number2.toString())*100;
-		if(percent > 99.99) {
-			return "100%";
-		}
-		if(percent < 0.01) {
-			return "0%";
-		}
-		return df.format(percent)+"%";
+		return percent(number1,number2,df);
 	}
 	
 	/**
@@ -198,13 +193,6 @@ public class ViewUtils {
 
 	private static Object getNestedProperty(Object bean,	String key) {
 		try{
-//			Object propertyObject = PropertyUtils.getProperty(bean, key);
-//			if (propertyObject instanceof Map) {
-//				 Map map = (Map) propertyObject;
-//				 if (map.get(key.)) {
-//					
-//				}
-//			}
 			return PropertyUtils.getNestedProperty(bean, key);
 		}catch (Exception e){
 			logger.error("getNestedProperty error! key=" +key + ",bean="+bean ,e) ; 
