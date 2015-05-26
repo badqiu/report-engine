@@ -34,7 +34,7 @@ public class FreeMarkerConfigurationUtil {
 			conf.setSharedVariable("MiscUtil", new MiscUtil());
 			conf.setSharedVariable("DataUtils", new DataUtils());
 			conf.setSharedVariable("ObjectUtils", new com.github.rapid.common.util.ObjectUtils());
-			conf.setSharedVariable("PDateUtils", new com.github.reportengine.util.DateUtils());
+			conf.setSharedVariable("PDateUtils", new com.github.reportengine.util.DateUtil());
 			
 			conf.setNumberFormat("######.####");
 			conf.setBooleanFormat("true,false");

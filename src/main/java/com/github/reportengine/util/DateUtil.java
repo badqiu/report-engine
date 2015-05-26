@@ -5,7 +5,7 @@ import java.util.Date;
 
 import com.github.rapid.common.util.DateConvertUtils;
 
-public class DateUtils {
+public class DateUtil {
 	/**
 	 * 返回上个月的1号的日期
 	 * 

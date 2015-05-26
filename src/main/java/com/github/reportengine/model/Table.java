@@ -29,8 +29,6 @@ public class Table extends BaseDataListObject implements ReportEngineLifecycle,C
 	 * 分页器
 	 */
 	private Paginator paginator;
-	/**是否为留存类数据,用于监控时做日期处理,留存数据保留用户查询时间*/
-	private boolean isRetainedData=false;
 	
 	public String getTitle() {
 		return title;
@@ -47,7 +45,6 @@ public class Table extends BaseDataListObject implements ReportEngineLifecycle,C
 	public void setPageable(boolean pageable) {
 		this.pageable = pageable;
 	}
-
 	
 	public Column[] getColumns() {
 		return columns;
@@ -56,16 +53,9 @@ public class Table extends BaseDataListObject implements ReportEngineLifecycle,C
 	public void setColumns(Column[] columns) {
 		this.columns = columns;
 	}
+	
 	public Paginator getPaginator() {
 		return paginator;
-	}
-
-	public boolean getIsRetainedData() {
-		return isRetainedData;
-	}
-
-	public void setIsRetainedData(boolean isRetainedData) {
-		this.isRetainedData = isRetainedData;
 	}
 
 	public static class Column extends BaseObject implements Serializable{
@@ -74,7 +64,6 @@ public class Table extends BaseDataListObject implements ReportEngineLifecycle,C
 		private String name;
 		private String label;
 		private String value;
-		private Boolean isKpi = true;
 
 		public String getName() {
 			return name;
@@ -100,13 +89,6 @@ public class Table extends BaseDataListObject implements ReportEngineLifecycle,C
 			this.value = value;
 		}
 
-		public Boolean getIsKpi() {
-			return isKpi;
-		}
-
-		public void setIsKpi(Boolean isKpi) {
-			this.isKpi = isKpi;
-		}
 	}
 
 	public void afterQuery(Map<String, Object> context) throws Exception {
