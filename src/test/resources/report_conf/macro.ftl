@@ -177,7 +177,7 @@
 					</#if>
 					<#list paramDef.dataList as row>
 						<#assign valueInterpret = row[paramDef.valueExpr]>
-						<#assign labelInterpret = row[paramDef.labelExpr]>
+						<#assign labelInterpret = row[paramDef.labelExpr]!row[paramDef.valueExpr]>
 						<option <#if paramValue?string == valueInterpret?string >selected="selected"</#if> value="${valueInterpret}">${labelInterpret}</option> 
 					</#list>
 				</select>
@@ -314,7 +314,7 @@
 
 
 <#macro renderObject id>
-	<#assign obj = report.getElementById("${id}")/>
+	<#assign obj = report.getElementById(id)/>
 	<#if obj.class.simpleName = 'Chart'>
 		<@renderChart obj/>
 	<#elseif obj.class.simpleName = 'Table'>

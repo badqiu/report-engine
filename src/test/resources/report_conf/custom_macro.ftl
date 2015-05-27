@@ -1,4 +1,3 @@
-<#assign system = "reportEngine">
 <#include "/beta_macro.ftl"/>
 
 <#assign tipId=0 />
@@ -29,6 +28,7 @@
 		-->
 		<script src="${ctx}/js/bootstrap-tooltip.js"></script>
 		<script src="${ctx}/js/bootstrap-popover.js"></script>
+		<script src="${ctx}/js/bootstrap-tab.js"></script>
 		
 		<!-- multiple-select -->
 		<link href="${ctx}/js/multiple-select/multiple-select.css" rel="stylesheet"/>
@@ -80,7 +80,6 @@
          })
 
          </script>
-         -->
     
 	    <style type="text/css">
 			.div-space {
@@ -123,27 +122,33 @@
 <#-- 渲染tabs, 参数示例: tabs : ['chart1','chart2','chart3'] -->
 <#macro renderTabs tabs>
 	<div class="tabbable">
+	
 		<ul class="nav nav-tabs">
 			<#list tabs as tab>
 				<#assign tabTitle = report.getElementById(tab).title/>
+				<#assign tabId = report.getElementById(tab).id/>
 				<#if tab_index=0>
-					<li class="active"><a href="#Tab${tab}" data-toggle="tab" onclick="showTab('Tab${tab}');">${tabTitle}</a></li>
+					<li class="active"><a href="#Tab${tabId}" data-toggle="tab" onclick="showTab('Tab${tabId}');">${tabTitle}</a></li>
 				<#else>
-					<li><a href="#Tab${tab}" data-toggle="tab" onclick="showTab('Tab${tab}');">${tabTitle}</a></li>
+					<li><a href="#Tab${tabId}" data-toggle="tab" onclick="showTab('Tab${tabId}');">${tabTitle}</a></li>
 				</#if>
 			</#list>
 		</ul>
+		
 		<div class="tab-content">
 			<#list tabs as tab>
+				<#assign tabId = report.getElementById(tab).id/>
 				<#if tab_index=0>
-					<div class="tab-pane active" id="Tab${tab}">
+					<div class="tab-pane active" id="Tab${tabId}">
 				<#else>
-					<div class="tab-pane" id="Tab${tab}">
+					<div class="tab-pane" id="Tab${tabId}">
 				</#if>
+				
 					<@renderObject tab/>
-				</div>						
+					</div>						
 			</#list>				
 		</div>
+		
 	</div>
 </#macro>
 
