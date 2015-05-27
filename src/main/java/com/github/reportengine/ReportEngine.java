@@ -190,6 +190,8 @@ public class ReportEngine implements InitializingBean,ApplicationContextAware{
 			
 			report.fireAfterQueryLiftcycle(context);
 			context.put("elements", report.getElements());
+			context.putAll(processedParams);
+			
 			return returnContext(context, afterBindings);
 		}catch(Exception e) {
 			throw new RuntimeException("processForModel error,report:"+report+" params:"+params,e);

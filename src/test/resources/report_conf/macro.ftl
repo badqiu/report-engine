@@ -211,6 +211,28 @@
 					</#assign>
 					<input name="${paramDef.id}" type="${paramDef.displayType}" value="${valueInterpret}" ${checked}  >${labelInterpret}</input>
 				</#list>
+		<#elseif paramDef.displayType == 'multiple-select'>
+				<select id="${paramDef.id}" name="${paramDef.id}" multiple="multiple">
+					<#list paramDef.dataList as row>
+						<#assign valueInterpret = row[paramDef.valueExpr]>
+						<#assign labelInterpret = row[paramDef.labelExpr]>
+						<#assign selected>
+							<#compress>
+							<#if paramValue?is_string>
+								<#if paramValue?string == valueInterpret?string>selected='selected'</#if>
+							<#else> 
+								<#if paramValue?seq_contains(valueInterpret)>selected='selected'</#if> 
+							</#if>
+							</#compress>
+						</#assign>
+						<option value="${valueInterpret}" ${selected}>${labelInterpret}</option>
+					</#list>		
+				</select>
+				<script>
+				        $("#${paramDef.id}").multipleSelect({
+				            filter: true
+				        });
+				</script>
 		<#elseif paramDef.displayType == 'date'>
 				<input id="${paramDef.id}" name="${paramDef.id}" type="text" value="${paramValue}" title="${paramDef.help!}" placeholder="${paramDef.label}" onfocus="WdatePicker({isShowWeek:true})" onchange="this.form.submit();">
 				<!--

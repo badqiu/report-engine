@@ -2,7 +2,7 @@
 
 <report author="badqiu" title="测试报表标题" refDataSource="userDs">
 	<params>
-		<param id="globalTdate" label="定义在global_report.xml中，用于其它模板通过ref导入" defaultValue="" dataType="string" displayType="select" labelExpr="TDATE" valueExpr="cnt">
+		<param id="globalTdate" label="定义在global_report.xml中，用于其它模板通过ref导入" defaultValue="" dataType="string" displayType="multiple-select" labelExpr="TDATE" valueExpr="cnt">
 			<query refDataSource="userDs">
 				<sql>
 				select FORMATDATETIME(tdate,'yyyy-MM-dd') tdate,count(*) cnt from st_blog group by tdate;

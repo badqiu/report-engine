@@ -30,6 +30,10 @@
 		<script src="${ctx}/js/bootstrap-tooltip.js"></script>
 		<script src="${ctx}/js/bootstrap-popover.js"></script>
 		
+		<!-- multiple-select -->
+		<link href="${ctx}/js/multiple-select/multiple-select.css" rel="stylesheet"/>
+		<script src="${ctx}/js/multiple-select/jquery.multiple.select.js"></script>
+		
 		<!-- begin import highcharts -->
 		<script src="${ctx}/js/highcharts/highcharts.js"></script>
 	    <script src="${ctx}/js/highcharts/modules/exporting.js"></script>

@@ -13,6 +13,7 @@
 		<!-- 切换皮肤需求引用 -->
 		<input type="hidden" id="ctx" value="">	
 		<div class="rp-query">
+			<@renderParams report.params/>
 		</div>
 
 		<div class="box rp-chart">
