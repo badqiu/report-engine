@@ -44,43 +44,7 @@
    		 <script src="${ctx}/js/My97DatePicker/WdatePicker.js"></script>
     
     	 <script src="${ctx}/js/bootstrap-sortable.js"></script>
-    	 
-     	<script type="text/javascript">
 
-		(function($){
-    		$.getUrlParam = function(name)
-   			 {
-        		var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
-        		var r = window.location.search.substr(1).match(reg);
-        		if (r!=null) return unescape(r[2]); return null; 
-    			}
-		})(jQuery);
-        $(function () {
-			var showTab = $.getUrlParam('showTab');
-        	var hideTab = $.getUrlParam('hideTab');
-         	 
-         	if(showTab!=null && hideTab!=null){
-         	
-         	    var showTabArray = new Array();
-         	    var hideTabArray = new Array();
-         	    
-         		showTabArray=showTab.split(","); //字符分割      
-         		hideTabArray=hideTab.split(","); //字符分割    
-         		
-		 		for (i=0;i<showTabArray.length;i++ ){    
-		         $('#'+showTabArray[i]).addClass('active');
-		    	} 
-         		  
-		 		for (i=0;i<hideTabArray.length;i++ ){    
-		         $('#'+hideTabArray[i]).removeClass('active');
-		    	}          		
-
-        	 }
-        	        	       	        	
-         })
-
-         </script>
-    
 	    <style type="text/css">
 			.div-space {
 				margin-left: 15px;
@@ -127,25 +91,16 @@
 			<#list tabs as tab>
 				<#assign tabTitle = report.getElementById(tab).title/>
 				<#assign tabId = report.getElementById(tab).id/>
-				<#if tab_index=0>
-					<li class="active"><a href="#Tab${tabId}" data-toggle="tab" onclick="showTab('Tab${tabId}');">${tabTitle}</a></li>
-				<#else>
-					<li><a href="#Tab${tabId}" data-toggle="tab" onclick="showTab('Tab${tabId}');">${tabTitle}</a></li>
-				</#if>
+				<li <#if tab_index=0> class="active" </#if> ><a href="#tab_${tabId}" data-toggle="tab">${tabTitle}</a></li>
 			</#list>
 		</ul>
 		
 		<div class="tab-content">
 			<#list tabs as tab>
 				<#assign tabId = report.getElementById(tab).id/>
-				<#if tab_index=0>
-					<div class="tab-pane active" id="Tab${tabId}">
-				<#else>
-					<div class="tab-pane" id="Tab${tabId}">
-				</#if>
-				
+				<div class="tab-pane <#if tab_index=0> active </#if>" id="tab_${tabId}">
 					<@renderObject tab/>
-					</div>						
+				</div>						
 			</#list>				
 		</div>
 		
