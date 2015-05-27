@@ -64,6 +64,7 @@ public class Table extends BaseDataListObject implements ReportEngineLifecycle,C
 		private String name;
 		private String label;
 		private String value;
+		private boolean hidden = false;
 
 		public String getName() {
 			return name;
@@ -87,6 +88,14 @@ public class Table extends BaseDataListObject implements ReportEngineLifecycle,C
 
 		public void setValue(String value) {
 			this.value = value;
+		}
+
+		public boolean isHidden() {
+			return hidden;
+		}
+
+		public void setHidden(boolean hidden) {
+			this.hidden = hidden;
 		}
 
 	}

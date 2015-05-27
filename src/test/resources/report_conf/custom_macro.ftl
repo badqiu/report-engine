@@ -4,21 +4,17 @@
 <#macro renderHtmlHead>
 	<head>
 		<meta charset="utf-8">
-		<title>${report.tiele!}</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		
+		<title>${report.tiele!}</title>
 		
 		<!-- css -->
 		<link href="${ctx}/css/skin/bootstrap-redy.css" rel="stylesheet" id="bs-css">
 
 		<link href="${ctx}/css/bootstrap-responsive.min.css" rel="stylesheet">
-		<link href="${ctx}/css/bootstrap-sortable.css" rel="stylesheet">
 		
 		<link href="${ctx}/css/dynamic-page.css" rel="stylesheet">
 		
-		<!-- external javascript
-		================================================== -->
-		<!-- Placed at the end of the document so the pages load faster -->
-	
 		<script src="${ctx}/js/jquery.min.js"></script>
 		<!-- 在dynamic-page.js中, 用到了jquery-ui的sortable拖曳特效 -->
 		<script src="${ctx}/js/jquery-ui.custom.min.js"></script>
@@ -26,24 +22,26 @@
 		<!--
 		<script src="${ctx}/js/dynamic-page.js"></script>
 		-->
+		
 		<script src="${ctx}/js/bootstrap-tooltip.js"></script>
 		<script src="${ctx}/js/bootstrap-popover.js"></script>
 		<script src="${ctx}/js/bootstrap-tab.js"></script>
+		
+		<!-- bootstrap-sortable -->
+    	<script src="${ctx}/js/bootstrap-sortable.js"></script>
+		<link href="${ctx}/css/bootstrap-sortable.css" rel="stylesheet">
 		
 		<!-- multiple-select -->
 		<link href="${ctx}/js/multiple-select/multiple-select.css" rel="stylesheet"/>
 		<script src="${ctx}/js/multiple-select/jquery.multiple.select.js"></script>
 		
-		<!-- begin import highcharts -->
+		<!-- highcharts -->
 		<script src="${ctx}/js/highcharts/highcharts.js"></script>
 	    <script src="${ctx}/js/highcharts/modules/exporting.js"></script>
 	    <script src="${ctx}/js/highcharts/highchartsUtil.js"></script>
-	    <!-- end import highcharts -->	
 	    
-	     <!-- my97 date picker -->
-   		 <script src="${ctx}/js/My97DatePicker/WdatePicker.js"></script>
-    
-    	 <script src="${ctx}/js/bootstrap-sortable.js"></script>
+	    <!-- my97 date picker -->
+   		<script src="${ctx}/js/My97DatePicker/WdatePicker.js"></script>
 
 	    <style type="text/css">
 			.div-space {
