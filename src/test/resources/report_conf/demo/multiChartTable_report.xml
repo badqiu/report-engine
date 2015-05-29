@@ -22,14 +22,14 @@
 	
 	<querys>
 		<!-- 查询SQL，返回一个对象，并将查询结果保存在 varName指定的变量中 -->
-		<query id="user" singleRow="true" dataSource="userDs">
+		<query id="user" singleResult="true" dataSource="userDs">
 			<sql>
 			select * from user limit 1;
 			</sql>
 		</query>
 		
 		<!-- 查询SQL，返回List，并将查询结果保存在 varName指定的变量中 -->
-		<query id="blogList" singleRow="false">
+		<query id="blogList" singleResult="false">
 			<sql>
 				select FORMATDATETIME(tdate,'yyyy-MM-dd') tdate,product,game,sum(pay) pay_sum,sum(click)click_sum,count(*) cnt from st_blog 
 				group by tdate,product,game

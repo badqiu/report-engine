@@ -20,6 +20,7 @@ import com.github.reportengine.ReportEngineLifecycle;
 import com.github.reportengine.util.AggrFunctionUtil;
 import com.github.reportengine.util.FreeMarkerConfigurationUtil;
 import com.github.reportengine.util.FreemarkerUtil;
+import com.github.reportengine.util.ListUtil;
 import com.github.reportengine.util.MetaDataRowMapperResultSetExtractor;
 import com.github.reportengine.util.ObjectSqlQueryUtil;
 import com.github.reportengine.util.ResultSetMetaDataInfo;
@@ -38,7 +39,7 @@ public class Query extends BaseObject implements InitializingBean,ReportEngineLi
 	/**
 	 * 查询结果是否单条对象
 	 */
-	private boolean singleRow;
+	private boolean singleResult;
 	/**
 	 * 查询SQL
 	 */
@@ -71,17 +72,26 @@ public class Query extends BaseObject implements InitializingBean,ReportEngineLi
 	 */
 	public List<ResultSetMetaDataInfo> metaDatas;
 	
+	/**
+	 * 将多行的查询结果转换为map
+	 */
+	private boolean resultAsMap;
+	/**
+	 * 将多行的查询结果转换为map,指定的作为map key列
+	 */
+	private String mapKeyColumn;
+	
 	public String getRefDataSource() {
 		return refDataSource;
 	}
 	public void setRefDataSource(String refDataSource) {
 		this.refDataSource = refDataSource;
 	}
-	public boolean isSingleRow() {
-		return singleRow;
+	public boolean isSingleResult() {
+		return singleResult;
 	}
-	public void setSingleRow(boolean singleRow) {
-		this.singleRow = singleRow;
+	public void setSingleResult(boolean singleResult) {
+		this.singleResult = singleResult;
 	}
 	public String getSql() {
 		return sql;
@@ -100,6 +110,22 @@ public class Query extends BaseObject implements InitializingBean,ReportEngineLi
 	}
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
+	}
+	
+	public boolean isResultAsMap() {
+		return resultAsMap;
+	}
+	
+	public void setResultAsMap(boolean resultAsMap) {
+		this.resultAsMap = resultAsMap;
+	}
+	
+	public String getMapKeyColumn() {
+		return mapKeyColumn;
+	}
+	
+	public void setMapKeyColumn(String mapKeyColumn) {
+		this.mapKeyColumn = mapKeyColumn;
 	}
 	
 	public Object getResult() {
@@ -129,7 +155,7 @@ public class Query extends BaseObject implements InitializingBean,ReportEngineLi
 			Assert.notNull(dataSource,"dataSource must be not null");
 			Configuration conf = FreeMarkerConfigurationUtil.newDefaultConfiguration();
 			String sql = FreemarkerUtil.processTemplateIntoString(conf,getSql(),params);
-			Object result = executeSqlQuery(params,dataSource, sql);
+			Object result = processResultRows(executeSqlQuery(params,dataSource, sql));
 			
 			if(StringUtils.isNotBlank(requerySql)) {
 				List tempInputList = null;
@@ -154,17 +180,21 @@ public class Query extends BaseObject implements InitializingBean,ReportEngineLi
 		}
 	}
 	
-	private Object executeSqlQuery(Map params,DataSource ds, String sql) {
+	private List<Map> executeSqlQuery(Map params,DataSource ds, String sql) {
 		NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(ds);
 //		List<Map<String,Object>> rows = jdbcTemplate.queryForList(sql, params);
 		
 		ColumnMapRowMapper rowMapper = new ColumnMapRowMapper();
 		MetaDataRowMapperResultSetExtractor resultSetExtractor  = new MetaDataRowMapperResultSetExtractor(rowMapper);
 		
-		List<Map> rows = jdbcTemplate.query(sql, params,resultSetExtractor);
+		List<Map> rows = (List<Map>)jdbcTemplate.query(sql, array2listForFixedSpringUnsupport(params),resultSetExtractor);
 		metaDatas = resultSetExtractor.getMetaDatas();
 		Assert.notNull(metaDatas,"metaDatas must be not null");
-		if(isSingleRow()) {
+		return rows;
+	}
+	
+	private Object processResultRows(List<Map> rows) {
+		if(isSingleResult()) {
 			Map<String,Object> row = DataAccessUtils.singleResult(rows);
 			if(row != null && row.size() == 1) {
 				Object value = row.entrySet().iterator().next().getValue();
@@ -172,11 +202,23 @@ public class Query extends BaseObject implements InitializingBean,ReportEngineLi
 			}else {
 				return row;
 			}
+		}else if(resultAsMap) {
+			Assert.hasText(mapKeyColumn,"if resultAsMap=true, 'mayKeyColumn' must be not empty");
+			return ListUtil.list2Map(rows,mapKeyColumn);
 		}else {
 			return rows;
 		}
 	}
-
+	
+	/**
+	 * 将array 转换成 list,因为spring in (:param) 不支持param是Array,只支持是List
+	 * @param params
+	 * @return
+	 */
+	public static Map array2listForFixedSpringUnsupport(Map params) {
+		return ListUtil.array2list(params);
+	}
+	
 	public void beforeQuery(Map<String, Object> context) throws Exception {
 		super.beforeQuery(context);
 	}

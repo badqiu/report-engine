@@ -45,14 +45,14 @@
 	
 	<querys>
 		<!-- 查询SQL，返回一个对象，并将查询结果保存在 varName指定的变量中 -->
-		<query id="user" singleRow="true" refDataSource="userDs">
+		<query id="user" singleResult="true" refDataSource="userDs">
 			<sql>
 			select * from user limit 1;
 			</sql>
 		</query>
 		
 		<!-- 查询SQL，返回List，并将查询结果保存在 varName指定的变量中 -->
-		<query id="cubeBlogList" singleRow="false">
+		<query id="cubeBlogList" singleResult="false">
 			<sql>
 				<![CDATA[
 				select FORMATDATETIME(tdate,'yyyy-MM-dd') tdate,product,game,sum(pay) pay_sum,sum(click)click_sum,count(*) cnt from st_blog 
@@ -66,7 +66,7 @@
 		</query>
 		
 		<!-- 查询SQL，返回List，并将查询结果保存在 varName指定的变量中 -->
-		<query id="blogList" singleRow="false">
+		<query id="blogList" singleResult="false">
 			<sql>
 			<![CDATA[
 				select tdate,product,game,sum(pay) pay_sum,sum(click)click_sum,count(*) cnt from st_blog 
@@ -77,14 +77,14 @@
 		</query>	
 
 		<!-- 查询SQL，返回List，并将查询结果保存在 varName指定的变量中 -->
-		<query id="allBlogList" singleRow="false">
+		<query id="allBlogList" singleResult="false">
 			<sql>
 				select tdate,sum(pay) pay_sum from st_blog group by tdate order by tdate asc
 			</sql>
 		</query>	
 				
 		<!-- 查询SQL，返回List，并将查询结果保存在 varName指定的变量中 -->
-		<query id="requeryBlogList" singleRow="false">
+		<query id="requeryBlogList" singleResult="false">
 			<sql>
 				select tdate,product,game,sum(pay) pay_sum,sum(click)click_sum,count(*) cnt from st_blog 
 				group by tdate,product,game
