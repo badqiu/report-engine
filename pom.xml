@@ -202,6 +202,12 @@
 				<version>${jackson.version}</version>
 			</dependency>
 			
+			<dependency>
+			    <groupId>org.jsoup</groupId>
+			    <artifactId>jsoup</artifactId>
+			    <version>1.8.2</version>
+			</dependency>
+
 			<!-- spring begin -->
 			<dependency>
 				<groupId>org.springframework</groupId>
