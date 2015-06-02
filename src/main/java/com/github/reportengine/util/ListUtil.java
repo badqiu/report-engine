@@ -8,13 +8,13 @@ import java.util.Set;
 
 public class ListUtil {
 
-	public static Map<Object,Map> list2Map(Collection<Map> rows,String mapKeyColumn) {
+	public static Map<Object,Map> list2Map(Collection<Map<String,Object>> rows,String mapKeyColumn) {
 		if(rows == null) return null;
 		
 		Map result = new HashMap();
 		for(Map row : rows) {
-			Object key = row.get(mapKeyColumn);
-			if(key != null) {
+			if(row.containsKey(mapKeyColumn)) {
+				Object key = row.get(mapKeyColumn);
 				result.put(key, row);
 			}
 		}

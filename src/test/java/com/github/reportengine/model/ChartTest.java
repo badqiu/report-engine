@@ -8,7 +8,7 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.github.rapid.common.util.DateConvertUtils;
+import com.github.rapid.common.util.DateConvertUtil;
 import com.github.reportengine.util.MapUtil;
 import com.github.reportengine.util.ObjectSqlQueryUtil;
 
@@ -18,9 +18,9 @@ public class ChartTest {
 	@Before
 	public void before() {
 		chart.setX("date");
-		rows.add(MapUtil.newMap("date",DateConvertUtils.parse("1999-1-1", "yyyy-MM-dd")));
-		rows.add(MapUtil.newMap("date",DateConvertUtils.parse("1999-1-3", "yyyy-MM-dd")));
-		rows.add(MapUtil.newMap("date",DateConvertUtils.parse("1999-1-7", "yyyy-MM-dd")));
+		rows.add(MapUtil.newMap("date",DateConvertUtil.parse("1999-1-1", "yyyy-MM-dd")));
+		rows.add(MapUtil.newMap("date",DateConvertUtil.parse("1999-1-3", "yyyy-MM-dd")));
+		rows.add(MapUtil.newMap("date",DateConvertUtil.parse("1999-1-7", "yyyy-MM-dd")));
 	}
 	
 	@Test
@@ -43,7 +43,7 @@ public class ChartTest {
 		for(Map row : rows) {
 			Date date  = (Date)row.get(key);
 //			row.remove(key);
-			String dateString = DateConvertUtils.format(date, "yyyy-MM-dd");
+			String dateString = DateConvertUtil.format(date, "yyyy-MM-dd");
 			System.out.println(dateString+" => " + row);
 		}
 	}

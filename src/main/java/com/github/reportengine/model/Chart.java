@@ -14,7 +14,7 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 
 import com.github.rapid.common.beanutils.PropertyUtils;
-import com.github.rapid.common.util.DateConvertUtils;
+import com.github.rapid.common.util.DateConvertUtil;
 import com.github.reportengine.ReportEngineLifecycle;
 import com.github.reportengine.util.MapUtil;
 
@@ -237,7 +237,7 @@ public class Chart extends BaseDataListObject implements ReportEngineLifecycle,C
 	private String formatBy(Object value, String format) {
 		if(value == null) return null;
 		if(value instanceof Date) {
-			return DateConvertUtils.format((Date)value, format);
+			return DateConvertUtil.format((Date)value, format);
 		}else if(value instanceof Number) {
 			DecimalFormat df = new DecimalFormat();
 			return df.format((Number)value);

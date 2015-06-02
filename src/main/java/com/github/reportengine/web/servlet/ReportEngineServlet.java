@@ -1,8 +1,6 @@
 package com.github.reportengine.web.servlet;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,20 +9,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.DateUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
+import org.springframework.util.Assert;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.util.WebUtils;
 
-import com.github.rapid.common.util.DateConvertUtils;
-import com.github.rapid.common.util.DateFormats;
 import com.github.reportengine.ReportEngine;
-import com.github.reportengine.model.Param;
-import com.github.reportengine.model.Report;
 import com.github.reportengine.util.CookieUtil;
 import com.github.reportengine.util.ResponseUtil;
 
@@ -219,8 +212,15 @@ public class ReportEngineServlet extends HttpServlet{
 	 * 下载报表
 	 * @param req
 	 * @param resp
+	 * @throws IOException 
 	 */
-	private void download(String reportPath,Map params,HttpServletRequest req, HttpServletResponse resp) {
+	private void download(String reportPath,Map params,HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		String table = req.getParameter("table");
+		Assert.hasText(table,"table parameter must be not empty");
+		resp.setContentType("application/octet-stream");
+		resp.setHeader("Content-Disposition", "attachment; filename="+table+".csv");
+		
+		ResponseUtil.writeString(resp,reportEngine.download(reportPath, params));
 	}
 	
 }

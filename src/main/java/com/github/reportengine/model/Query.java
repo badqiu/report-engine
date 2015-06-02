@@ -1,9 +1,7 @@
 package com.github.reportengine.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,7 +37,7 @@ public class Query extends BaseObject implements InitializingBean,ReportEngineLi
 	/**
 	 * 查询结果是否单条对象
 	 */
-	private boolean singleResult;
+	private Boolean singleResult;
 	/**
 	 * 查询SQL
 	 */
@@ -75,7 +73,7 @@ public class Query extends BaseObject implements InitializingBean,ReportEngineLi
 	/**
 	 * 将多行的查询结果转换为map
 	 */
-	private boolean resultAsMap;
+	private Boolean result2Map;
 	/**
 	 * 将多行的查询结果转换为map,指定的作为map key列
 	 */
@@ -87,10 +85,10 @@ public class Query extends BaseObject implements InitializingBean,ReportEngineLi
 	public void setRefDataSource(String refDataSource) {
 		this.refDataSource = refDataSource;
 	}
-	public boolean isSingleResult() {
+	public Boolean isSingleResult() {
 		return singleResult;
 	}
-	public void setSingleResult(boolean singleResult) {
+	public void setSingleResult(Boolean singleResult) {
 		this.singleResult = singleResult;
 	}
 	public String getSql() {
@@ -112,12 +110,12 @@ public class Query extends BaseObject implements InitializingBean,ReportEngineLi
 		this.dataSource = dataSource;
 	}
 	
-	public boolean isResultAsMap() {
-		return resultAsMap;
+	public Boolean isResult2Map() {
+		return result2Map;
 	}
 	
-	public void setResultAsMap(boolean resultAsMap) {
-		this.resultAsMap = resultAsMap;
+	public void setResult2Map(Boolean result2Map) {
+		this.result2Map = result2Map;
 	}
 	
 	public String getMapKeyColumn() {
@@ -137,7 +135,6 @@ public class Query extends BaseObject implements InitializingBean,ReportEngineLi
 	}
 	
 	public void afterPropertiesSet() throws Exception {
-		Assert.hasText(sql,"sql must be not empty");
 	}
 	
 	@Override
@@ -151,50 +148,46 @@ public class Query extends BaseObject implements InitializingBean,ReportEngineLi
 	}
 	
 	public Object execute(Map params) {
+		return execute0(new HashMap(params));
+	}
+	
+	private Object execute0(Map params) {
 		try {
 			Assert.notNull(dataSource,"dataSource must be not null");
+			Assert.hasText(sql,"sql must be not empty");
+			
+			params.put("this", this);
 			Configuration conf = FreeMarkerConfigurationUtil.newDefaultConfiguration();
 			String sql = FreemarkerUtil.processTemplateIntoString(conf,getSql(),params);
-			Object result = processResultRows(executeSqlQuery(params,dataSource, sql));
+			List<Map<String,Object>> result = executeSqlQuery(params,dataSource, sql);
 			
 			if(StringUtils.isNotBlank(requerySql)) {
-				List tempInputList = null;
-				if(result instanceof List) {
-					tempInputList =  (List)result;
-				}else {
-					tempInputList = result == null ? new ArrayList() : Arrays.asList(result);
-				}
-				result = ObjectSqlQueryUtil.query(FreemarkerUtil.processTemplateIntoString(conf,requerySql,params), (List)tempInputList,params);
+				result = ObjectSqlQueryUtil.query(FreemarkerUtil.processTemplateIntoString(conf,requerySql,params), result,params);
 			}
 			
-			this.result = result;
-			if(result instanceof List) {
-				this.autoSumResult = AggrFunctionUtil.autoSumAggr((List)result);
-			}else {
-				this.autoSumResult = Collections.EMPTY_MAP;
-			}
-			
-			return result;
+			this.autoSumResult = AggrFunctionUtil.autoSumAggr((List)result);
+			this.result = processResultRows(result);
+			return this.result;
 		}catch(Exception e) {
 			throw new RuntimeException("execute query,id:"+getId()+" sql:"+sql+" error"+" params:"+params,e);
 		}
 	}
 	
-	private List<Map> executeSqlQuery(Map params,DataSource ds, String sql) {
+	private List<Map<String,Object>> executeSqlQuery(Map params,DataSource ds, String sql) {
 		NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(ds);
 //		List<Map<String,Object>> rows = jdbcTemplate.queryForList(sql, params);
 		
 		ColumnMapRowMapper rowMapper = new ColumnMapRowMapper();
 		MetaDataRowMapperResultSetExtractor resultSetExtractor  = new MetaDataRowMapperResultSetExtractor(rowMapper);
 		
-		List<Map> rows = (List<Map>)jdbcTemplate.query(sql, array2listForFixedSpringUnsupport(params),resultSetExtractor);
+		List<Map<String,Object>> rows = (List<Map<String,Object>>)jdbcTemplate.query(sql, array2listForFixedSpringUnsupport(params),resultSetExtractor);
 		metaDatas = resultSetExtractor.getMetaDatas();
 		Assert.notNull(metaDatas,"metaDatas must be not null");
 		return rows;
 	}
 	
-	private Object processResultRows(List<Map> rows) {
-		if(isSingleResult()) {
+	private Object processResultRows(List<Map<String,Object>> rows) {
+		if(singleResult != null && singleResult) {
 			Map<String,Object> row = DataAccessUtils.singleResult(rows);
 			if(row != null && row.size() == 1) {
 				Object value = row.entrySet().iterator().next().getValue();
@@ -202,8 +195,8 @@ public class Query extends BaseObject implements InitializingBean,ReportEngineLi
 			}else {
 				return row;
 			}
-		}else if(resultAsMap) {
-			Assert.hasText(mapKeyColumn,"if resultAsMap=true, 'mayKeyColumn' must be not empty");
+		}else if(result2Map != null && result2Map) {
+			Assert.hasText(mapKeyColumn,"if result2Map=true, 'mayKeyColumn' must be not empty");
 			return ListUtil.list2Map(rows,mapKeyColumn);
 		}else {
 			return rows;

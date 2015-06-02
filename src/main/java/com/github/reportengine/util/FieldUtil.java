@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.github.rapid.common.util.ObjectUtils;
+import com.github.rapid.common.util.ObjectUtil;
 
 public class FieldUtil {
 
@@ -18,7 +18,7 @@ public class FieldUtil {
 		for (Field parentField : getAllFields(parent.getClass())) {
 			try {
 				Object parentValue = getFieldValue(parent, parentField);
-				if (ObjectUtils.isEmpty(parentValue)
+				if (ObjectUtil.isEmpty(parentValue)
 						|| isZeroNumber(parentValue)) {
 					continue;
 				}
@@ -30,7 +30,7 @@ public class FieldUtil {
 				
 				Object childValue = getFieldValue(child, childField);
 				
-				if((ObjectUtils.isEmpty(childValue) || isZeroNumber(childValue)) ) {
+				if((ObjectUtil.isEmpty(childValue) || isZeroNumber(childValue)) ) {
 					setFieldValue(child,childField, parentValue);
 				}
 			} catch (Exception e) {

@@ -3,7 +3,7 @@ package com.github.reportengine.util;
 import java.util.Calendar;
 import java.util.Date;
 
-import com.github.rapid.common.util.DateConvertUtils;
+import com.github.rapid.common.util.DateConvertUtil;
 
 public class DateUtil {
 	/**
@@ -18,7 +18,7 @@ public class DateUtil {
 		Calendar cal = getCalendar(date);
 		cal.add(Calendar.MONTH, -1);
 		cal.set(Calendar.DAY_OF_MONTH, 1);
-		return DateConvertUtils.format(cal.getTime(), "yyyy-MM-dd");
+		return DateConvertUtil.format(cal.getTime(), "yyyy-MM-dd");
 	}
 	
 	/**
@@ -33,7 +33,7 @@ public class DateUtil {
 		Calendar cal = getCalendar(date);
 		cal.add(Calendar.MONTH, -1);
 		cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
-		return DateConvertUtils.format(cal.getTime(), "yyyy-MM-dd");
+		return DateConvertUtil.format(cal.getTime(), "yyyy-MM-dd");
 	}
 
 	// 返回日历
@@ -55,7 +55,7 @@ public class DateUtil {
 		cal.add(Calendar.WEEK_OF_MONTH, -1);
 		cal.setFirstDayOfWeek(Calendar.MONDAY);
 		cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-		return DateConvertUtils.format(cal.getTime(), "yyyy-MM-dd");
+		return DateConvertUtil.format(cal.getTime(), "yyyy-MM-dd");
 	}
 	
 	/**
@@ -71,7 +71,7 @@ public class DateUtil {
 		cal.add(Calendar.WEEK_OF_MONTH, -1);
 		cal.setFirstDayOfWeek(Calendar.MONDAY);
 		cal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
-		return DateConvertUtils.format(cal.getTime(), "yyyy-MM-dd");
+		return DateConvertUtil.format(cal.getTime(), "yyyy-MM-dd");
 	}
 	
 	/**
@@ -86,7 +86,7 @@ public class DateUtil {
 		Calendar cal = getCalendar(date);
 		cal.setFirstDayOfWeek(Calendar.MONDAY);
 		cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-		return DateConvertUtils.format(cal.getTime(), "yyyy-MM-dd");
+		return DateConvertUtil.format(cal.getTime(), "yyyy-MM-dd");
 	}
 	
 	/**
@@ -102,7 +102,7 @@ public class DateUtil {
 		cal.add(Calendar.WEEK_OF_MONTH, 1);
 		cal.setFirstDayOfWeek(Calendar.SUNDAY);
 		cal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
-		return DateConvertUtils.format(cal.getTime(), "yyyy-MM-dd");
+		return DateConvertUtil.format(cal.getTime(), "yyyy-MM-dd");
 	}
 	/**
 	 * 返回上一个小时的开始时间
@@ -116,7 +116,7 @@ public class DateUtil {
 		cal.set(Calendar.MINUTE,0);
 		cal.set(Calendar.SECOND, 0);
 		cal.set(Calendar.MILLISECOND, 0);
-		return DateConvertUtils.format(cal.getTime(), "yyyy-MM-dd HH:mm:ss");
+		return DateConvertUtil.format(cal.getTime(), "yyyy-MM-dd HH:mm:ss");
 	}
 	/**
 	 * 返回上5分钟的开始时间
@@ -131,6 +131,6 @@ public class DateUtil {
 		cal.set(Calendar.MINUTE,minuteSlot);
 		cal.set(Calendar.SECOND, 0);
 		cal.set(Calendar.MILLISECOND, 0);
-		return DateConvertUtils.format(cal.getTime(), "yyyy-MM-dd HH:mm:ss");
+		return DateConvertUtil.format(cal.getTime(), "yyyy-MM-dd HH:mm:ss");
 	}
 }

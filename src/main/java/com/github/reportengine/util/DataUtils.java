@@ -16,7 +16,7 @@ import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.lang.time.DateUtils;
 
 import com.github.rapid.common.beanutils.PropertyUtils;
-import com.github.rapid.common.util.DateConvertUtils;
+import com.github.rapid.common.util.DateConvertUtil;
 
 /**
  * @warning 如果你看到这个，那么说明你现在已经在负责我以前的项目了。
@@ -244,11 +244,11 @@ public class DataUtils {
 	
 	public static List<List<Map<String, Object>>> getRangeDataListsByDay(List<List<Map<String, Object>>> dataLists, Date endDate, int nums){
 		final String tdate = "tdate";
-		String firstDate = DateConvertUtils.format(DateUtils.addDays(endDate, -nums), DATE_FORMAT);
+		String firstDate = DateConvertUtil.format(DateUtils.addDays(endDate, -nums), DATE_FORMAT);
 		List<List<Map<String, Object>>> resultDataLists = new ArrayList<List<Map<String,Object>>>();
 		for (List<Map<String, Object>> list : dataLists) {
 			for (Map<String, Object> map : list) {
-				if ((DateConvertUtils.format((Date)map.get(tdate), DATE_FORMAT)).compareTo(firstDate) > 0) {
+				if ((DateConvertUtil.format((Date)map.get(tdate), DATE_FORMAT)).compareTo(firstDate) > 0) {
 					resultDataLists.add(list);
 					break;
 				}

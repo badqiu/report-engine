@@ -108,6 +108,24 @@ public class ReportEngine implements InitializingBean,ApplicationContextAware{
 		}
 	}
 	
+	/**
+	 * 下载报表的table为Csv
+	 * @param reportPath
+	 * @param params
+	 * @return
+	 */
+	public String download(String reportPath, Map params) {
+		try {
+			Map<String,Object> model = getTemplateModel(reportPath,params);
+			
+			Configuration conf = getFreemarkerConfiguration();
+			Template template = conf.getTemplate("/download.ftl");
+			return FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
+		}catch(Exception e) {
+			throw new RuntimeException("renderParameter error,reportPath:"+reportPath+" params:"+params,e);
+		}
+	}
+	
 	public Map<String, Object> getTemplateModel(String reportPath,Map<String, Object> params) throws FileNotFoundException {
 		Assert.hasText(reportPath,"reportPath must be not empty");
 		Report report = getReport(reportPath,params);
@@ -151,6 +169,8 @@ public class ReportEngine implements InitializingBean,ApplicationContextAware{
 					report.extend(parent);
 				}
 			}
+		}catch (Exception e){
+			throw new RuntimeException("cannot parse report xml file:"+reportFile,e);
 		}finally {
 			IOUtils.closeQuietly(input);
 		}

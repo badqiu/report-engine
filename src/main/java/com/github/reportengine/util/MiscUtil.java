@@ -14,8 +14,8 @@ import java.util.Set;
 
 import org.apache.commons.lang.math.NumberUtils;
 
-import com.github.rapid.common.util.DateConvertUtils;
-import com.github.rapid.common.util.ObjectUtils;
+import com.github.rapid.common.util.DateConvertUtil;
+import com.github.rapid.common.util.ObjectUtil;
 import com.github.reportengine.model.Chart;
 import com.github.reportengine.model.Chart.Ser;
 
@@ -36,7 +36,7 @@ public class MiscUtil {
 	 * @return hh:mm:ss
 	 */
 	public static String getDuration(Object totalDur, Object kpiValue ) {
-		if(ObjectUtils.isEmpty(totalDur) || ObjectUtils.isEmpty(kpiValue ) || Double.valueOf(kpiValue .toString()).longValue()==0) {
+		if(ObjectUtil.isEmpty(totalDur) || ObjectUtil.isEmpty(kpiValue ) || Double.valueOf(kpiValue .toString()).longValue()==0) {
 			return calDuration(0D);
 		}
 		double quotient = (double)Double.valueOf(totalDur.toString())/(double)Double.valueOf(kpiValue .toString());
@@ -57,7 +57,7 @@ public class MiscUtil {
 //	}
 	
 	public static String calDuration(Double quotient){
-		if (ObjectUtils.isEmpty(quotient)) {
+		if (ObjectUtil.isEmpty(quotient)) {
 			quotient = 0D;
 		}
 		StringBuilder sb = new StringBuilder();
@@ -78,7 +78,7 @@ public class MiscUtil {
 	 */
 	public static String parseRateString(Object member, Object denominator) {
 		StringBuffer sb = new StringBuffer();
-		if (ObjectUtils.isNotEmpty(member) && Double.valueOf(member .toString()).longValue()!=0 && ObjectUtils.isNotEmpty(denominator) && Double.valueOf(denominator .toString()).longValue()!=0) {
+		if (ObjectUtil.isNotEmpty(member) && Double.valueOf(member .toString()).longValue()!=0 && ObjectUtil.isNotEmpty(denominator) && Double.valueOf(denominator .toString()).longValue()!=0) {
 			sb.append(member.toString());
 			sb.append("(");
 			sb.append(ViewUtils.percent(member, denominator));
@@ -121,7 +121,7 @@ public class MiscUtil {
 				for (String date : tdateList) {
 					values.add(null);
 					for (Map<String, Object> rowInDim : dataList) {
-						if (rowInDim.get(dim).equals(kpiValue) && DateConvertUtils.format((Date)rowInDim.get(tdate), "yyyy-MM-dd").equals(date)) {
+						if (rowInDim.get(dim).equals(kpiValue) && DateConvertUtil.format((Date)rowInDim.get(tdate), "yyyy-MM-dd").equals(date)) {
 							values.remove(values.size() - 1);
 							Map<String, Number> kpisMap = (Map<String, Number>) rowInDim.get("kpis");
 							values.add(kpisMap.get(kpi));
@@ -192,7 +192,7 @@ public class MiscUtil {
 		List<Map<String, Object>>  tdateList = distinctByCol(dataList, tdate);
 		List<String> dateList = new ArrayList<String>();
 		for (Map<String, Object> row : tdateList) {
-			dateList.add(DateConvertUtils.format((Date)row.get(tdate),"yyyy-MM-dd"));
+			dateList.add(DateConvertUtil.format((Date)row.get(tdate),"yyyy-MM-dd"));
 		}
 		return dateList;
 	}
@@ -237,7 +237,7 @@ public class MiscUtil {
 	public static List<Map<String, Object>> distinctByCol(List<Map<String, Object>> dataList, String column) {
 		List<Map<String, Object>> distinctColDataList = new ArrayList<Map<String,Object>>();
 		Set<Map<String, Object>> distinctColDataSet = new HashSet<Map<String,Object>>();
-		if (ObjectUtils.isNullOrEmptyString(dataList)) {
+		if (ObjectUtil.isNullOrEmptyString(dataList)) {
 			return distinctColDataList;
 		}
 		for (Map<String, Object> row : dataList) {

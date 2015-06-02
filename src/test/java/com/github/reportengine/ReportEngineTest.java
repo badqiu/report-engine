@@ -13,7 +13,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.util.ResourceUtils;
 
-import com.github.rapid.common.util.DateConvertUtils;
+import com.github.rapid.common.util.DateConvertUtil;
 import com.github.reportengine.model.Param;
 
 
@@ -37,9 +37,9 @@ public class ReportEngineTest extends Assert{
 		};
 		Map params = new HashMap();
 		Map context = new HashMap();
-		context.put("now", DateConvertUtils.parse("1999-1-20 20:20:20", "yyyy-MM-dd HH:mm:ss"));
+		context.put("now", DateConvertUtil.parse("1999-1-20 20:20:20", "yyyy-MM-dd HH:mm:ss"));
 		Map<String,Object> result = engine.processParams(params, defs, context);
-		assertEquals(DateConvertUtils.parse("1999-1-20", "yyyy-MM-dd"),result.get("startDate"));
+		assertEquals(DateConvertUtil.parse("1999-1-20", "yyyy-MM-dd"),result.get("startDate"));
 	}
 	
 	@Before

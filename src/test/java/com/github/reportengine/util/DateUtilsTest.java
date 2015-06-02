@@ -5,10 +5,10 @@ import java.util.Date;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.github.rapid.common.util.DateConvertUtils;
+import com.github.rapid.common.util.DateConvertUtil;
 
 public class DateUtilsTest extends Assert{
-	private Date date = DateConvertUtils.parse("2013-10-10 13:24:00", "yyyy-MM-dd HH:mm:ss");
+	private Date date = DateConvertUtil.parse("2013-10-10 13:24:00", "yyyy-MM-dd HH:mm:ss");
 	@Test
 	public void testGetFirstDayOfLastMonth() {
 		assertEquals(DateUtil.getFirstDayOfLastMonth(date), "2013-09-01");
@@ -17,7 +17,7 @@ public class DateUtilsTest extends Assert{
 	@Test
 	public void testGetBeginDayOfLastWeek() {
 		assertEquals(DateUtil.getBeginDayOfLastWeek(date), "2013-09-30");
-		Date date2 = DateConvertUtils.parse("2013-10-02", "yyyy-MM-dd");
+		Date date2 = DateConvertUtil.parse("2013-10-02", "yyyy-MM-dd");
 		System.out.println(DateUtil.getBeginDayOfLastWeek(date2));
 	}
 

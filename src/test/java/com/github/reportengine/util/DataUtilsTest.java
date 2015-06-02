@@ -10,7 +10,7 @@ import java.util.Map;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.github.rapid.common.util.DateConvertUtils;
+import com.github.rapid.common.util.DateConvertUtil;
 
 public class DataUtilsTest extends Assert{
 	
@@ -224,7 +224,7 @@ public class DataUtilsTest extends Assert{
 		@Test
 		public void testGetRangeDataListsByDay()  {
 			List<List<Map<String, Object>>> lists = initData();
-			Date endDate = DateConvertUtils.parse("2013-12-16", "yyyy-MM-dd");
+			Date endDate = DateConvertUtil.parse("2013-12-16", "yyyy-MM-dd");
 			List<List<Map<String, Object>>> resultLists = DataUtils.getRangeDataListsByDay(lists, endDate, 2);
 			assertEquals(2, resultLists.size());
 			System.out.println(resultLists);
