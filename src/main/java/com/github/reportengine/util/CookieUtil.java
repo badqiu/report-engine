@@ -88,11 +88,15 @@ public class CookieUtil {
 				if(cookieName.startsWith(cookieNamePrefix)) {
 					String key = cookieName.substring(cookieNamePrefix.length());
 					String value = null;
-					try {
-						value = URLDecoder.decode(c.getValue(), URL_ENCODE);
-					} catch (UnsupportedEncodingException e) {
-						logger.error("cookie decode error,",e);
+					
+					if(StringUtils.isNotBlank(c.getValue())) {
+						try {
+							value = URLDecoder.decode(c.getValue(), URL_ENCODE);
+						} catch (UnsupportedEncodingException e) {
+							logger.error("cookie decode error,",e);
+						}
 					}
+					
 					if(StringUtils.isNotBlank(value)) {
 						if(StringUtils.contains(value, ARRAY_SEPERATOR)) {
 							String[] values = StringUtils.split(value,ARRAY_SEPERATOR);
