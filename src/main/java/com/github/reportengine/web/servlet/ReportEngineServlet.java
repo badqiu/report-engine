@@ -99,38 +99,10 @@ public class ReportEngineServlet extends HttpServlet{
 		param.put("application",getServletContext());
 		param.put("session",req.getSession());
 		param.put("include_page", new IncludePage(req,resp));
-		param.put("queryParams", buildParamStringFromMap(param));
 		
 		return param;
 	}
 	
-	private String buildParamStringFromMap(Map param){
-		String paramString = "";
-		Object paramKeys[] = param.keySet().toArray();
-		for(int i = 0; i < param.size(); i++) {
-			if(param.get(paramKeys[i]) instanceof String && filterString((String)paramKeys[i],"startDate","endDate","reportPath")){
-				paramString += "&"+paramKeys[i].toString();
-				paramString += "=";
-				paramString += param.get(paramKeys[i]);
-			}
-		}
-		if(StringUtils.isNotBlank(paramString)){
-			paramString = paramString.substring(1);
-		}else {
-			paramString = "1=1";
-		}
-		return paramString;
-	}
-	
-	private boolean filterString(String source,String ... filters){
-		for(String filter:filters){
-			if(filter.equalsIgnoreCase(source)){
-				return false;
-			}
-		}
-		return true;
-	}
-
 	private Map excludeCookieMapByKeys(Map cookies) {
 		String[] excludes = new String[]{"page"};
 		Map result = new HashMap();
