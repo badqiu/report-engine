@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.github.common</groupId>
+	<groupId>com.github.report-engine</groupId>
 	<artifactId>report-engine</artifactId>
 	<version>0.1.3-SNAPSHOT</version>	
 	<packaging>jar</packaging>
@@ -28,12 +28,12 @@
 		<repository>
 			<id>releases</id>
 			<name>Internal Releases</name>
-			<url>http://10.20.122.91/nexus/content/repositories/releases/</url>
+			<url>http://nexus.qinha.com:8081/nexus/content/repositories/releases/</url>
 		</repository>
 		<snapshotRepository>
 			<id>snapshots</id>
 			<name>Internal snapshots</name>
-			<url>http://10.20.122.91/nexus/content/repositories/snapshots/</url>
+			<url>http://nexus.qinha.com:8081/nexus/content/repositories/snapshots/</url>
 		</snapshotRepository>
 	</distributionManagement>
 			
