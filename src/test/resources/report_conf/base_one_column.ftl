@@ -16,22 +16,24 @@
 			<@renderParams report.params/>
 		</div>
 
-		<div class="box rp-chart">
+		<div class="panel panel-default">
 			<@renderBoxHeader "icon-picture"/>
-			<@block name="chart"></@block>  
+			<div class="panel-body">
+				<@block name="chart"></@block>
+			</div>
 		</div>
 
-		<div class="box rp-table">
+		<div class="panel panel-default">
 			<@renderBoxHeader "icon-list-alt"/>
-			<div class="box-content">
+			<div class="panel-body">
 				<@block name="table"></@block>
 			</div>
 		</div>
 		<!--/row-->
 		
-		<div class="box rp-help">
+		<div class="panel panel-default">
 			<@renderBoxHeader "icon-book"/>
-			<div class="box-content">
+			<div class="panel-body">
 				<@block name="help"></@block>
 			</div>
 		</div>

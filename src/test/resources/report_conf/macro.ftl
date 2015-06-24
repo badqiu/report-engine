@@ -11,19 +11,10 @@
 </#function>
 
 <#macro renderParamsBoxHeader>
-	<div class="box">
-		<div class="box-header well">
+		<div class="panel-heading">
 			<h2>
 				<i class="icon-search"></i> ${report.title!} 报表作者:${report.author!}
 			</h2>
-			<div class="box-icon">
-			    <!--
-				<a href="#" class="btn btn-setting btn-round"><i class="icon-cog"></i></a>
-				<a href="#" class="btn btn-close btn-round"><i class="icon-remove"></i></a> 
-				-->
-				<a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a> 
-			</div>
-			
 			<div id="beforeN15Div" class="pull-right div-space" style="display:none;">
 				<input type="button" class="btn btn-primary" value="最近30天" onclick="getBeforeDay(-30);this.form.submit();">
 			</div>					
@@ -80,7 +71,7 @@
 				   if(typeof str == 'string'){  
 				     var results = str.split("-");
 				     if(results && results.length>=3)  {
-				      return new Date(parseFloat(results[0]),parseFloat(results[1]) -1,parseFloat(results[2]));   
+				      return new Date(parseFloat(results[0]),parseFloat(results[1]) - 1,parseFloat(results[2]));   
 				     }
 				   }  
 				   throw new Error("cannot parse str for date:"+str);  
@@ -124,28 +115,27 @@
 			   			$('#beforeN7Div').show();
 			   		}
 			   })
-   		</script>			
-	   </div>
+   			</script>	
+		</div>   				
 </#macro>
 
 <#macro renderParams paramDefs>
+	<div class="panel panel-default">
 		<@renderParamsBoxHeader/>
 		
-		<div id="queryConditions" class="box-content container-fluid">
-				<#list filter(paramDefs,'hidden',true) as paramDef>
-					<@renderParam paramDef/>
-				</#list>
+		<div id="queryConditions" class="panel-body">
+			<#list filter(paramDefs,'hidden',true) as paramDef>
+				<@renderParam paramDef/>
+			</#list>
 				
-				<table border="0">
+			<table border="0" class="table">
 				<#list filter(paramDefs,'hidden',false)?chunk(3) as paramDefRow>
 					<tr>
-					<#list paramDefRow as paramDef>
-					<td>
-					<@renderParam paramDef/>
-					</td>
+						<#list paramDefRow as paramDef>
+							<td><@renderParam paramDef/></td>
+						</#list>
+					</tr>
 				</#list>
-				</tr>
-			</#list>
 			</table>
 		</div>	
 	</div>
@@ -235,9 +225,6 @@
 				</script>
 		<#elseif paramDef.displayType == 'date'>
 				<input id="${paramDef.id}" name="${paramDef.id}" type="text" value="${paramValue}" title="${paramDef.help!}" placeholder="${paramDef.label}" onfocus="WdatePicker({isShowWeek:true})" onchange="this.form.submit();">
-				<!--
-				<img onclick="WdatePicker({el:'${paramDef.id}'})" src="${ctx}/js/My97DatePicker/skin/datePicker.gif" width="16" height="22" align="absmiddle">
-				-->
 		<#else>
 				<input name="${paramDef.id}" type="${paramDef.displayType}" value="${paramValue}" title="${paramDef.help!}" placeholder="${paramDef.label}" onchange="this.form.submit();" <#if paramDef.readonly>readonly="readonly"</#if>>
 		</#if>

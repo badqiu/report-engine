@@ -8,20 +8,11 @@
 		
 		<title>${report.tiele!}</title>
 		
-		<!-- css -->
-		<link href="${ctx}/css/skin/bootstrap-redy.css" rel="stylesheet" id="bs-css">
-
-		<link href="${ctx}/css/bootstrap-responsive.min.css" rel="stylesheet">
-		
-		<link href="${ctx}/css/dynamic-page.css" rel="stylesheet">
-		
+		<link href="${ctx}/css/bootstrap.min.css" rel="stylesheet" />
+    	<link href="${ctx}/css/bootstrap-theme.css"  rel="stylesheet" />
+    	
 		<script src="${ctx}/js/jquery.min.js"></script>
-		<!-- 在dynamic-page.js中, 用到了jquery-ui的sortable拖曳特效 -->
-		<script src="${ctx}/js/jquery-ui.custom.min.js"></script>
 		<script src="${ctx}/js/bootstrap.min.js"></script>
-		<!--
-		<script src="${ctx}/js/dynamic-page.js"></script>
-		-->
 		
 		<script src="${ctx}/js/bootstrap-tooltip.js"></script>
 		<script src="${ctx}/js/bootstrap-popover.js"></script>
@@ -55,10 +46,9 @@
 </#macro>
 
 <#macro renderBoxHeader title="" icon="icon-book" kpis=[]>
-	<div class="box-header well">
-			<h2>
+		<div class="panel-heading">
 				<i class="${icon}"></i>
-				<span id='tTitle'>${title!}</span>
+				${title!}
 				
 				<#if kpis?size!=0>
 					<#assign kpiMap = application.getAttribute("kpiMap") />
@@ -73,11 +63,7 @@
 					</script>
 					
 				</#if>
-			</h2>
-			<div class="box-icon">
-				<a href="#" class="btn btn-close btn-round"><i class="icon-remove"></i></a>
-			</div>
-	</div>
+		</div>
 	<#assign tipId=tipId+1 />
 </#macro>
 
