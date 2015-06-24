@@ -12,23 +12,23 @@
 
 <#macro renderParamsBoxHeader>
 		<div class="panel-heading">
-			<div class="pull-left">
+			<div id="queryPanel" class="panel-title">
 				${report.title!} 报表作者:${report.author!}
-			</div>
-			<div id="beforeN30Div" class="pull-right div-space" style="display:none;">
-				<input type="button" class="btn btn-primary" value="最近30天" onclick="getBeforeDay(-30);this.form.submit();">
-			</div>					
-			<div id="beforeN7Div" class="pull-right div-space" style="display:none;">
-				<input type="button" class="btn btn-primary" value="最近7天" onclick="getBeforeDay(-7);this.form.submit();">
-			</div>
-			<div id="nextDateDiv" class="pull-right div-space">
-				<input type="button" class="btn btn-primary" value="后一天" onclick="scrollStartDateEndDate(1);this.form.submit();">
-			</div>
-			<div id="preDateDiv" class="pull-right div-space">
-				<input type="button" class="btn btn-primary" value="前一天" onclick="scrollStartDateEndDate(-1);this.form.submit();">
-			</div>
-			<div id="queryDiv" class="pull-right div-space">
-				<input type="button" class="btn btn-primary" onclick="this.form.submit();" value="查    询">
+				<div id="beforeN30Div" class="pull-right div-space" style="display:none;">
+					<input type="button" class="btn btn-primary" value="最近30天" onclick="getBeforeDay(-30);this.form.submit();">
+				</div>					
+				<div id="beforeN7Div" class="pull-right div-space" style="display:none;">
+					<input type="button" class="btn btn-primary" value="最近7天" onclick="getBeforeDay(-7);this.form.submit();">
+				</div>
+				<div id="nextDateDiv" class="pull-right div-space">
+					<input type="button" class="btn btn-primary" value="后一天" onclick="scrollStartDateEndDate(1);this.form.submit();">
+				</div>
+				<div id="preDateDiv" class="pull-right div-space">
+					<input type="button" class="btn btn-primary" value="前一天" onclick="scrollStartDateEndDate(-1);this.form.submit();">
+				</div>
+				<div id="queryDiv" class="pull-right div-space">
+					<input type="button" class="btn btn-primary" onclick="this.form.submit();" value="查    询">
+				</div>
 			</div>
 			<script type="text/javascript">
 			 //前N天
@@ -122,21 +122,19 @@
 	<div class="panel panel-default">
 		<@renderParamsBoxHeader/>
 		
-		<div id="queryConditions" class="panel-body">
-			<#list filter(paramDefs,'hidden',true) as paramDef>
-				<@renderParam paramDef/>
+		<#list filter(paramDefs,'hidden',true) as paramDef>
+			<@renderParam paramDef/>
+		</#list>
+			
+		<table border="0" class="table  table-condensed">
+			<#list filter(paramDefs,'hidden',false)?chunk(3) as paramDefRow>
+				<tr>
+					<#list paramDefRow as paramDef>
+						<td><@renderParam paramDef/></td>
+					</#list>
+				</tr>
 			</#list>
-				
-			<table border="0" class="table  table-condensed">
-				<#list filter(paramDefs,'hidden',false)?chunk(3) as paramDefRow>
-					<tr>
-						<#list paramDefRow as paramDef>
-							<td><@renderParam paramDef/></td>
-						</#list>
-					</tr>
-				</#list>
-			</table>
-		</div>	
+		</table>
 	</div>
 </#macro>
 
@@ -169,6 +167,12 @@
 						<option <#if paramValue?string == valueInterpret?string >selected="selected"</#if> value="${valueInterpret}">${labelInterpret}</option> 
 					</#list>
 				</select>
+				<script>
+				        $("#${paramDef.id}").multipleSelect({
+				            filter: true,
+				            single: true
+				        });
+				</script>
 		<#elseif paramDef.displayType == 'radio'>
 			<div class="btn-group" data-toggle="buttons-radio" style="width:${paramDef.dataList?size * 40}px">
 				<input type="hidden"  id="${paramDef.id}" name="${paramDef.id}" value="${paramValue}" />

@@ -39,6 +39,9 @@
 				margin-left: 15px;
 				margin-right: 15px;
 			}
+			#queryPanel {
+				height : 32px;
+			}
 	    </style>
 	
 	    <@block name="head"></@block>  
