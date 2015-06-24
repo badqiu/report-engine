@@ -12,10 +12,10 @@
 
 <#macro renderParamsBoxHeader>
 		<div class="panel-heading">
-			<h2>
-				<i class="icon-search"></i> ${report.title!} 报表作者:${report.author!}
-			</h2>
-			<div id="beforeN15Div" class="pull-right div-space" style="display:none;">
+			<div class="pull-left">
+				${report.title!} 报表作者:${report.author!}
+			</div>
+			<div id="beforeN30Div" class="pull-right div-space" style="display:none;">
 				<input type="button" class="btn btn-primary" value="最近30天" onclick="getBeforeDay(-30);this.form.submit();">
 			</div>					
 			<div id="beforeN7Div" class="pull-right div-space" style="display:none;">
@@ -30,7 +30,6 @@
 			<div id="queryDiv" class="pull-right div-space">
 				<input type="button" class="btn btn-primary" onclick="this.form.submit();" value="查    询">
 			</div>
-			
 			<script type="text/javascript">
 			 //前N天
 			  Date.prototype.format = function(fmt)
@@ -128,7 +127,7 @@
 				<@renderParam paramDef/>
 			</#list>
 				
-			<table border="0" class="table">
+			<table border="0" class="table  table-condensed">
 				<#list filter(paramDefs,'hidden',false)?chunk(3) as paramDefRow>
 					<tr>
 						<#list paramDefRow as paramDef>
@@ -154,7 +153,6 @@
 	<#if paramDef.hidden>
 		<input type="hidden" id="${paramDef.id}" name="${paramDef.id}" value="${paramValue}" />
 	<#else>
-		<div id="param_${paramDef.id}" class="input-prepend pull-left div-space">
 		
 		<#if paramDef.label??>
 		<span class="add-on">${paramDef.label}</span>
@@ -229,13 +227,12 @@
 				<input name="${paramDef.id}" type="${paramDef.displayType}" value="${paramValue}" title="${paramDef.help!}" placeholder="${paramDef.label}" onchange="this.form.submit();" <#if paramDef.readonly>readonly="readonly"</#if>>
 		</#if>
 		
-		</div>	
 		
      </#if>		
 </#macro>
 
 <#macro renderChart chart>
-		<div class="box-content rp-chart" id="${chart.id}" style="width:96%;">
+		<div id="${chart.id}" style="width:96%;">
 		</div>
 		<script type="text/javascript">
 			$(function () {
