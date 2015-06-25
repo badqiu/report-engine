@@ -8,8 +8,11 @@
 		
 		<title>${report.tiele!}</title>
 		
+		<!--
 		<link href="${ctx}/css/bootstrap.min.css" rel="stylesheet" />
     	<link href="${ctx}/css/bootstrap-theme.css"  rel="stylesheet" />
+    	-->
+    	<link href="${ctx}/css/skin/cerulean/bootstrap.min.css" rel="stylesheet" />
     	
 		<script src="${ctx}/js/jquery.min.js"></script>
 		<script src="${ctx}/js/bootstrap.min.js"></script>
