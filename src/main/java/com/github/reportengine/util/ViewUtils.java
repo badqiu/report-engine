@@ -132,12 +132,15 @@ public class ViewUtils {
 	 * @param number2
 	 * @return
 	 */
-	public static long div(Object number1,Object number2) {
+	public static double div(Object number1,Object number2) {
 		if(number1==null || number2==null) {
 			return 0;
 		}
-		long result = Long.valueOf(number1.toString())/Long.valueOf(number2.toString());
-		return result;
+		Double num1 = Double.valueOf(number1.toString());
+		Double num2 = Double.valueOf(number2.toString());
+		if(num2 == 0) return 0;
+		
+		return num1 / num2;
 	}
 	
 	/**
@@ -150,8 +153,7 @@ public class ViewUtils {
 		if(number1==null || number2==null) {
 			return 0;
 		}
-		Double result = Double.valueOf(number1.toString())/Double.valueOf(number2.toString());
-		return Double.valueOf(NUM_FORMAT.format(result));
+		return Double.valueOf(NUM_FORMAT.format(div(number1,number2)));
 	}
 	
 	public static String parseRate(Object number1,Object number2){

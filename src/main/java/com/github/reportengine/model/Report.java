@@ -22,6 +22,7 @@ import com.github.reportengine.ReportEngineLifecycle;
 import com.github.reportengine.model.Chart.Ser;
 import com.github.reportengine.model.Table.Column;
 import com.github.reportengine.util.CloneUtil;
+import com.github.reportengine.util.RegexHelper;
 import com.github.reportengine.util.SelectorUtil;
 import com.github.reportengine.util.SpringUtil;
 import com.thoughtworks.xstream.XStream;
@@ -53,6 +54,8 @@ public class Report extends BaseObject implements InitializingBean,Cloneable,Ser
 	private Chart[] charts = new Chart[]{};
 	private Table[] tables = new Table[]{};
 	private Cube[] cubes = new Cube[]{};
+	
+	private String xml; //report自身的xml
 	
 	public String getAuthor() {
 		return author;
@@ -128,6 +131,18 @@ public class Report extends BaseObject implements InitializingBean,Cloneable,Ser
 	}
 	public void setExtend(String extend) {
 		this.extend = extend;
+	}
+	
+	public String getXml() {
+		return xml;
+	}
+	
+	public void setXml(String reportXml) {
+		this.xml = reportXml;
+	}
+	
+	public List<String> getKpis() {
+		return RegexHelper.findMatchs(xml,"\\{row.([\\w_]+)",1);
 	}
 	
 	public Object getElementById(Object id) {
@@ -247,6 +262,7 @@ public class Report extends BaseObject implements InitializingBean,Cloneable,Ser
 			String xml = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
 			XStream xstream = buildReportXStream();
 			Report report = (Report)xstream.fromXML(xml);
+			report.setXml(xml);
 			SpringUtil.initializing(report);
 			return report;
 		}catch(Exception e) {
