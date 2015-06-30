@@ -8,8 +8,10 @@ import java.io.Serializable;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -141,8 +143,8 @@ public class Report extends BaseObject implements InitializingBean,Cloneable,Ser
 		this.xml = reportXml;
 	}
 	
-	public List<String> getKpis() {
-		return RegexHelper.findMatchs(xml,"\\{row.([\\w_]+)",1);
+	public Collection<String> getKpis() {
+		return new LinkedHashSet(RegexHelper.findMatchs(xml,"\\{[\\w]+.([\\w_]+)",1));
 	}
 	
 	public Object getElementById(Object id) {
