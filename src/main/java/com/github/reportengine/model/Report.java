@@ -58,6 +58,7 @@ public class Report extends BaseObject implements InitializingBean,Cloneable,Ser
 	private Cube[] cubes = new Cube[]{};
 	
 	private String xml; //report自身的xml
+	private String template; //report自身的freemarker template文件内容
 	
 	public String getAuthor() {
 		return author;
@@ -143,8 +144,19 @@ public class Report extends BaseObject implements InitializingBean,Cloneable,Ser
 		this.xml = reportXml;
 	}
 	
+	public String getTemplate() {
+		return template;
+	}
+	
+	public void setTemplate(String template) {
+		this.template = template;
+	}
+	
 	public Collection<String> getKpis() {
-		return new LinkedHashSet(RegexHelper.findMatchs(xml,"\\{[\\w]+.([\\w_]+)",1));
+		String regex = "\\{[\\w]+.([\\w_]+)";
+		LinkedHashSet linkedHashSet = new LinkedHashSet(RegexHelper.findMatchs(xml,regex,1));
+		linkedHashSet.addAll(RegexHelper.findMatchs(template,regex,1));
+		return linkedHashSet;
 	}
 	
 	public Object getElementById(Object id) {

@@ -1,7 +1,7 @@
 package com.github.reportengine.model;
 
 import java.beans.PropertyDescriptor;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
@@ -84,9 +84,9 @@ public class BaseObject  implements ReportEngineLifecycle,InitializingBean,Seria
 	 * @param required
 	 * @throws IllegalAccessException
 	 * @throws InvocationTargetException
-	 * @throws FileNotFoundException 
+	 * @throws IOException 
 	 */
-	private void setBeanPropertiesByRef(Map<String, Object> context,boolean required) throws IllegalAccessException, InvocationTargetException, FileNotFoundException {
+	private void setBeanPropertiesByRef(Map<String, Object> context,boolean required) throws IllegalAccessException, InvocationTargetException, IOException {
 		for(PropertyDescriptor pd : PropertyUtils.getPropertyDescriptors(getClass())) {
 			String name = pd.getName();
 			if(name.equals("ref")) {
@@ -114,7 +114,7 @@ public class BaseObject  implements ReportEngineLifecycle,InitializingBean,Seria
 	}
 
 	private Object lookupBean(Map<String, Object> context, String beanName)
-			throws FileNotFoundException {
+			throws IOException {
 		Object bean = null;
 		if(beanName.contains("/")) {
 			int index = beanName.lastIndexOf("/");

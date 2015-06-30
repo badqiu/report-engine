@@ -17,6 +17,7 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -126,7 +127,7 @@ public class ReportEngine implements InitializingBean,ApplicationContextAware{
 		}
 	}
 	
-	public Map<String, Object> getTemplateModel(String reportPath,Map<String, Object> params) throws FileNotFoundException {
+	public Map<String, Object> getTemplateModel(String reportPath,Map<String, Object> params) throws IOException {
 		Assert.hasText(reportPath,"reportPath must be not empty");
 		Report report = getReport(reportPath,params);
 		Map<String,Object> context = processForModel(report, params);
@@ -136,31 +137,32 @@ public class ReportEngine implements InitializingBean,ApplicationContextAware{
 	}
 
 //	private Map<String,Report> reportCache = new ConcurrentHashMap<String,Report>();
-	public Report getReport(String reportPath) throws FileNotFoundException {
+	public Report getReport(String reportPath) throws IOException {
 		return getReport(reportPath,System.getProperties());
 	}
 	
-	public Report getReport(String reportPath,Map model) throws FileNotFoundException {
+	public Report getReport(String reportPath,Map model) throws IOException {
 		Assert.hasText(reportPath,"reportPath must be not empty");
 		reportPath = reportPath.trim();
 		
-		File reportFile = new File(baseReportDir,reportPath+".xml");
+		File reportXmlFile = new File(baseReportDir,reportPath+".xml");
+		File reportTemplateFile = new File(baseReportDir,reportPath+".ftl");
 //		Report report = reportCache.get(reportPath);
 		Report report = null;
-		if(report == null || reportFile.lastModified() != report.getLastModifiedTime()) {
-			report = newReport(reportPath, model, reportFile);
+		if(report == null || reportXmlFile.lastModified() != report.getLastModifiedTime()) {
+			report = newReport(model, reportXmlFile,reportTemplateFile);
 //			reportCache.put(reportPath, report);
 		}
 		return report.deepClone();
 	}
 
-	private Report newReport(String reportPath, Map model, File reportFile)
+	private Report newReport(Map model, File reportXmlFile,File reportTemplateFile)
 			throws FileNotFoundException {
 		Report report;
-		InputStream input = new FileInputStream(reportFile);
+		InputStream input = new FileInputStream(reportXmlFile);
 		try {
 			report = Report.parse((Configuration)conf.clone(),input,model);
-			report.setLastModifiedTime(reportFile.lastModified());
+			report.setLastModifiedTime(reportXmlFile.lastModified());
 			
 			if(StringUtils.isNotBlank(report.getExtend())) {
 				String[] parentReportPaths = StringUtils.split(report.getExtend(),",");
@@ -169,8 +171,12 @@ public class ReportEngine implements InitializingBean,ApplicationContextAware{
 					report.extend(parent);
 				}
 			}
+			
+			if(reportTemplateFile.exists()) {
+				report.setTemplate(FileUtils.readFileToString(reportTemplateFile));
+			}
 		}catch (Exception e){
-			throw new RuntimeException("cannot parse report xml file:"+reportFile,e);
+			throw new RuntimeException("cannot parse report xml file:"+reportXmlFile,e);
 		}finally {
 			IOUtils.closeQuietly(input);
 		}
