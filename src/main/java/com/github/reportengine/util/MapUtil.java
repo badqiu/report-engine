@@ -10,6 +10,17 @@ import org.apache.commons.lang.StringUtils;
 
 public class MapUtil {
 
+	public static double sumValues(Map<String,Object> map) {
+		double sum = 0;
+		for(Map.Entry<String, Object> entry : map.entrySet()) {
+			Object objValue = entry.getValue();
+			if(objValue instanceof Number) {
+				sum += ((Number)objValue).doubleValue();
+			}
+		}
+		return sum;
+	}
+	
 	/**
 	 * 将所有key 转换为小写
 	 * @param list

@@ -207,16 +207,16 @@ public class Param extends BaseDataListObject implements InitializingBean,Report
 	}
 	
 	public static class Util {
-		public static Object parseValue(Param p,String value) {
+		public static Object parseValue(Param p,String value,String defaultValue) {
 			try {
-				return parseValue0(p.getDataType(), value,p.getDefaultValue());
+				return parseValue0(p.getDataType(), value,defaultValue);
 			}catch(Exception e) {
 				throw new RuntimeException("parse param value error,id:"+p.getId()+" dataType:"+p.getDataType()+" value:"+value+", cause message:"+e.getMessage(),e);
 			}
 		}
 		
 		private static Object parseValue0(String type,String value,String defaultValue) {
-			value = StringUtils.defaultString(value, defaultValue);
+			value = StringUtils.defaultIfEmpty(value, defaultValue);
 			if(StringUtils.isBlank(value)) {
 				return null;
 			}

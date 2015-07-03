@@ -312,7 +312,7 @@ public class ReportEngine implements InitializingBean,ApplicationContextAware{
 			if(StringUtils.isBlank(stringValue) && p.getRequired()) {
 				throw new RuntimeException(p.getId() + " param is required");
 			}
-			Object parsedValue = Param.Util.parseValue(p, stringValue);
+			Object parsedValue = Param.Util.parseValue(p, stringValue , defaultValue);
 			return parsedValue;
 		}else {
 			return rawValue;
