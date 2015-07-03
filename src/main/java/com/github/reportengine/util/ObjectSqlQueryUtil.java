@@ -101,19 +101,8 @@ public class ObjectSqlQueryUtil {
 		}
 	}
 	
-	private static String buildCreateTableSql(String tableName, List<Map<String, Object>> rows) {
-		for(int i = 0 ; i < rows.size(); i++) {
-			Map row = rows.get(i);
-			try {
-				return buildCreateTableSql(tableName,row,true);
-			}catch(IllegalArgumentException e) {
-				//ignore
-			}
-		}
-		return buildCreateTableSql(tableName,rows.get(0),false);
-	}
-
-	static String buildCreateTableSql(String tableName,Map<String,Object> map,boolean errorOnValueNull) {
+	static String buildCreateTableSql(String tableName, List<Map<String, Object>> rows) {
+		Map<String,Object> map = rows.get(0);
 		StringBuilder sql = new StringBuilder("create memory local temporary  table "+tableName+" (");
 		boolean first = true;
 		for(Map.Entry<String, Object> entry : map.entrySet()) {
@@ -123,16 +112,22 @@ public class ObjectSqlQueryUtil {
 				sql.append(",");
 			}
 			String key = entry.getKey();
-			Object value = entry.getValue();
-			if(errorOnValueNull && value == null) {
-				throw new IllegalArgumentException("value is null by key:"+key);
-			}
-			String sqlType = getSqlType(value);
+			String sqlType = getSqlType(rows,key);
 			sql.append(key + " " +sqlType);
-			
 		}
 		
 		return sql.append(" ) NOT PERSISTENT").toString();
+	}
+	
+	private static String getSqlType(List<Map<String,Object>> rows,String key) {
+		for(Map row : rows) {
+			Object value = row.get(key);
+			if(value == null) {
+				continue;
+			}
+			return getSqlType(value);
+		}
+		return getSqlType(null);
 	}
 	
 	private static String getSqlType(Object value) {

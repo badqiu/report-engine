@@ -3,6 +3,7 @@ package com.github.reportengine.util;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +26,7 @@ public class ObjectSqlQueryUtilTest extends Assert{
 		row.put("percent", 12.239);
 		row.put("birth_date", DateConvertUtil.parse("1999.9.9", "yyyy.MM.dd"));
 		
-		String createTableSql = util.buildCreateTableSql("t",row ,false);
+		String createTableSql = util.buildCreateTableSql("t",Arrays.asList(row));
 		String insertSql = util.buildInsertSql("t",row );
 		System.out.println(createTableSql);
 		System.out.println(insertSql);
