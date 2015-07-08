@@ -133,10 +133,20 @@ public class ObjectSqlQueryUtil {
 	private static String getSqlType(Object value) {
 		if(value instanceof String) {
 			return "varchar(4000)";
+		}else if(value instanceof Integer) {
+			return "BIGINT";
+		}else if(value instanceof Long) {
+			return "BIGINT";			
 		}else if(value instanceof Number) {
-			return "NUMBER";
+			return "DOUBLE";
+		}else if(value instanceof java.sql.Date) {
+			return "date";
+		}else if(value instanceof java.sql.Time) {
+			return "time";
+		}else if(value instanceof java.sql.Timestamp) {
+			return "timestamp";
 		}else if(value instanceof Date) {
-			return "datetime";
+			return "datetime";			
 		}else if(value instanceof Boolean) {
 			return "bool";
 		}else {

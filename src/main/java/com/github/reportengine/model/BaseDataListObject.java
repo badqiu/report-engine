@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
 import com.github.reportengine.util.CloneUtil;
@@ -17,10 +19,14 @@ import com.github.reportengine.util.ObjectSqlQueryUtil;
  */
 public class BaseDataListObject extends BaseObject {
 
+	private static Logger logger = LoggerFactory.getLogger(BaseDataListObject.class);
+	
 	private List<Map<String,Object>> dataList;
 	private String refDataList;
 	private Query query;
 	private String orderBy; //排序,使用sql语法,示例: tdate desc,game asc
+	private String limit;
+	private String requerySql;
 	
 	public List<Map<String, Object>> getDataList() {
 		return dataList;
@@ -54,6 +60,21 @@ public class BaseDataListObject extends BaseObject {
 		this.query = query;
 	}
 	
+	public String getLimit() {
+		return limit;
+	}
+
+	public void setLimit(String limit) {
+		this.limit = limit;
+	}
+
+	public String getRequerySql() {
+		return requerySql;
+	}
+
+	public void setRequerySql(String requerySql) {
+		this.requerySql = requerySql;
+	}
 
 	@Override
 	public void beforeQuery(Map<String, Object> context) throws Exception {
@@ -74,9 +95,24 @@ public class BaseDataListObject extends BaseObject {
 			dataList = (List)query.execute(context);
 		}
 		
-		if(StringUtils.isNotBlank(orderBy)) {
-			dataList = ObjectSqlQueryUtil.query("select * from t order by "+orderBy, dataList);
+		executeRequerySql();
+	}
+
+	private void executeRequerySql() {
+		if(StringUtils.isBlank(requerySql) && StringUtils.isBlank(orderBy) &&  StringUtils.isBlank(limit)){
+			return;
 		}
-		
+		String requerySql = "select * from t";
+		if(StringUtils.isNotBlank(this.requerySql)) {
+			requerySql = this.requerySql;
+		}
+		if(StringUtils.isNotBlank(orderBy)) {
+			requerySql = requerySql + " order by " + orderBy;
+		}
+		if(StringUtils.isNotBlank(limit)) {
+			requerySql = requerySql + " limit " + limit;
+		}
+		logger.info("execute requerySql:"+requerySql);
+		dataList = ObjectSqlQueryUtil.query(requerySql, dataList);
 	}
 }

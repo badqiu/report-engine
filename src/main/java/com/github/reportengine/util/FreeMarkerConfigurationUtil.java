@@ -37,7 +37,8 @@ public class FreeMarkerConfigurationUtil {
 			conf.setSharedVariable("ObjectUtil", new com.github.rapid.common.util.ObjectUtil());
 			conf.setSharedVariable("PDateUtils", new com.github.reportengine.util.DateUtil());
 			
-			conf.setNumberFormat("######.####");
+			conf.setNumberFormat("###,###,###,###.##");
+			conf.setTimeFormat("HH:mm:ss");
 			conf.setBooleanFormat("true,false");
 			conf.setDateFormat("yyyy-MM-dd");
 			conf.setDateTimeFormat("yyyy-MM-dd HH:mm:ss");

@@ -292,9 +292,11 @@ public class ReportEngine implements InitializingBean,ApplicationContextAware{
 		for(Param p : paramDefs) {
 			try {
 				Object rawValue = params.get(p.getId());
-				Object value = getParamValue(rawValue, context, p);
+				Object stringValue = getStringParamValue(rawValue, context, p);
+				Object value = parseParamValue(p,stringValue);
 				p.setValue(value);
 				p.setRawValue(rawValue);
+				p.setStringValue(stringValue);
 				result.put(p.getId(), value);
 			}catch(Exception e) {
 				throw new RuntimeException("param error,param:"+p.getId()+" cause:"+e,e);
@@ -303,19 +305,27 @@ public class ReportEngine implements InitializingBean,ApplicationContextAware{
 		return result;
 	}
 
-	private Object getParamValue(Object rawValue, Map context,
-			 Param p) throws IOException,
-			TemplateException {
+	private Object getStringParamValue(Object rawValue, Map context,Param p) throws IOException,TemplateException {
 		if(rawValue == null || rawValue instanceof String) {
 			String defaultValue = processForParamDefaultValue(context, p);
-			String stringValue = StringUtils.defaultIfEmpty((String)rawValue,defaultValue);
+			String stringRawValue = (String)rawValue;
+			String stringValue = StringUtils.isBlank(stringRawValue) ? defaultValue : stringRawValue;
 			if(StringUtils.isBlank(stringValue) && p.getRequired()) {
 				throw new RuntimeException(p.getId() + " param is required");
 			}
-			Object parsedValue = Param.Util.parseValue(p, stringValue , defaultValue);
-			return parsedValue;
+			return stringValue;
 		}else {
 			return rawValue;
+		}
+	}
+	
+	private Object parseParamValue(Param p,Object stringRawValue) throws IOException,
+			TemplateException {
+		if(stringRawValue == null || stringRawValue instanceof String) {
+			Object parsedValue = Param.Util.parseValue(p, (String)stringRawValue , null);
+			return parsedValue;
+		}else {
+			return stringRawValue;
 		}
 	}
 
@@ -340,12 +350,8 @@ public class ReportEngine implements InitializingBean,ApplicationContextAware{
 	public void afterPropertiesSet() throws Exception {
 		Assert.notNull(baseReportDir,"baseReportDir must be not null");
 		conf.setTemplateLoader(new FileTemplateLoader(baseReportDir));
-		
 		logger.info("ReportEngine inited, baseReportDir:"+baseReportDir+" engineContext.keys:"+engineContext.keySet());
 	}
-
-
-
 
 	
 }

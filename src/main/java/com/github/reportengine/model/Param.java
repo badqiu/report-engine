@@ -38,6 +38,7 @@ public class Param extends BaseDataListObject implements InitializingBean,Report
 	private String sortDirection; //asc desc 
 	
 	private Object value; // 参数值 (经过处理后)
+	private Object stringValue; // string参数值 (经过处理后)
 	private Object rawValue; //参数原始值
 	
 	public Param() {
@@ -143,6 +144,14 @@ public class Param extends BaseDataListObject implements InitializingBean,Report
 		this.value = value;
 	}
 	
+	public Object getStringValue() {
+		return stringValue;
+	}
+
+	public void setStringValue(Object stringValue) {
+		this.stringValue = stringValue;
+	}
+
 	public Object getRawValue() {
 		return rawValue;
 	}
@@ -151,6 +160,15 @@ public class Param extends BaseDataListObject implements InitializingBean,Report
 		this.rawValue = rawValue;
 	}
 
+	public Object[] getStringValues() {
+		if(stringValue == null) return null;
+		if(stringValue.getClass().isArray()) {
+			return (String[])stringValue;
+		}else {
+			return new Object[]{stringValue};
+		}
+	}
+	
 	public Object[] getValues() {
 		if(value == null) return null;
 		if(value.getClass().isArray()) {

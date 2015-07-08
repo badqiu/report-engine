@@ -22,7 +22,7 @@
     
     function extractNumber(input) {
     	if(input) {
-    		var allNumbers = input.match(/[0-9\-\.\s:]*/g);
+    		var allNumbers = input.match(/[0-9\-\.\s,:]*/g);
     		var temp2 = allNumbers[0].match(/[0-9\.]*/g);
     		var  result = temp2.join("");
     		//alert("input:"+ input + " allNumbers:"+allNumbers + " temp2:"+temp2 + " result:"+result);
