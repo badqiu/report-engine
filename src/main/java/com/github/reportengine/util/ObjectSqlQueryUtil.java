@@ -133,8 +133,12 @@ public class ObjectSqlQueryUtil {
 	private static String getSqlType(Object value) {
 		if(value instanceof String) {
 			return "varchar(4000)";
+		}else if(value instanceof Byte) {
+			return "TINYINT";				
+		}else if(value instanceof Short) {
+			return "SMALLINT";			
 		}else if(value instanceof Integer) {
-			return "BIGINT";
+			return "INT";
 		}else if(value instanceof Long) {
 			return "BIGINT";			
 		}else if(value instanceof Number) {
