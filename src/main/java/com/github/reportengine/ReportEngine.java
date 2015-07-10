@@ -249,13 +249,17 @@ public class ReportEngine implements InitializingBean,ApplicationContextAware{
 
 	private Map processGroovyScript(Map<String, Object> context, Map params,
 			String groovyScript) throws ScriptException {
-		ScriptEngineManager factory = new ScriptEngineManager();
-		ScriptEngine engine = factory.getEngineByName("groovy");
-		Bindings bindings = engine.createBindings();
-		bindings.put("context", context);
-		bindings.put("param", params);
-		engine.eval(new StringReader(groovyScript), bindings);
-		return bindings;
+		try {
+			ScriptEngineManager factory = new ScriptEngineManager();
+			ScriptEngine engine = factory.getEngineByName("groovy");
+			Bindings bindings = engine.createBindings();
+			bindings.put("context", context);
+			bindings.put("param", params);
+			engine.eval(new StringReader(groovyScript), bindings);
+			return bindings;
+		}catch(ScriptException e) {
+			throw new RuntimeException("error eval script:"+groovyScript+" params:"+params,e);
+		}
 	}
 
 	private void processQuerys(Report report, Map<String, Object> context, Map params)

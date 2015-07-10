@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -46,13 +48,23 @@ public class ReportEngineServlet extends HttpServlet{
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		try {
-			doGet0(req, resp);
+			service0(req, resp);
+		} catch (Exception e) {
+			throw new RuntimeException(e.getMessage(),e); 
+		}
+	}
+	
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		try {
+			service0(req, resp);
 		} catch (Exception e) {
 			throw new RuntimeException(e.getMessage(),e); 
 		}
 	}
 
-	private void doGet0(HttpServletRequest req, HttpServletResponse resp)
+	private void service0(HttpServletRequest req, HttpServletResponse resp)
 			throws Exception {
 		resp.setContentType("text/html;charset=UTF-8");
 		
@@ -103,7 +115,7 @@ public class ReportEngineServlet extends HttpServlet{
 		return param;
 	}
 	
-	private Map excludeCookieMapByKeys(Map cookies) {
+	private static Map excludeCookieMapByKeys(Map cookies) {
 		String[] excludes = new String[]{"page"};
 		Map result = new HashMap();
 		for(Object key : cookies.keySet()) {
