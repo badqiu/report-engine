@@ -30,6 +30,7 @@ public class FreeMarkerConfigurationUtil {
 			conf.setSharedVariable("StringUtils", new StringUtils());
 			conf.setSharedVariable("WordUtils", new WordUtils());
 			conf.setSharedVariable("NumberUtils", new NumberUtils());
+			conf.setSharedVariable("MomUtil", new MomUtil());
 			conf.setSharedVariable("MapUtil", new MapUtil());
 			conf.setSharedVariable("ViewUtils", new ViewUtils());
 			conf.setSharedVariable("MiscUtil", new MiscUtil());
