@@ -276,7 +276,7 @@ public class Chart extends BaseDataListObject implements ReportEngineLifecycle,C
 			for(Map row : dataList) {
 				try {
 					Number value = (Number)PropertyUtils.getNestedProperty(row, y);
-					values.add(value == null ? 0 : value);
+					values.add(value);
 				}catch(NestedNullException e) {
 					values.add(0);
 					//ignore
