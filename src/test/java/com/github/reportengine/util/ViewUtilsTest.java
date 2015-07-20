@@ -44,13 +44,4 @@ public class ViewUtilsTest extends Assert{
 		System.out.println(ViewUtils.div("10278209236590804416", 123.0));
 	}
 
-	@Test
-	public void testRate() {
-		System.out.println(ViewUtils.rate(20, 3));
-		try{
-			ViewUtils.rate(0.000000, 0.000000);
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-	}
 }

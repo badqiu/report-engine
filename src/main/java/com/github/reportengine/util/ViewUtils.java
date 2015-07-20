@@ -25,6 +25,13 @@ public class ViewUtils {
 	
 	private static Logger logger = LoggerFactory.getLogger(ViewUtils.class);
 	
+	public static String percent(Object number) {
+		if(number == null) return "";
+		if(StringUtils.isBlank(String.valueOf(number))) return "";
+		
+		return NUM_FORMAT.format(Double.parseDouble(number.toString()) * 100) + "%";
+	}
+	
 	/**
 	 * 百分比
 	 * @param number1
@@ -69,25 +76,6 @@ public class ViewUtils {
 		
 		return num1 / num2;
 	}
-	
-	/**
-	 * 占比
-	 * @param number1
-	 * @param number2
-	 * @return
-	 */
-	public static double rate(Object number1,Object number2) {
-		if(number1==null || number2==null) {
-			return 0;
-		}
-		return Double.valueOf(NUM_FORMAT.format(div(number1,number2)));
-	}
-	
-	public static String parseRate(Object number1,Object number2){
-		String result =  NUM_FORMAT.format(rate(number1, number2) * 100);
-		return result+"%";
-	}
-	
 
 	public static String html2text(String html) {
 		if(StringUtils.isBlank(html)) {
