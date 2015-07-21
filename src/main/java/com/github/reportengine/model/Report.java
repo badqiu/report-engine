@@ -279,7 +279,7 @@ public class Report extends BaseObject implements InitializingBean,Cloneable,Ser
 	
 	public static Report parse(Configuration conf,InputStream input,Map model) {
 		try {
-			Template template = newSyntaxFreemarkerTemplate(new InputStreamReader(input),conf);
+			Template template = newSyntaxFreemarkerTemplate(new InputStreamReader(input,"UTF-8"),conf);
 			String xml = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
 			XStream xstream = buildReportXStream();
 			Report report = (Report)xstream.fromXML(xml);
