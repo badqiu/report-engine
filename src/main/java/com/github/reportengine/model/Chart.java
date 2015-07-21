@@ -51,7 +51,16 @@ public class Chart extends BaseDataListObject implements ReportEngineLifecycle,C
 	
 	private int dateIntervalSeconds = 60 * 60 * 24;
 	/** 设置tooltip shared属性 */
-	private boolean tipShared=false;
+	private boolean tipShared=false; // TODO: 该属性作用不大，以后删除
+	/**
+	 * 设置chart属性，json格式。
+	 * 示例值:
+	 * {
+	 *  title : {text : title},
+	 *	tooltip: {shared : true}
+	 * }
+	 */
+	private String options;
 	
 	public String getTitle() {
 		return title;
@@ -151,6 +160,14 @@ public class Chart extends BaseDataListObject implements ReportEngineLifecycle,C
 
 	public void setTipShared(boolean tipShared) {
 		this.tipShared = tipShared;
+	}
+	
+	public String getOptions() {
+		return options;
+	}
+
+	public void setOptions(String options) {
+		this.options = options;
 	}
 
 	@Override
