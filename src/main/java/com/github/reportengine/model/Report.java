@@ -153,9 +153,15 @@ public class Report extends BaseObject implements InitializingBean,Cloneable,Ser
 	}
 	
 	public Collection<String> getKpis() {
-		String regex = "\\{[\\w]+.([\\w_]+)";
-		LinkedHashSet linkedHashSet = new LinkedHashSet(RegexHelper.findMatchs(xml,regex,1));
-		linkedHashSet.addAll(RegexHelper.findMatchs(template,regex,1));
+		return getKpis(xml,template);
+	}
+	
+	public static Collection<String> getKpis(String... strings) {
+		LinkedHashSet linkedHashSet = new LinkedHashSet();
+		for(String str : strings) {
+			linkedHashSet.addAll(RegexHelper.findMatchs(str,"\\{[\\w]+.([\\w_]+)",1));
+			linkedHashSet.addAll(RegexHelper.findMatchs(str,"\\([\\w]+.([\\w_]+)",1));
+		}
 		return linkedHashSet;
 	}
 	

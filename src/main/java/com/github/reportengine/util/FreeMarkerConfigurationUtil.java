@@ -1,6 +1,6 @@
 package com.github.reportengine.util;
 
-import org.apache.commons.lang.NumberUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
 import org.apache.commons.lang.time.DateUtils;
@@ -28,8 +28,9 @@ public class FreeMarkerConfigurationUtil {
 			conf.setSharedVariable("DateUtils", new DateUtils());
 			conf.setSharedVariable("DateConvertUtil", new DateConvertUtil());
 			conf.setSharedVariable("StringUtils", new StringUtils());
+			conf.setSharedVariable("CollectionUtils", new CollectionUtils());
 			conf.setSharedVariable("WordUtils", new WordUtils());
-			conf.setSharedVariable("NumberUtils", new NumberUtils());
+			conf.setSharedVariable("NumberUtils", new org.apache.commons.lang.math.NumberUtils());
 			conf.setSharedVariable("MomUtil", new MomUtil());
 			conf.setSharedVariable("MapUtil", new MapUtil());
 			conf.setSharedVariable("ViewUtils", new ViewUtils());

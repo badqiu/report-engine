@@ -3,6 +3,7 @@ package com.github.reportengine.model;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.Collection;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -50,6 +51,18 @@ public class ReportTest extends Assert{
 		
 		cloneReport = CloneUtil.deepClone(r);
 		assertFalse(cloneReport.getGroovy() == r.getGroovy());
+	}
+	
+	@Test
+	public void test_getKpis() {
+		printKpis("<column value='${ViewUtils.percent(row.pur)}' label='PUR'/>","[percent, pur]");
+		printKpis("<column value='${row.pur}' label='PUR'/>","[pur]");
+	}
+
+	private void printKpis(String input,String assertResult) {
+		Collection<String> kpis = Report.getKpis(input);
+		System.out.println(kpis);
+		assertEquals(kpis.toString(),assertResult);
 	}
 	
 }
