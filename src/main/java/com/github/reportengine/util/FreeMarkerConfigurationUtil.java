@@ -1,5 +1,7 @@
 package com.github.reportengine.util;
 
+import java.util.Locale;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
@@ -19,6 +21,8 @@ public class FreeMarkerConfigurationUtil {
 	public static Configuration newDefaultConfiguration() {
 		try {
 			Configuration conf = new Configuration();
+			conf.setLocale(Locale.CHINA);
+			conf.setDefaultEncoding("UTF-8");
 			conf.setSharedVariable("block", new BlockDirective());  
 			conf.setSharedVariable("override", new OverrideDirective());  
 			conf.setSharedVariable("extends", new ExtendsDirective());  
