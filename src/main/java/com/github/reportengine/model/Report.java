@@ -161,6 +161,7 @@ public class Report extends BaseObject implements InitializingBean,Cloneable,Ser
 		for(String str : strings) {
 			linkedHashSet.addAll(RegexHelper.findMatchs(str,"\\{[\\w]+.([\\w_]+)",1));
 			linkedHashSet.addAll(RegexHelper.findMatchs(str,"\\([\\w]+.([\\w_]+)",1));
+			linkedHashSet.addAll(RegexHelper.findMatchs(str,"y=['\"]([\\w_]+)['\"]",1));
 		}
 		return linkedHashSet;
 	}

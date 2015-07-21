@@ -57,6 +57,8 @@ public class ReportTest extends Assert{
 	public void test_getKpis() {
 		printKpis("<column value='${ViewUtils.percent(row.pur)}' label='PUR'/>","[percent, pur]");
 		printKpis("<column value='${row.pur}' label='PUR'/>","[pur]");
+		printKpis("<ser y=\"avg_val\"/>","[avg_val]");
+		printKpis("<ser y='avg_val'/>","[avg_val]");
 	}
 
 	private void printKpis(String input,String assertResult) {
