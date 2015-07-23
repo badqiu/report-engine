@@ -32,7 +32,7 @@ public class Table extends BaseDataListObject implements ReportEngineLifecycle,I
 	private Paginator paginator;
 	
 	/**
-	 * 控制显示合计值，在table foot位置 
+	 * 控制显示合计值，显示位置: table foot
 	 */
 	private Boolean showSum;
 	
