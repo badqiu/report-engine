@@ -5,13 +5,14 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.MapUtils;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.Assert;
 
 import com.github.rapid.common.util.page.Paginator;
 import com.github.reportengine.Constants;
 import com.github.reportengine.ReportEngineLifecycle;
 
-public class Table extends BaseDataListObject implements ReportEngineLifecycle,Cloneable,Serializable{
+public class Table extends BaseDataListObject implements ReportEngineLifecycle,InitializingBean,Cloneable,Serializable{
 	private static final long serialVersionUID = 1L;
 	/**
 	 * 表格标题
@@ -29,6 +30,11 @@ public class Table extends BaseDataListObject implements ReportEngineLifecycle,C
 	 * 分页器
 	 */
 	private Paginator paginator;
+	
+	/**
+	 * 控制显示合计值，在table foot位置 
+	 */
+	private Boolean showSum;
 	
 	public String getTitle() {
 		return title;
@@ -56,6 +62,14 @@ public class Table extends BaseDataListObject implements ReportEngineLifecycle,C
 	
 	public Paginator getPaginator() {
 		return paginator;
+	}
+	
+	public boolean isShowSum() {
+		return showSum;
+	}
+
+	public void setShowSum(boolean showSum) {
+		this.showSum = showSum;
 	}
 
 	public static class Column extends BaseObject implements Serializable{
@@ -111,6 +125,12 @@ public class Table extends BaseDataListObject implements ReportEngineLifecycle,C
 			List<Map<String, Object>> subList = getDataList().subList(paginator.getOffset(),paginator.getOffset()+paginator.getLimit());
 			setDataList(subList);
 		}
+	}
+	
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		super.afterPropertiesSet();
+		this.showSum  = this.showSum == null ?  true : this.showSum;
 	}
 	
 	@Override
