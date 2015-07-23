@@ -23,6 +23,7 @@ import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import com.github.reportengine.ReportEngineLifecycle;
 import com.github.reportengine.model.Chart.Ser;
 import com.github.reportengine.model.Table.Column;
+import com.github.reportengine.util.ArrayUtil;
 import com.github.reportengine.util.CloneUtil;
 import com.github.reportengine.util.RegexHelper;
 import com.github.reportengine.util.SelectorUtil;
@@ -186,37 +187,11 @@ public class Report extends BaseObject implements InitializingBean,Cloneable,Ser
 		if(StringUtils.isBlank(refDataSource)) setRefDataSource(parent.getRefDataSource());
 		if(groovy == null) setGroovy(parent.getGroovy());
 		
-		setQuerys(addAll(parent.getQuerys(),this.querys));
-		setParams(addAll(parent.getParams(),this.params));
-		setCharts(addAll(parent.getCharts(),this.charts));
-		setCubes(addAll(parent.getCubes(),this.cubes));
-		setTables(addAll(parent.getTables(),this.tables));
-		
-	}
-	
-	private static <T> T[] addAll(T[] target, T[] extend) {
-		try {
-			T[] result = (T[])java.lang.reflect.Array.newInstance(extend.getClass().getComponentType(), 0);
-			
-			List<T> resultList = new ArrayList<T>(asList(target));
-			for(T e : asList(extend)) {
-				if(resultList.contains(e)) {
-					int oldIndex = resultList.indexOf(e);
-					resultList.remove(e);
-					resultList.add(oldIndex, e);
-				}else {
-					resultList.add(e);
-				}
-			}
-			return (T[])resultList.toArray((T[])result);
-		} catch (Exception e) {
-			throw new RuntimeException("error on addAll",e);
-		}
-	}
-	
-	private static <T> List<T> asList(T[] target) {
-		if(target == null) return Collections.EMPTY_LIST;
-		return Arrays.asList(target);
+		setQuerys(ArrayUtil.addAll(parent.getQuerys(),this.querys));
+		setParams(ArrayUtil.addAll(parent.getParams(),this.params));
+		setCharts(ArrayUtil.addAll(parent.getCharts(),this.charts));
+		setCubes(ArrayUtil.addAll(parent.getCubes(),this.cubes));
+		setTables(ArrayUtil.addAll(parent.getTables(),this.tables));
 	}
 	
 	@Override

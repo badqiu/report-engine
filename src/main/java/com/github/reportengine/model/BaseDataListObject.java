@@ -25,8 +25,8 @@ public class BaseDataListObject extends BaseObject {
 	private String refDataList;
 	private Query query;
 	private String orderBy; //排序,使用sql语法,示例: tdate desc,game asc
-	private String limit;
-	private String requerySql;
+	private String limit; //sql limit,使用sql语法,示例: 10,1
+	private String requerySql; //将数据重新查询一次的sql
 	
 	public List<Map<String, Object>> getDataList() {
 		return dataList;
