@@ -268,7 +268,7 @@ public class ReportEngine implements InitializingBean,ApplicationContextAware{
 			Object result = q.execute(params);
 			context.put(q.getId(), result);
 			if(result instanceof Collection) {
-				Map sumArrgMap = AggrFunctionUtil.autoSumAggr((List)result);
+				Map sumArrgMap = q.getAutoSumResult();
 				String sumId = q.getId()+"Sum";
 				context.put(sumId, sumArrgMap);
 				if(logger.isDebugEnabled()) {
