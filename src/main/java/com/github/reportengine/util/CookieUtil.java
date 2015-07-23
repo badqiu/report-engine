@@ -26,7 +26,7 @@ public class CookieUtil {
 	
 	private final static Logger logger = LoggerFactory.getLogger(CookieUtil.class);
 	
-	public static void saveParamInotCookie(Map<String,Object> param, HttpServletResponse resp,String cookieNamePrefix) {
+	public static void saveParamInotCookie(Map<String,Object> param, HttpServletResponse resp,String cookieNamePrefix,int maxAge) {
 		Assert.notNull(cookieNamePrefix,"cookieNamePrefix must be not empty");
 		
 		for(String key : param.keySet()) {
@@ -52,6 +52,7 @@ public class CookieUtil {
 			} catch (UnsupportedEncodingException e) {
 				logger.error("cookie encode error,", e);
 			}
+			cookie.setMaxAge(maxAge);
 			cookie.setPath("/");
 //				cookie.setMaxAge(-1); //浏览器进程生效
 			resp.addCookie(cookie);

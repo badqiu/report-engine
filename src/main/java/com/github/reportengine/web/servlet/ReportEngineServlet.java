@@ -64,6 +64,10 @@ public class ReportEngineServlet extends HttpServlet{
 		}
 	}
 
+	/**
+	 * cookie失效时间，单位：秒
+	 */
+	int COOKIE_MAX_AGE = 3600 * 12; 
 	private void service0(HttpServletRequest req, HttpServletResponse resp)
 			throws Exception {
 		resp.setContentType("text/html;charset=UTF-8");
@@ -73,7 +77,7 @@ public class ReportEngineServlet extends HttpServlet{
 		Map params = genParams(req, resp);
 		
 		Map<String, Object> rawParam = WebUtils.getParametersStartingWith(req, "");
-		CookieUtil.saveParamInotCookie(excludeCookieMapByKeys(rawParam),resp,REPORT_ENGINE_COOKIE_PARAM_PREFIX);
+		CookieUtil.saveParamInotCookie(excludeCookieMapByKeys(rawParam),resp,REPORT_ENGINE_COOKIE_PARAM_PREFIX,COOKIE_MAX_AGE);
 		
 		if("parameter".equals(method)) {
 			parameter(reportPath,params,req, resp);
