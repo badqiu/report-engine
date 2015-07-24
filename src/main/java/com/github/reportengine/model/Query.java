@@ -1,6 +1,7 @@
 package com.github.reportengine.model;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -189,11 +190,11 @@ public class Query extends BaseObject implements InitializingBean,ReportEngineLi
 	private Object processResultRows(List<Map<String,Object>> rows) {
 		if(singleResult != null && singleResult) {
 			Map<String,Object> row = DataAccessUtils.singleResult(rows);
-			if(row != null && row.size() == 1) {
+			if(row != null && row.keySet().size() == 1) {
 				Object value = row.entrySet().iterator().next().getValue();
 				return value;
 			}else {
-				return row;
+				return row == null ? Collections.EMPTY_MAP : row;
 			}
 		}else if(result2Map != null && result2Map) {
 			Assert.hasText(mapKeyColumn,"if result2Map=true, 'mayKeyColumn' must be not empty");

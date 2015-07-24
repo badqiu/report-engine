@@ -67,7 +67,7 @@ public class ReportEngineServlet extends HttpServlet{
 	/**
 	 * cookie失效时间，单位：秒
 	 */
-	int COOKIE_MAX_AGE = 3600 * 12; 
+	int COOKIE_MAX_AGE = 3600 * 10; 
 	private void service0(HttpServletRequest req, HttpServletResponse resp)
 			throws Exception {
 		resp.setContentType("text/html;charset=UTF-8");
