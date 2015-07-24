@@ -6,7 +6,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +22,7 @@ import javax.script.ScriptException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -34,8 +37,8 @@ import com.github.reportengine.model.Groovy;
 import com.github.reportengine.model.Param;
 import com.github.reportengine.model.Query;
 import com.github.reportengine.model.Report;
-import com.github.reportengine.util.AggrFunctionUtil;
 import com.github.reportengine.util.FreeMarkerConfigurationUtil;
+import com.github.reportengine.util.MD5Util;
 
 import freemarker.cache.FileTemplateLoader;
 import freemarker.template.Configuration;
@@ -55,6 +58,11 @@ public class ReportEngine implements InitializingBean,ApplicationContextAware{
 	private File baseReportDir;
 	private Configuration conf = FreeMarkerConfigurationUtil.newDefaultConfiguration();
 	
+	/** report渲染缓存设置 */
+	private boolean reportCache=false;
+	/** 缓存目录 */
+	private String reportCacheDir=null;
+	
 	public ReportEngine() {
 	}
 	
@@ -70,6 +78,22 @@ public class ReportEngine implements InitializingBean,ApplicationContextAware{
 		return engineContext;
 	}
 	
+	public boolean isReportCache() {
+		return reportCache;
+	}
+
+	public void setReportCache(boolean reportCache) {
+		this.reportCache = reportCache;
+	}
+
+	public String getReportCacheDir() {
+		return reportCacheDir;
+	}
+
+	public void setReportCacheDir(String reportCacheDir) {
+		this.reportCacheDir = reportCacheDir;
+	}
+
 	/**
 	 * 渲染报表
 	 * @param reportPath
@@ -79,12 +103,35 @@ public class ReportEngine implements InitializingBean,ApplicationContextAware{
 	public String renderReport(String reportPath,Map<String,Object> params) {
 		logger.info("renderReport() reportPath:"+reportPath);
 		try {
-			Map<String, Object> model = getTemplateModel(reportPath, params);
+			Assert.hasText(reportPath,"reportPath must be not empty");
+			Report report = getReport(reportPath,params);
+			//缓存文件
+			File cacheFile=null;
+			//读取缓存
+			if(isReportCache(report)){
+				cacheFile = processParamsAndGetCache(reportPath, params, report);
+				if(cacheFile.exists()){
+					if(logger.isDebugEnabled()){
+						logger.debug("use cache file:"+cacheFile.getAbsolutePath());
+					}
+					return FileUtils.readFileToString(cacheFile, "UTF-8");
+				}
+			}
+			/*Map<String, Object> model = getTemplateModel(reportPath, params);*/
+			Map<String,Object> model = processForModel(report, params);
+			model.put("reportPath", reportPath);
 			
 			Configuration conf = getFreemarkerConfiguration();
 			Template reportTemplate = conf.getTemplate(reportPath+".ftl");
 			String result = FreeMarkerTemplateUtils.processTemplateIntoString(reportTemplate, model);
 			
+			//写入缓存
+			if(isReportCache(report)){
+				FileUtils.writeStringToFile(cacheFile, result, "UTF-8");
+				if(logger.isDebugEnabled()){
+					logger.debug("write cache file:"+cacheFile.getAbsolutePath());
+				}
+			}
 			return result;
 		}catch(Exception e) {
 			throw new RuntimeException("renderReport error,reportPath:"+reportPath+" params:"+params,e);
@@ -355,6 +402,85 @@ public class ReportEngine implements InitializingBean,ApplicationContextAware{
 		Assert.notNull(baseReportDir,"baseReportDir must be not null");
 		conf.setTemplateLoader(new FileTemplateLoader(baseReportDir));
 		logger.info("ReportEngine inited, baseReportDir:"+baseReportDir+" engineContext.keys:"+engineContext.keySet());
+		if(reportCache){
+			Assert.notNull(reportCacheDir, "reportCacheDir must is not null");
+			//生成缓存文件夹
+			File reportCacheDirFile=new File(reportCacheDir);
+			if(!reportCacheDirFile.exists()){
+				reportCacheDirFile.mkdirs();
+			}else if(reportCacheDirFile.isFile()){
+				throw new RuntimeException("reportCacheDir:"+getReportCacheDir()+" is file!");
+			}
+			if(!reportCacheDir.endsWith(File.separator)){
+				reportCacheDir=reportCacheDir+File.separator;
+			}
+		}
+	}
+	
+	private boolean isReportCache(Report report) {
+		return reportCache&&!report.isNotCache();
+	}
+	
+	/**
+	 * 处理缓存参数并获得缓存文件
+	 * @param reportPath
+	 * @param params
+	 * @param report
+	 * @return
+	 * @throws Exception
+	 */
+	private File processParamsAndGetCache(String reportPath,
+			Map<String, Object> params, Report report) throws Exception {
+		reportEngineContext.set(this);
+		Map<String,Object> context = new HashMap<String,Object>(params);
+		context.putAll(engineContext);
+		context.put("report", report);
+		context.put("now", new Date());
+		context.put("context", context);
+		
+		report.fireBeforeQueryLiftcycle(context);
+		
+		Map<String,Object> processedParamMap = processParams(context,report.getParams(),context);
+		//放入报表路径
+		processedParamMap.put("reportPath", reportPath);
+		String hashKey=genReportCacheHashKey(processedParamMap);
+		String date=DateFormatUtils.format(new Date(), "yyyy-MM-dd");
+		return new File(reportCacheDir+date+File.separator+hashKey+".html");
+	}
+	
+	/**
+	 * 生成缓存key
+	 * @param reportPath
+	 * @param processedParamMap
+	 * @return
+	 */
+	private String genReportCacheHashKey(Map<String, Object> processedParamMap) {
+		//对key进行排序，可以防止参数位置发生变化，而导致缓存失效
+		List<String> keys=new ArrayList<String>(processedParamMap.keySet());
+		Collections.sort(keys);
+		StringBuilder sb=new StringBuilder();
+		for(String key:keys){
+			sb.append(key);
+			sb.append("=");
+			sb.append(String.valueOf(processedParamMap.get(key)));
+			sb.append(";");
+		}
+		String cacheKey=sb.toString();
+		if(logger.isDebugEnabled()){
+			logger.debug("cacheKey:"+cacheKey);
+		}
+		return MD5Util.getMD5String(cacheKey);
+	}
+	
+	/**
+	 * 清除缓存文件
+	 * @param cleanDate
+	 * @throws IOException
+	 */
+	public void cleanReportCache(String cleanDate) throws IOException {
+		File reportCacheDirFile=new File(StringUtils.isNotBlank(cleanDate) ? reportCacheDir+File.separator+cleanDate:reportCacheDir);
+		FileUtils.cleanDirectory(reportCacheDirFile);
+		logger.info("clean reportCache:"+reportCacheDirFile.getAbsolutePath()+" is success!");
 	}
 
 	

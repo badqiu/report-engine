@@ -60,7 +60,7 @@ public class Report extends BaseObject implements InitializingBean,Cloneable,Ser
 	
 	private String xml; //report自身的xml
 	private String template; //report自身的freemarker template文件内容
-	private boolean cache = true; //是否缓存报表
+	private boolean notCache; //是否不缓存报表
 	
 	public String getAuthor() {
 		return author;
@@ -110,11 +110,11 @@ public class Report extends BaseObject implements InitializingBean,Cloneable,Ser
 	public void setGroovy(Groovy groovy) {
 		this.groovy = groovy;
 	}
-	public boolean isCache() {
-		return cache;
+	public boolean isNotCache() {
+		return notCache;
 	}
-	public void setCache(boolean cache) {
-		this.cache = cache;
+	public void setNotCache(boolean notCache) {
+		this.notCache = notCache;
 	}
 	public Table[] getTables() {
 		return tables;

@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -89,6 +87,8 @@ public class ReportEngineServlet extends HttpServlet{
 			download(reportPath,params,req, resp);
 		}else if("cleanParamCookies".equals(method)){
 			cleanParamCookies(req, resp);
+		}else if("cleanReportCache".equals(method)) {
+			cleanReportCache(req, resp);
 		}else {
 			throw new RuntimeException("unknow method:"+method+" servletPath:"+req.getRequestURI());
 		}
@@ -97,6 +97,13 @@ public class ReportEngineServlet extends HttpServlet{
 
 
 	
+	private void cleanReportCache(HttpServletRequest req,
+			HttpServletResponse resp) throws IOException {
+		String cleanDate=req.getParameter("cleanDate");
+		reportEngine.cleanReportCache(cleanDate);
+		resp.getOutputStream().write("200".getBytes());
+	}
+
 	@SuppressWarnings("unchecked")
 	protected Map genParams(HttpServletRequest req, HttpServletResponse resp) {
 		Map param = new HashMap();
