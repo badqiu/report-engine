@@ -1,6 +1,7 @@
 package com.github.reportengine.util;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -115,13 +116,18 @@ public class AggrFunctionUtil {
 		Map<String,Object> result = new HashMap<String,Object>();
 		for(Map.Entry<String, Object> entry : rows.get(0).entrySet()) {
 			Object notNullValue = getNotNullValue(entry.getKey(),rows);
-			if(notNullValue != null && notNullValue instanceof Number) {
+			if(notNullValue instanceof Number) {
 				List tempRows = rows;
 				double sum = sum(tempRows,entry.getKey());
 				result.put(entry.getKey(), sum);
+			}else if(notNullValue instanceof String) {
+				result.put(entry.getKey(), "");
+			}else if(notNullValue instanceof Date) {
+				result.put(entry.getKey(), null);				
 			}else {
-				result.put(entry.getKey(), (double)0);
+				result.put(entry.getKey(), null);
 			}
+			
 		}
 		return result;
 	}
