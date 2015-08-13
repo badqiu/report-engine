@@ -47,10 +47,10 @@ public class ReportTest extends Assert{
 		assertNotNull(pieChart.getId(),"pieChart");
 		
 		Report cloneReport = r.clone();
-		assertEquals(cloneReport.getGroovy(),r.getGroovy());
+		assertEquals(cloneReport.getScript(),r.getScript());
 		
 		cloneReport = CloneUtil.deepClone(r);
-		assertFalse(cloneReport.getGroovy() == r.getGroovy());
+		assertFalse(cloneReport.getScript() == r.getScript());
 	}
 	
 	@Test

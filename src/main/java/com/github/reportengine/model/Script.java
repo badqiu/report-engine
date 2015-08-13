@@ -3,14 +3,16 @@ package com.github.reportengine.model;
 import java.io.Serializable;
 
 /**
- * groovy 脚本对象
+ * Script 脚本对象
  * 
  * @author badqiu
  * 
  */
-public class Groovy implements Cloneable,Serializable{
+public class Script implements Cloneable,Serializable{
 	private static final long serialVersionUID = 1L;
 
+	private String lang;
+	
 	private String beforeQuery;
 
 	private String afterQuery;
@@ -29,6 +31,14 @@ public class Groovy implements Cloneable,Serializable{
 
 	public void setAfterQuery(String afterQuery) {
 		this.afterQuery = afterQuery;
+	}
+	
+	public String getLang() {
+		return lang;
+	}
+
+	public void setLang(String lang) {
+		this.lang = lang;
 	}
 
 	@Override

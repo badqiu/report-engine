@@ -98,7 +98,7 @@
 			measures="count(*) 行数,min(pay_sum) 最小充值,sum(pay_sum),count(distinct game) 游戏排重"/>			
 	</cubes>
 	
-	<groovy>
+	<script lang="groovy">
 		<!-- 作些如参数检查的事,可以引用params的对象 -->
 		<beforeQuery>
 			beforeQueryTag = "beforeQueryTag";
@@ -119,7 +119,7 @@
 			Integer[] a = [100,200,300,400,500];
 			chart.addSer(new Ser("------------",Arrays.asList(a)));
 		</afterQuery>
-	</groovy>
+	</script>
 	
 	<charts>
 		<chart id="lineChart" title="序列图" x="TDATE"  xTitle="xTitle" yTitle="yTitle" chartType="line" refDataList="blogList">

@@ -50,7 +50,7 @@ public class Report extends BaseObject implements InitializingBean,Cloneable,Ser
 	
 	private long lastModifiedTime = 0; //report对象的最后修改时间,用于内部缓存使用,外部禁止使用
 	
-	private Groovy groovy = new Groovy();
+	private Script script = new Script();
 	
 	private Param[] params = new Param[]{};
 	private Query[] querys = new Query[]{};
@@ -104,11 +104,11 @@ public class Report extends BaseObject implements InitializingBean,Cloneable,Ser
 	public void setCharts(Chart[] pics) {
 		this.charts = pics;
 	}
-	public Groovy getGroovy() {
-		return groovy;
+	public Script getScript() {
+		return script;
 	}
-	public void setGroovy(Groovy groovy) {
-		this.groovy = groovy;
+	public void setScript(Script script) {
+		this.script = script;
 	}
 	public boolean isNotCache() {
 		return notCache;
@@ -191,7 +191,7 @@ public class Report extends BaseObject implements InitializingBean,Cloneable,Ser
 		if(StringUtils.isBlank(title)) setTitle(parent.getTitle());
 		if(StringUtils.isBlank(help)) setHelp(parent.getHelp());
 		if(StringUtils.isBlank(refDataSource)) setRefDataSource(parent.getRefDataSource());
-		if(groovy == null) setGroovy(parent.getGroovy());
+		if(script == null) setScript(parent.getScript());
 		
 		setQuerys(ArrayUtil.addAll(parent.getQuerys(),this.querys));
 		setParams(ArrayUtil.addAll(parent.getParams(),this.params));
@@ -216,7 +216,7 @@ public class Report extends BaseObject implements InitializingBean,Cloneable,Ser
 		SpringUtil.initializing(params);
 		SpringUtil.initializing(querys);
 		SpringUtil.initializing(charts);
-		SpringUtil.initializing(groovy);
+		SpringUtil.initializing(script);
 		SpringUtil.initializing(cubes);
 		SpringUtil.initializing(tables);
 	}
@@ -291,7 +291,7 @@ public class Report extends BaseObject implements InitializingBean,Cloneable,Ser
 		xstream.alias("report", Report.class);
 		xstream.alias("query", Query.class);
 		xstream.alias("param", Param.class);
-		xstream.alias("groovy", Groovy.class);
+		xstream.alias("script", Script.class);
 		xstream.alias("cube", Cube.class);
 		
 		xstream.alias("chart", Chart.class);

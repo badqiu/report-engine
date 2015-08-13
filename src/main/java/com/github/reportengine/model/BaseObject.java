@@ -41,6 +41,16 @@ public class BaseObject  implements ReportEngineLifecycle,InitializingBean,Seria
 	 */
 	private Properties props;
 	
+	/**
+	 * 自定义css style
+	 */
+	private String cssStyle;
+	
+	/**
+	 * 自定义css class
+	 */
+	private String cssClass;
+	
 	public String getId() {
 		return id;
 	}
@@ -63,6 +73,22 @@ public class BaseObject  implements ReportEngineLifecycle,InitializingBean,Seria
 
 	public void setRemarks(String remark) {
 		this.remarks = remark;
+	}
+	
+	public String getCssStyle() {
+		return cssStyle;
+	}
+
+	public void setCssStyle(String cssStyle) {
+		this.cssStyle = cssStyle;
+	}
+
+	public String getCssClass() {
+		return cssClass;
+	}
+
+	public void setCssClass(String cssClass) {
+		this.cssClass = cssClass;
 	}
 
 	public void beforeQuery(Map<String, Object> context) throws Exception {

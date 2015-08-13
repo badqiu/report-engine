@@ -33,7 +33,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.util.Assert;
 
-import com.github.reportengine.model.Groovy;
+import com.github.reportengine.model.Script;
 import com.github.reportengine.model.Param;
 import com.github.reportengine.model.Query;
 import com.github.reportengine.model.Report;
@@ -255,11 +255,11 @@ public class ReportEngine implements InitializingBean,ApplicationContextAware{
 			report.fireBeforeQueryLiftcycle(context);
 			
 			Map processedParams = processParams(context,report.getParams(),context);
-			processGroovyBeforeQuery(report,context,processedParams);
+			processBeforeQueryScript(report,context,processedParams);
 			
 			processQuerys(report, context, processedParams);
 			
-			Map afterBindings = processGroovyAfterQuery(report,context,processedParams);
+			Map afterBindings = processAfterQueryScript(report,context,processedParams);
 			
 			report.fireAfterQueryLiftcycle(context);
 			context.put("elements", report.getElements());
@@ -280,32 +280,33 @@ public class ReportEngine implements InitializingBean,ApplicationContextAware{
 		return result;
 	}
 
-	private Map processGroovyBeforeQuery(Report report, Map<String, Object> context, Map params) throws ScriptException {
-		Groovy g = report.getGroovy();
+	private Map processBeforeQueryScript(Report report, Map<String, Object> context, Map params) throws ScriptException {
+		Script g = report.getScript();
 		if(g == null) return context;
 		String groovyScript = g.getBeforeQuery();
-		return processGroovyScript(context, params, groovyScript);
+		return processScript(context, params, groovyScript,g.getLang());
 	}
 	
-	private Map processGroovyAfterQuery(Report report, Map<String, Object> context, Map params) throws ScriptException {
-		Groovy g = report.getGroovy();
+	private Map processAfterQueryScript(Report report, Map<String, Object> context, Map params) throws ScriptException {
+		Script g = report.getScript();
 		if(g == null) return context;
 		String groovyScript = g.getAfterQuery();
-		return processGroovyScript(context, params, groovyScript);
+		return processScript(context, params, groovyScript,g.getLang());
 	}
 
-	private Map processGroovyScript(Map<String, Object> context, Map params,
-			String groovyScript) throws ScriptException {
+	private Map processScript(Map<String, Object> context, Map params,
+			String script,String lang) throws ScriptException {
+		Assert.hasText(lang,"'lang' must be not empty for lookup ScriptEngine");
 		try {
 			ScriptEngineManager factory = new ScriptEngineManager();
-			ScriptEngine engine = factory.getEngineByName("groovy");
+			ScriptEngine engine = factory.getEngineByName(lang);
 			Bindings bindings = engine.createBindings();
 			bindings.put("context", context);
 			bindings.put("param", params);
-			engine.eval(new StringReader(groovyScript), bindings);
+			engine.eval(new StringReader(script), bindings);
 			return bindings;
 		}catch(ScriptException e) {
-			throw new RuntimeException("error eval script:"+groovyScript+" params:"+params,e);
+			throw new RuntimeException("error eval script:"+script+" params:"+params,e);
 		}
 	}
 

@@ -12,7 +12,7 @@ public class AllModelTest extends Assert{
 	public void testAllModel() throws InstantiationException, IllegalAccessException {
 		testPropertiesAndCommonMethod(Chart.class);
 		testPropertiesAndCommonMethod(Chart.Ser.class);
-		testPropertiesAndCommonMethod(Groovy.class);
+		testPropertiesAndCommonMethod(Script.class);
 		testPropertiesAndCommonMethod(Param.class);
 		testPropertiesAndCommonMethod(Query.class,"dataSource");
 		testPropertiesAndCommonMethod(Report.class);

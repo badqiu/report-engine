@@ -46,7 +46,7 @@
 	</cubes>
 	 -->
 	
-	<groovy>
+	<script  lang="groovy">
 		<!-- 作些如参数检查的事,可以引用params的对象 -->
 		<beforeQuery>
 			beforeQueryTag = "beforeQueryTag";
@@ -58,7 +58,7 @@
 			afterQueryTag = "afterQueryTag";
 			context.put("afterQueryTag","afterQueryTag");
 		</afterQuery>
-	</groovy>
+	</script>
 	
 	<charts>
 		<!-- 序列图 -->
