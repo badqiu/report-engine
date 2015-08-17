@@ -203,6 +203,9 @@ public class ReportEngineServlet extends HttpServlet{
 		}
 	}
 	
+	
+	// UTF-8 编码头
+    private final static byte commonCsvHead[] = { (byte) 0xEF, (byte) 0xBB, (byte) 0xBF };
 	/**
 	 * 下载报表
 	 * @param req
@@ -214,7 +217,8 @@ public class ReportEngineServlet extends HttpServlet{
 		Assert.hasText(table,"table parameter must be not empty");
 		resp.setContentType("application/octet-stream");
 		resp.setHeader("Content-Disposition", "attachment; filename="+table+".csv");
-		
+		//加上UTF-8的文件头
+		resp.getWriter().write(new String(commonCsvHead));
 		ResponseUtil.writeString(resp,reportEngine.download(reportPath, params));
 	}
 	
