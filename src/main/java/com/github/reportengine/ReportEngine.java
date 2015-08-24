@@ -296,7 +296,7 @@ public class ReportEngine implements InitializingBean,ApplicationContextAware{
 
 	private Map processScript(Map<String, Object> context, Map params,
 			String script,String lang) throws ScriptException {
-		Assert.hasText(lang,"'lang' must be not empty for lookup ScriptEngine");
+		Assert.hasText(lang,"'lang' must be not empty for lookup ScriptEngine,lang:[groovy,javascript,...]");
 		try {
 			ScriptEngineManager factory = new ScriptEngineManager();
 			ScriptEngine engine = factory.getEngineByName(lang);
