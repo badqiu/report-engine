@@ -1,17 +1,15 @@
 package com.github.reportengine.util;
 
 import java.text.DecimalFormat;
+import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.beanutils.NestedNullException;
 import org.apache.commons.lang.StringUtils;
+import org.apache.tools.ant.util.DateUtils;
 import org.jsoup.Jsoup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.github.rapid.common.beanutils.PropertyUtils;
 
 /**
  * 页面工具类
@@ -25,6 +23,10 @@ public class ViewUtils {
 	
 	private static Logger logger = LoggerFactory.getLogger(ViewUtils.class);
 	
+	/**
+	 * 显示 百分比
+	 * @return
+	 */
 	public static String percent(Object number) {
 		if(number == null) return "";
 		if(StringUtils.isBlank(String.valueOf(number))) return "";
@@ -33,7 +35,7 @@ public class ViewUtils {
 	}
 	
 	/**
-	 * 百分比
+	 * 显示 百分比
 	 * @param number1
 	 * @param number2
 	 * @return
@@ -41,7 +43,7 @@ public class ViewUtils {
 	public static String percent(Object number1,Object number2) {
 		return percent(number1, number2, NUM_FORMAT);
 	}
-
+	
 	private static String percent(Object number1, Object number2,DecimalFormat df) {
 		if(number1==null || number2==null || 
 				StringUtils.isBlank(number1.toString()) || 
@@ -61,7 +63,7 @@ public class ViewUtils {
 	
 	
 	/**
-	 * 除
+	 * 除,分母为0不报错,返回 0
 	 * @param number1
 	 * @param number2
 	 * @return
@@ -82,6 +84,11 @@ public class ViewUtils {
 			return html;
 		}
 		return Jsoup.parse(html).text();
+	}
+	
+	public static String showTimeDuration(int seconds) {
+		Date date = new Date(seconds * 1000);
+		return DateUtils.format(date, "HH:mm:ss");
 	}
 
 }

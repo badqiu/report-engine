@@ -44,4 +44,12 @@ public class ViewUtilsTest extends Assert{
 		System.out.println(ViewUtils.div("10278209236590804416", 123.0));
 	}
 
+	@Test
+	public void testShowTimeDuration() {
+		assertEquals(ViewUtils.showTimeDuration(1800),"00:30:00");
+		assertEquals(ViewUtils.showTimeDuration(3600),"01:00:00");
+		assertEquals(ViewUtils.showTimeDuration(3610),"01:00:10");
+		assertEquals(ViewUtils.showTimeDuration(3600 * 49),"01:00:00");
+	}
+	
 }
