@@ -33,10 +33,10 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.util.Assert;
 
-import com.github.reportengine.model.Script;
 import com.github.reportengine.model.Param;
 import com.github.reportengine.model.Query;
 import com.github.reportengine.model.Report;
+import com.github.reportengine.model.Script;
 import com.github.reportengine.util.FreeMarkerConfigurationUtil;
 import com.github.reportengine.util.MD5Util;
 
