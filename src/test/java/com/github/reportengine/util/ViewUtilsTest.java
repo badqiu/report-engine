@@ -46,10 +46,11 @@ public class ViewUtilsTest extends Assert{
 
 	@Test
 	public void testShowTimeDuration() {
-		assertEquals(ViewUtils.showTimeDuration(1800),"00:30:00");
-		assertEquals(ViewUtils.showTimeDuration(3600),"01:00:00");
-		assertEquals(ViewUtils.showTimeDuration(3610),"01:00:10");
-		assertEquals(ViewUtils.showTimeDuration(3600 * 49),"01:00:00");
+		assertEquals(ViewUtils.showTimeDuration(1800 * 1000),"00:30:00");
+		assertEquals(ViewUtils.showTimeDuration(3600 * 1000),"01:00:00");
+		assertEquals(ViewUtils.showTimeDuration(3610 * 1000),"01:00:10");
+		assertEquals(ViewUtils.showTimeDuration(3600 * 49 * 1000),"01:00:00");
+		assertEquals(ViewUtils.showTimeDuration(null),"");
 	}
 	
 }

@@ -86,8 +86,9 @@ public class ViewUtils {
 		return Jsoup.parse(html).text();
 	}
 	
-	public static String showTimeDuration(int seconds) {
-		Date date = new Date(seconds * 1000);
+	public static String showTimeDuration(Number mills) {
+		if(mills == null) return "";
+		Date date = new Date(mills.longValue());
 		return DateUtils.format(date, "HH:mm:ss");
 	}
 
