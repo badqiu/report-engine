@@ -284,6 +284,7 @@ public class ReportEngine implements InitializingBean,ApplicationContextAware{
 		Script g = report.getScript();
 		if(g == null) return context;
 		String groovyScript = g.getBeforeQuery();
+		if(StringUtils.isBlank(groovyScript)) return context;
 		return processScript(context, params, groovyScript,g.getLang());
 	}
 	
@@ -291,6 +292,7 @@ public class ReportEngine implements InitializingBean,ApplicationContextAware{
 		Script g = report.getScript();
 		if(g == null) return context;
 		String groovyScript = g.getAfterQuery();
+		if(StringUtils.isBlank(groovyScript)) return context;
 		return processScript(context, params, groovyScript,g.getLang());
 	}
 
