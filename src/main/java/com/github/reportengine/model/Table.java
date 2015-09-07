@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.Assert;
@@ -21,7 +22,7 @@ public class Table extends BaseDataListObject implements ReportEngineLifecycle,I
 	/**
 	 * 表格的列
 	 */
-	private Column[] columns = new Column[]{};
+	private Column[] columns =  null;
 	/**
 	 * 是否支持分页
 	 */
@@ -117,6 +118,10 @@ public class Table extends BaseDataListObject implements ReportEngineLifecycle,I
 	public void afterQuery(Map<String, Object> context) throws Exception {
 		super.afterQuery(context);
 		Assert.notNull(getDataList(),"dataList must be not null");
+		if(columns == null) {
+			columns = generateColumnsByDataList(getDataList());
+		}
+		
 		if(pageable) {
 			int page = MapUtils.getIntValue(context, "page", 0);
 			int pageSize = MapUtils.getIntValue(context, "pageSize", Constants.DEFAULT_PAGE_SIZE);
@@ -127,6 +132,24 @@ public class Table extends BaseDataListObject implements ReportEngineLifecycle,I
 		}
 	}
 	
+	private Column[] generateColumnsByDataList(List<Map<String, Object>> dataList) {
+		if(CollectionUtils.isEmpty(dataList)) {
+			return new Column[]{};
+		}
+		Map<String,Object> row = dataList.get(0);
+		Column[] result = new Column[row.size()];
+		int index = 0;
+		for(String key : row.keySet()) {
+			Column c = new Column();
+			c.setLabel(key);
+			c.setValue("${row."+key+"!}");
+//			c.setName(key);
+			result[index] = c;
+			index++;
+		}
+		return result;
+	}
+
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		super.afterPropertiesSet();

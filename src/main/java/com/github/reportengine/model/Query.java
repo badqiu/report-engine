@@ -75,8 +75,9 @@ public class Query extends BaseObject implements InitializingBean,ReportEngineLi
 	 * 将多行的查询结果转换为map
 	 */
 	private Boolean result2Map;
+	
 	/**
-	 * 将多行的查询结果转换为map,指定的作为map key列
+	 * 将多行的查询结果转换为map,指定的作为map key列,配合result2Map属性一起使用
 	 */
 	private String mapKeyColumn;
 	
