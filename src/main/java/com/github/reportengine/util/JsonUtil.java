@@ -9,6 +9,7 @@ public class JsonUtil {
 	static {
 		mapper.configure(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS, false);
 	}
+	
 	public static String toJson(Object obj) {
 		try {
 			return mapper.writeValueAsString(obj);

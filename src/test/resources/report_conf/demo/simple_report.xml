@@ -4,6 +4,7 @@
 
 	<props>
 		<property name="sex" value="1"/>
+		<property name="name" value="badqiu"/>
 	</props>
 	
 	<params>

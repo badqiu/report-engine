@@ -57,31 +57,6 @@ public class ObjectSqlQueryUtil {
 		
 	}
 
-//	public static List<Map<String,Object>> query(final String sql,final List<Map<String,Object>>... multiDataRows) {
-//		if(multiDataRows == null) return null;
-//		
-//		final DataSource ds = getDataSource();
-//		TransactionTemplate tt = new TransactionTemplate(new DataSourceTransactionManager(ds));
-//		return tt.execute(new TransactionCallback<List<Map<String,Object>>>() {
-//			public List<Map<String,Object>> doInTransaction(TransactionStatus status) {
-//				int count = 0;
-//				for(List<Map<String,Object>> rows : multiDataRows) {
-//					createTableAndInsertData(TABLE_NAME+(++count),rows,ds);
-//				}
-//				final JdbcTemplate jdbcTemplate = new JdbcTemplate(ds);
-//				jdbcTemplate.execute("CREATE AGGREGATE IF NOT EXISTS collect_map FOR \"com.github.reportengine.h2.functions.CollectMapAggrFunction\"");
-//				jdbcTemplate.execute("CREATE ALIAS IF NOT EXISTS map FOR \"com.github.reportengine.h2.functions.H2Functions.string_map\"");
-//				jdbcTemplate.execute("CREATE ALIAS IF NOT EXISTS string_map FOR \"com.github.reportengine.h2.functions.H2Functions.string_map\"");
-//				jdbcTemplate.execute("CREATE ALIAS IF NOT EXISTS number_map FOR \"com.github.reportengine.h2.functions.H2Functions.number_map\"");
-//				jdbcTemplate.execute("CREATE ALIAS IF NOT EXISTS date_map FOR \"com.github.reportengine.h2.functions.H2Functions.date_map\"");
-//				jdbcTemplate.execute("CREATE ALIAS IF NOT EXISTS get_property FOR \"com.github.reportengine.h2.functions.H2Functions.get_property\"");
-//				
-//				return MapUtil.allMapKey2LowerCase(jdbcTemplate.queryForList(sql));
-//			}
-//		});
-//		
-//	}
-	
 	private static void createTableAndInsertData(String tableName,final List<Map<String, Object>> rows,final DataSource dataSource) {
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 		String createTableSql = buildCreateTableSql(tableName, rows);
@@ -184,14 +159,14 @@ public class ObjectSqlQueryUtil {
 		sql.append(" )");
 		return sql.toString();
 	}
-//	private static AtomicLong dbCount = new AtomicLong();
+	
 	private static DataSource getDataSource() {
 		DriverManagerDataSource ds = new DriverManagerDataSource();
 		ds.setDriverClassName("org.h2.Driver");
 		ds.setPassword("sa");
 		ds.setPassword("");
-//		ds.setUrl("jdbc:h2:mem:object_sql_query"+(dbCount.incrementAndGet())+";MODE=MYSQL");
-		ds.setUrl("jdbc:h2:mem:object_sql_query;MODE=MYSQL;DB_CLOSE_DELAY=-1");
+		// LOCK_MODE=0;
+		ds.setUrl("jdbc:h2:mem:object_sql_query;MODE=MYSQL;DB_CLOSE_DELAY=-1;LOG=0;UNDO_LOG=0;CACHE_SIZE=65536;MULTI_THREADED=1");
 		return ds;
 	}
 }

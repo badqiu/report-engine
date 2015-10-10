@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Properties;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
@@ -44,6 +45,7 @@ public class Report extends BaseObject implements InitializingBean,Cloneable,Ser
 	private String help; //报表帮助文档
 	private String extend; // 继承某个Report对象;
 	private String refDataSource; //引用的公共数据源名称
+	private boolean notCache; //是否不缓存报表
 	
 	private long lastModifiedTime = 0; //report对象的最后修改时间,用于内部缓存使用,外部禁止使用
 	
@@ -54,10 +56,11 @@ public class Report extends BaseObject implements InitializingBean,Cloneable,Ser
 	private Chart[] charts = new Chart[]{};
 	private Table[] tables = new Table[]{};
 	private Cube[] cubes = new Cube[]{};
+	private Properties props = new Properties();
 	
+	// metadata
 	private String xml; //report自身的xml
 	private String template; //report自身的freemarker template文件内容
-	private boolean notCache; //是否不缓存报表
 	
 	public String getAuthor() {
 		return author;
@@ -132,7 +135,12 @@ public class Report extends BaseObject implements InitializingBean,Cloneable,Ser
 	public void setCubes(Cube[] cubes) {
 		this.cubes = cubes;
 	}
-	
+	public Properties getProps() {
+		return props;
+	}
+	public void setProps(Properties props) {
+		this.props = props;
+	}
 	public String getExtend() {
 		return extend;
 	}

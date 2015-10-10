@@ -1,6 +1,7 @@
 <#include "/macro.ftl"/>
 
 <@override name="table">
+	<h1>Props: SEX=${report.props.sex},Name=${report.props.name}</h1>
 	<table class="table table-bordered " style="text-align: center;">
 		<tr>
 			<td>
