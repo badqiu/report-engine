@@ -56,7 +56,6 @@ public class Report extends BaseObject implements InitializingBean,Cloneable,Ser
 	private Chart[] charts = new Chart[]{};
 	private Table[] tables = new Table[]{};
 	private Cube[] cubes = new Cube[]{};
-	private Properties props = new Properties();
 	
 	// metadata
 	private String xml; //report自身的xml
@@ -134,12 +133,6 @@ public class Report extends BaseObject implements InitializingBean,Cloneable,Ser
 	}
 	public void setCubes(Cube[] cubes) {
 		this.cubes = cubes;
-	}
-	public Properties getProps() {
-		return props;
-	}
-	public void setProps(Properties props) {
-		this.props = props;
 	}
 	public String getExtend() {
 		return extend;
