@@ -141,4 +141,28 @@ public class AggrFunctionUtil {
 		}
 		return null;
 	}
+
+	public static Map<String,Object> autoAvgAggr(List<Map<String,Object>> rows) {
+		if(CollectionUtils.isEmpty(rows)) {
+			return Collections.EMPTY_MAP;
+		}
+		
+		Map<String,Object> result = new HashMap<String,Object>();
+		for(Map.Entry<String, Object> entry : rows.get(0).entrySet()) {
+			Object notNullValue = getNotNullValue(entry.getKey(),rows);
+			if(notNullValue instanceof Number) {
+				List tempRows = rows;
+				double avg = avg(tempRows,entry.getKey());
+				result.put(entry.getKey(), avg);
+			}else if(notNullValue instanceof String) {
+				result.put(entry.getKey(), "");
+			}else if(notNullValue instanceof Date) {
+				result.put(entry.getKey(), null);				
+			}else {
+				result.put(entry.getKey(), null);
+			}
+			
+		}
+		return result;
+	}
 }

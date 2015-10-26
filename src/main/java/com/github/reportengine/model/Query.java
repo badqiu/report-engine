@@ -67,6 +67,11 @@ public class Query extends BaseObject implements InitializingBean,ReportEngineLi
 	private Map autoSumResult;
 	
 	/**
+	 * 自动求平均值的汇总结果
+	 */
+	private Map autoAvgResult;
+	
+	/**
 	 * 查询结果的元数据，元数据内容参考： @see java.sql.ResultSetMetaData
 	 */
 	public List<ResultSetMetaDataInfo> metaDatas;
@@ -136,6 +141,10 @@ public class Query extends BaseObject implements InitializingBean,ReportEngineLi
 		return autoSumResult;
 	}
 	
+	public Map getAutoAvgResult() {
+		return autoAvgResult;
+	}
+	
 	public void afterPropertiesSet() throws Exception {
 	}
 	
@@ -168,6 +177,7 @@ public class Query extends BaseObject implements InitializingBean,ReportEngineLi
 			}
 			
 			this.autoSumResult = AggrFunctionUtil.autoSumAggr((List)result);
+			this.autoAvgResult = AggrFunctionUtil.autoAvgAggr((List)result);
 			this.result = processResultRows(result);
 			return this.result;
 		}catch(Exception e) {

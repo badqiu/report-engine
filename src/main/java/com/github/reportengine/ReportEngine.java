@@ -318,11 +318,10 @@ public class ReportEngine implements InitializingBean,ApplicationContextAware{
 			Object result = q.execute(params);
 			context.put(q.getId(), result);
 			if(result instanceof Collection) {
-				Map sumArrgMap = q.getAutoSumResult();
-				String sumId = q.getId()+"Sum";
-				context.put(sumId, sumArrgMap);
+				context.put(q.getId()+"Sum", q.getAutoSumResult());
+				context.put(q.getId()+"Avg", q.getAutoAvgResult());
 				if(logger.isDebugEnabled()) {
-					logger.debug("query result,"+q.getId()+" size:"+(getSize(result)) +" "+ sumId + ":"+sumArrgMap+" dataList:"+result);
+					logger.debug("query result,"+q.getId()+" size:"+(getSize(result)) +" "+ (q.getId()+"Sum") + ":"+q.getAutoSumResult()+" Avg:" + q.getAutoAvgResult() +" dataList:"+result);
 				}
 			}else {
 				if(logger.isDebugEnabled()) {

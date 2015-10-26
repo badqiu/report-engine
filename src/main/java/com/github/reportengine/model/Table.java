@@ -35,7 +35,7 @@ public class Table extends BaseDataListObject implements ReportEngineLifecycle,I
 	/**
 	 * 控制显示合计值，显示位置: table foot
 	 */
-	private Boolean showSum;
+	private Boolean showSum = true;
 	
 	public String getTitle() {
 		return title;
