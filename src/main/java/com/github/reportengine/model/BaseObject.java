@@ -13,6 +13,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceAware;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.util.Assert;
 
 import com.github.rapid.common.beanutils.PropertyUtils;
@@ -107,6 +108,10 @@ public class BaseObject  implements ReportEngineLifecycle,InitializingBean,Seria
 	@JsonIgnore
 	public MessageSource getMessageSource() {
 		return messageSource;
+	}
+	
+	public String getMessage(String code,String... args) {
+		return getMessageSource().getMessage(code, args, code,LocaleContextHolder.getLocale());
 	}
 
 	public void beforeQuery(Map<String, Object> context) throws Exception {

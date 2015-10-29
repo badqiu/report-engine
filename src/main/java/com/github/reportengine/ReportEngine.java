@@ -32,6 +32,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceAware;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.util.Assert;
@@ -343,7 +344,7 @@ public class ReportEngine implements InitializingBean,ApplicationContextAware,Me
 		}
 	}
 	
-	private int getSize(Object result) {
+	private static int getSize(Object result) {
 		if(result == null) return 0;
 		if(result instanceof Collection) {
 			return ((Collection)result).size();
@@ -496,10 +497,17 @@ public class ReportEngine implements InitializingBean,ApplicationContextAware,Me
 		FileUtils.cleanDirectory(reportCacheDirFile);
 		logger.info("clean reportCache:"+reportCacheDirFile.getAbsolutePath()+" is success!");
 	}
+	
+	public String getMessage(String code,String... args) {
+		return getMessageSource().getMessage(code, args, code,LocaleContextHolder.getLocale());
+	}
 
 	public void setMessageSource(MessageSource messageSource) {
 		this.messageSource = messageSource;
 	}
 
+	public MessageSource getMessageSource() {
+		return messageSource;
+	}
 	
 }
