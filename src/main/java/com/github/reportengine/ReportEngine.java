@@ -30,6 +30,9 @@ import org.springframework.beans.factory.BeanIsAbstractException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.MessageSource;
+import org.springframework.context.MessageSourceAware;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.util.Assert;
 
@@ -39,6 +42,7 @@ import com.github.reportengine.model.Report;
 import com.github.reportengine.model.Script;
 import com.github.reportengine.util.FreeMarkerConfigurationUtil;
 import com.github.reportengine.util.MD5Util;
+import com.github.reportengine.util.SpringUtil;
 
 import freemarker.cache.FileTemplateLoader;
 import freemarker.template.Configuration;
@@ -50,7 +54,7 @@ import freemarker.template.TemplateException;
  * @author badqiu
  *
  */
-public class ReportEngine implements InitializingBean,ApplicationContextAware{
+public class ReportEngine implements InitializingBean,ApplicationContextAware,MessageSourceAware{
 	private static Logger logger = LoggerFactory.getLogger(ReportEngine.class);
 	public static ThreadLocal<ReportEngine> reportEngineContext = new ThreadLocal<ReportEngine>();
 	
@@ -62,6 +66,11 @@ public class ReportEngine implements InitializingBean,ApplicationContextAware{
 	private boolean reportCache=false;
 	/** 缓存目录 */
 	private String reportCacheDir=null;
+	
+	/**
+	 * i18n国际化使用的MessageSource资源类
+	 */
+	private MessageSource messageSource = new ResourceBundleMessageSource();
 	
 	public ReportEngine() {
 	}
@@ -209,6 +218,7 @@ public class ReportEngine implements InitializingBean,ApplicationContextAware{
 		InputStream input = new FileInputStream(reportXmlFile);
 		try {
 			report = Report.parse((Configuration)conf.clone(),input,model);
+			report.setMessageSource(messageSource);
 			report.setLastModifiedTime(reportXmlFile.lastModified());
 			
 			if(StringUtils.isNotBlank(report.getExtend())) {
@@ -222,6 +232,8 @@ public class ReportEngine implements InitializingBean,ApplicationContextAware{
 			if(reportTemplateFile.exists()) {
 				report.setTemplate(FileUtils.readFileToString(reportTemplateFile));
 			}
+			
+			SpringUtil.initializing(report);
 		}catch (Exception e){
 			throw new RuntimeException("cannot parse report xml file:"+reportXmlFile,e);
 		}finally {
@@ -483,6 +495,10 @@ public class ReportEngine implements InitializingBean,ApplicationContextAware{
 		File reportCacheDirFile=new File(StringUtils.isNotBlank(cleanDate) ? reportCacheDir+File.separator+cleanDate:reportCacheDir);
 		FileUtils.cleanDirectory(reportCacheDirFile);
 		logger.info("clean reportCache:"+reportCacheDirFile.getAbsolutePath()+" is success!");
+	}
+
+	public void setMessageSource(MessageSource messageSource) {
+		this.messageSource = messageSource;
 	}
 
 	

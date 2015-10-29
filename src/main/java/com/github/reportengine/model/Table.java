@@ -7,11 +7,13 @@ import java.util.Map;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.util.Assert;
 
 import com.github.rapid.common.util.page.Paginator;
 import com.github.reportengine.Constants;
 import com.github.reportengine.ReportEngineLifecycle;
+import com.github.reportengine.util.MessageSourceUtil;
 
 public class Table extends BaseDataListObject implements ReportEngineLifecycle,InitializingBean,Cloneable,Serializable{
 	private static final long serialVersionUID = 1L;
@@ -38,7 +40,7 @@ public class Table extends BaseDataListObject implements ReportEngineLifecycle,I
 	private Boolean showSum = true;
 	
 	public String getTitle() {
-		return title;
+		return getMessageSource().getMessage(title, null,title,LocaleContextHolder.getLocale());
 	}
 
 	public void setTitle(String title) {
@@ -90,7 +92,7 @@ public class Table extends BaseDataListObject implements ReportEngineLifecycle,I
 		}
 
 		public String getLabel() {
-			return label;
+			return getMessageSource().getMessage(label, null,label,LocaleContextHolder.getLocale());
 		}
 
 		public void setLabel(String label) {
@@ -153,7 +155,8 @@ public class Table extends BaseDataListObject implements ReportEngineLifecycle,I
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		super.afterPropertiesSet();
-		this.showSum  = this.showSum == null ?  true : this.showSum;
+//		this.showSum  = this.showSum == null ?  true : this.showSum;
+		MessageSourceUtil.initMessageSource(getMessageSource(),columns);
 	}
 	
 	@Override

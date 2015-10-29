@@ -9,7 +9,10 @@ import java.util.Properties;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.context.MessageSource;
+import org.springframework.context.MessageSourceAware;
 import org.springframework.util.Assert;
 
 import com.github.rapid.common.beanutils.PropertyUtils;
@@ -23,7 +26,7 @@ import com.github.reportengine.util.JsonUtil;
  * @author badqiu
  *
  */
-public class BaseObject  implements ReportEngineLifecycle,InitializingBean,Serializable{
+public class BaseObject  implements ReportEngineLifecycle,InitializingBean,Serializable,MessageSourceAware{
 	/**
 	 * 对象ID
 	 */
@@ -50,6 +53,11 @@ public class BaseObject  implements ReportEngineLifecycle,InitializingBean,Seria
 	 * 自定义css class
 	 */
 	private String cssClass;
+	
+	/**
+	 * i18n国际化使用的MessageSource资源类
+	 */
+	private transient MessageSource messageSource;
 	
 	public String getId() {
 		return id;
@@ -89,6 +97,16 @@ public class BaseObject  implements ReportEngineLifecycle,InitializingBean,Seria
 
 	public void setCssClass(String cssClass) {
 		this.cssClass = cssClass;
+	}
+	
+	@JsonIgnore
+	public void setMessageSource(MessageSource messageSource) {
+		this.messageSource = messageSource;
+	}
+	
+	@JsonIgnore
+	public MessageSource getMessageSource() {
+		return messageSource;
 	}
 
 	public void beforeQuery(Map<String, Object> context) throws Exception {
@@ -163,7 +181,8 @@ public class BaseObject  implements ReportEngineLifecycle,InitializingBean,Seria
 	public void afterPropertiesSet() throws Exception {
 		if(StringUtils.isBlank(ref)) {
 			Assert.hasText(id,"id must be not empty on "+getClass());
-		}		
+		}
+		
 	}
 	
 	public String toJson() {

@@ -12,11 +12,15 @@ import java.util.Map;
 import org.apache.commons.beanutils.NestedNullException;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.context.MessageSource;
+import org.springframework.context.MessageSourceAware;
+import org.springframework.context.i18n.LocaleContextHolder;
 
 import com.github.rapid.common.beanutils.PropertyUtils;
 import com.github.rapid.common.util.DateConvertUtil;
 import com.github.reportengine.ReportEngineLifecycle;
 import com.github.reportengine.util.MapUtil;
+import com.github.reportengine.util.MessageSourceUtil;
 
 /**
  * 报表图片
@@ -61,7 +65,7 @@ public class Chart extends BaseDataListObject implements ReportEngineLifecycle,C
 	private String options;
 	
 	public String getTitle() {
-		return title;
+		return getMessageSource().getMessage(title, null,title,LocaleContextHolder.getLocale());
 	}
 
 	public void setTitle(String title) {
@@ -93,7 +97,7 @@ public class Chart extends BaseDataListObject implements ReportEngineLifecycle,C
 	}
 
 	public String getxTitle() {
-		return xTitle;
+		return getMessageSource().getMessage(xTitle, null,xTitle,LocaleContextHolder.getLocale());
 	}
 
 	public void setxTitle(String xTitle) {
@@ -101,7 +105,7 @@ public class Chart extends BaseDataListObject implements ReportEngineLifecycle,C
 	}
 
 	public String getyTitle() {
-		return yTitle;
+		return getMessageSource().getMessage(yTitle, null,yTitle,LocaleContextHolder.getLocale());
 	}
 
 	public void setyTitle(String yTitle) {
@@ -263,7 +267,7 @@ public class Chart extends BaseDataListObject implements ReportEngineLifecycle,C
 		}
 	}
 
-	public static class Ser implements Serializable{
+	public static class Ser extends BaseObject implements Serializable{
 		private static final long serialVersionUID = 1L;
 		
 		private String y;
@@ -331,7 +335,7 @@ public class Chart extends BaseDataListObject implements ReportEngineLifecycle,C
 			this.yFormat = yFormat;
 		}
 		public String getTitle() {
-			return title;
+			return getMessageSource().getMessage(title, null,title,LocaleContextHolder.getLocale());
 		}
 		public void setTitle(String title) {
 			this.title = title;
@@ -343,6 +347,12 @@ public class Chart extends BaseDataListObject implements ReportEngineLifecycle,C
 			this.values = values;
 		}
 		
+	}
+	
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		super.afterPropertiesSet();
+		MessageSourceUtil.initMessageSource(getMessageSource(),sers);
 	}
 	
 	@Override

@@ -15,6 +15,7 @@ import java.util.Properties;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import com.github.reportengine.ReportEngineLifecycle;
@@ -22,6 +23,7 @@ import com.github.reportengine.model.Chart.Ser;
 import com.github.reportengine.model.Table.Column;
 import com.github.reportengine.util.ArrayUtil;
 import com.github.reportengine.util.CloneUtil;
+import com.github.reportengine.util.MessageSourceUtil;
 import com.github.reportengine.util.RegexHelper;
 import com.github.reportengine.util.SelectorUtil;
 import com.github.reportengine.util.SpringUtil;
@@ -68,7 +70,7 @@ public class Report extends BaseObject implements InitializingBean,Cloneable,Ser
 		this.author = author;
 	}
 	public String getTitle() {
-		return title;
+		return getMessageSource().getMessage(title, null,title,LocaleContextHolder.getLocale());
 	}
 	public void setTitle(String title) {
 		this.title = title;
@@ -211,6 +213,12 @@ public class Report extends BaseObject implements InitializingBean,Cloneable,Ser
 		setRefDataSourceProperty(cubes);
 		setRefDataSourceProperty(tables);
 		
+		MessageSourceUtil.initMessageSource(getMessageSource(),params);
+		MessageSourceUtil.initMessageSource(getMessageSource(),querys);
+		MessageSourceUtil.initMessageSource(getMessageSource(),charts);
+		MessageSourceUtil.initMessageSource(getMessageSource(),cubes);
+		MessageSourceUtil.initMessageSource(getMessageSource(),tables);
+		
 		SpringUtil.initializing(params);
 		SpringUtil.initializing(querys);
 		SpringUtil.initializing(charts);
@@ -263,7 +271,6 @@ public class Report extends BaseObject implements InitializingBean,Cloneable,Ser
 			XStream xstream = buildReportXStream();
 			Report report = (Report)xstream.fromXML(xml);
 			report.setXml(xml);
-			SpringUtil.initializing(report);
 			return report;
 		}catch(Exception e) {
 			throw new RuntimeException("cannot parse report from input:"+input,e);
@@ -355,7 +362,10 @@ public class Report extends BaseObject implements InitializingBean,Cloneable,Ser
 	}
 	
 	public Report deepClone() {
-		return CloneUtil.deepClone(this);
+		Report clone = CloneUtil.deepClone(this);
+		clone.setMessageSource(getMessageSource());
+		SpringUtil.initializing(clone);
+		return clone;
 	}
 	
 	private Map elements = null;

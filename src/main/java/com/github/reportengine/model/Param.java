@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.util.Assert;
 
 import com.github.reportengine.ReportEngineLifecycle;
@@ -56,7 +57,7 @@ public class Param extends BaseDataListObject implements InitializingBean,Report
 		this.displayType = displayType;
 	}
 	public String getLabel() {
-		return label;
+		return getMessageSource().getMessage(label, null,label,LocaleContextHolder.getLocale());
 	}
 	public void setLabel(String label) {
 		this.label = label;
