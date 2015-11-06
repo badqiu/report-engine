@@ -75,7 +75,10 @@ public class ReportEngineServlet extends HttpServlet{
 		Map params = genParams(req, resp);
 		
 		Map<String, Object> rawParam = WebUtils.getParametersStartingWith(req, "");
-		CookieUtil.saveParamInotCookie(excludeCookieMapByKeys(rawParam),resp,REPORT_ENGINE_COOKIE_PARAM_PREFIX,COOKIE_MAX_AGE);
+		//取json数据的时候不要保存cookie，因为是ajax请求的，用户是不知道的，此时参数是不需要写入cookie
+		if(!"json".equals(method)){
+			CookieUtil.saveParamInotCookie(excludeCookieMapByKeys(rawParam),resp,REPORT_ENGINE_COOKIE_PARAM_PREFIX,COOKIE_MAX_AGE);
+		}
 		
 		if("parameter".equals(method)) {
 			parameter(reportPath,params,req, resp);
@@ -89,6 +92,8 @@ public class ReportEngineServlet extends HttpServlet{
 			cleanParamCookies(req, resp);
 		}else if("cleanReportCache".equals(method)) {
 			cleanReportCache(req, resp);
+		}else if("json".equals(method)) {
+			json(reportPath,params,req, resp);
 		}else {
 			throw new RuntimeException("unknow method:"+method+" servletPath:"+req.getRequestURI());
 		}
@@ -97,6 +102,19 @@ public class ReportEngineServlet extends HttpServlet{
 
 
 	
+	/**
+	 * @param reportPath
+	 * @param params
+	 * @param req
+	 * @param resp
+	 * @throws IOException 
+	 */
+	private void json(String reportPath, Map params, HttpServletRequest req,
+			HttpServletResponse resp) throws IOException {
+		String json = reportEngine.renderJson(reportPath,params);
+		ResponseUtil.writeString(resp, json);
+	}
+
 	private void cleanReportCache(HttpServletRequest req,
 			HttpServletResponse resp) throws IOException {
 		String cleanDate=req.getParameter("cleanDate");

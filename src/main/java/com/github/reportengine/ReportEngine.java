@@ -37,6 +37,7 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.util.Assert;
 
+import com.github.reportengine.model.BaseObject;
 import com.github.reportengine.model.Param;
 import com.github.reportengine.model.Query;
 import com.github.reportengine.model.Report;
@@ -460,7 +461,8 @@ public class ReportEngine implements InitializingBean,ApplicationContextAware,Me
 		processedParamMap.put("reportPath", reportPath);
 		String hashKey=genReportCacheHashKey(processedParamMap);
 		String date=DateFormatUtils.format(new Date(), "yyyy-MM-dd");
-		return new File(reportCacheDir+date+File.separator+hashKey+".html");
+		String language=LocaleContextHolder.getLocale().getLanguage();
+		return new File(reportCacheDir+date+File.separator+language+File.separator+hashKey+".html");
 	}
 	
 	/**
@@ -508,6 +510,31 @@ public class ReportEngine implements InitializingBean,ApplicationContextAware,Me
 
 	public MessageSource getMessageSource() {
 		return messageSource;
+	}
+
+	/**
+	 * 返回json数据
+	 * @param reportPath
+	 * @param params
+	 * @return
+	 */
+	public String renderJson(String reportPath, Map params) {
+		logger.info("renderJson() reportPath:"+reportPath);
+		try {
+			Assert.hasText(reportPath,"reportPath must be not empty");
+			String objectIdName="elementId";
+			Report report = getReport(reportPath,params);
+			Map<String,Object> model = processForModel(report, params);
+			String objectId=(String) params.get(objectIdName);
+			Assert.hasText(objectId,objectIdName+" must be not empty");
+			BaseObject baseObject=(BaseObject) report.getElementById(objectId);
+			if(baseObject==null){
+			   throw new RuntimeException(objectIdName+":"+objectId+" is error,not find it.");
+			}
+			return baseObject.toJson();
+		}catch(Exception e) {
+			throw new RuntimeException("renderJson error,reportPath:"+reportPath+" params:"+params,e);
+		}
 	}
 	
 }
