@@ -54,6 +54,7 @@ public class Chart extends BaseDataListObject implements ReportEngineLifecycle,C
 	private Ser[] sers;
 	
 	private int dateIntervalSeconds = 60 * 60 * 24;
+	
 	/**
 	 * 设置chart属性，json格式。
 	 * 示例值:

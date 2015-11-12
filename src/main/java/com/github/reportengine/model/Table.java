@@ -79,8 +79,17 @@ public class Table extends BaseDataListObject implements ReportEngineLifecycle,I
 		private static final long serialVersionUID = 1L;
 
 		private String name;
+		/**
+		 * 显示名称
+		 */
 		private String label;
+		/**
+		 * 显示值的表达式
+		 */
 		private String value;
+		/**
+		 * 是否隐藏
+		 */
 		private boolean hidden = false;
 
 		public String getName() {
