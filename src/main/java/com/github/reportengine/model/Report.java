@@ -238,6 +238,10 @@ public class Report extends BaseObject implements InitializingBean,Cloneable,Ser
 	private void setRefDataSourceIfBlank(Query q) {
 		if(q == null) return;
 		
+		if(q.getDataSource() != null) {
+			return;
+		}
+		
 		if(StringUtils.isBlank(q.getRefDataSource())) {
 			q.setRefDataSource(refDataSource);
 		}
