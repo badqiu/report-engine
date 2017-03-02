@@ -1,22 +1,30 @@
 package com.github.reportengine.util;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class MomUtil {
 
-	public static void ringUp(List<Map> rows,String addDateType,int days) {
-		ringUp(rows,addDateType,"day",days);
+	public static List<Map> ringUp(List<Map> rows,String addDateType,int days) {
+		return ringUp(rows,addDateType,"day",days);
 	}
 	
-	public static void ringUp(List<Map> rows,String dateKey,String addDateType,int amount) {
+	public static List<Map> ringUp(List<Map> rows,String dateKey,String addDateType,int amount) {
+		List<Map> resultList = new ArrayList<Map>();
 		for(Map row : rows) {
+			Map resultRow = new HashMap(row);
 			Date date = (Date)row.get(dateKey);
 			Date nday = addDate(date,addDateType, amount);
 			Map ndayMap = getMapByKey(rows,dateKey,nday);
-			row.put(addDateType+Math.abs(amount), ndayMap);
+			resultRow.put(addDateType+Math.abs(amount), ndayMap);
+			resultRow.put("pre"+Math.abs(amount), ndayMap);
+			
+			resultList.add(resultRow);
 		}
+		return resultList;
 	}
 
 	private static Date addDate(Date date,String addDateType, int amount) {

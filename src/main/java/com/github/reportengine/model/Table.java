@@ -91,6 +91,9 @@ public class Table extends BaseDataListObject implements ReportEngineLifecycle,I
 		 * 是否隐藏
 		 */
 		private boolean hidden = false;
+		
+		private String cssClass;
+		private String cssStyle;
 
 		public String getName() {
 			return name;
@@ -122,6 +125,22 @@ public class Table extends BaseDataListObject implements ReportEngineLifecycle,I
 
 		public void setHidden(boolean hidden) {
 			this.hidden = hidden;
+		}
+
+		public String getCssClass() {
+			return cssClass;
+		}
+
+		public void setCssClass(String cssClass) {
+			this.cssClass = cssClass;
+		}
+
+		public String getCssStyle() {
+			return cssStyle;
+		}
+
+		public void setCssStyle(String cssStyle) {
+			this.cssStyle = cssStyle;
 		}
 
 	}

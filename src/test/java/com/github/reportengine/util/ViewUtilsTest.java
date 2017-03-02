@@ -53,4 +53,9 @@ public class ViewUtilsTest extends Assert{
 		assertEquals(ViewUtils.showTimeDuration(null),"");
 	}
 	
+	@Test
+	public void testIncr() {
+		System.out.println(ViewUtils.showIncr(100, 102));
+	}
+	
 }

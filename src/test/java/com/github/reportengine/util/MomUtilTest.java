@@ -44,7 +44,7 @@ public class MomUtilTest {
 	public void test_ringUpByMonth() {
 		
 		
-		MomUtil.ringUp(rows, "tdate","month", -2);
+		rows = MomUtil.ringUp(rows, "tdate","month", -2);
 		
 		for(Map row : rows) {
 			System.out.println(row);

@@ -206,9 +206,11 @@ public class ReportEngine implements InitializingBean,ApplicationContextAware,Me
 		File reportXmlFile = new File(baseReportDir,reportPath+".xml");
 		File reportTemplateFile = new File(baseReportDir,reportPath+".ftl");
 //		Report report = reportCache.get(reportPath);
+		Map finalModel = new HashMap(model);
+		finalModel.putAll(engineContext);
 		Report report = null;
 		if(report == null || reportXmlFile.lastModified() != report.getLastModifiedTime()) {
-			report = newReport(model, reportXmlFile,reportTemplateFile);
+			report = newReport(finalModel, reportXmlFile,reportTemplateFile);
 //			reportCache.put(reportPath, report);
 		}
 		return report.deepClone();
@@ -317,6 +319,7 @@ public class ReportEngine implements InitializingBean,ApplicationContextAware,Me
 			ScriptEngineManager factory = new ScriptEngineManager();
 			ScriptEngine engine = factory.getEngineByName(lang);
 			Bindings bindings = engine.createBindings();
+			bindings.putAll(context);
 			bindings.put("context", context);
 			bindings.put("param", params);
 			engine.eval(new StringReader(script), bindings);

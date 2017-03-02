@@ -91,5 +91,15 @@ public class ViewUtils {
 		Date date = new Date(mills.longValue());
 		return DateUtils.format(date, "HH:mm:ss");
 	}
+	
+	public static String showIncr(Number num1,Number num2) {
+		if(num1 == null || num2 == null) return null;
+		double m = num2.doubleValue() - num1.doubleValue();
+		double result = m / num1.doubleValue();
+		return percent(result);
+	}
 
+	public static String toString(Object obj) {
+		return String.valueOf(obj);
+	}
 }
