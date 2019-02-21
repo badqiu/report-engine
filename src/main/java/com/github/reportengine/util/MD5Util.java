@@ -57,7 +57,7 @@ public class MD5Util {
 	 * @return
 	 * @throws IOException
 	 */
-	public static String getFileMD5String(File file) throws IOException {		
+	public synchronized static String getFileMD5String(File file) throws IOException {		
 		InputStream fis;
 	    fis = new FileInputStream(file);
 	    byte[] buffer = new byte[1024];
@@ -69,7 +69,7 @@ public class MD5Util {
 		return bufferToHex(messagedigest.digest());
 	}
 
-	public static String getMD5String(byte[] bytes) {
+	public synchronized static String getMD5String(byte[] bytes) {
 		messagedigest.update(bytes);
 		return bufferToHex(messagedigest.digest());
 	}
